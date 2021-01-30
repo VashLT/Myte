@@ -1,8 +1,138 @@
+$default-font: Gadget,sans-serif;
 
-    
+$nav-bar-color: #343844;
+$nav-bar-items-color: #d8d7d7;
+
+$myte-blue: #383E56;
+$myte-orange: #f69e7b;
+$myte-skin: #eedad1;
+$default-indent: 10%;
+$btn-radius: 5px;
+
+html {
+    font-family: $default-font;
+    }
+.container-collapsible {
+    width: 20%;
+    justify-content: flex-start;
+    margin-left: 20px;
+
+    & div {
+        display: flex;
+        width: 70px;
+        height: 70px;
+        flex-direction: row;
+        border-radius: 50%;
+
+        margin-left: 20px;
+
+        align-items: center;
+        justify-content: center;
+
+        &:hover { background-color: #9b9b9b;}
+    }
+}
+
 .container-base {
     display: flex;
     flex-direction: column;
-    z-index: 10;    
+    z-index: 0;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 1000px;
+
+    background-color: #212121;
+    // background-image: url("../images/bg-min.png");
+    // background-repeat: no-repeat;
+    // background-position: center center;
+    // background-size: cover;
+    position: fixed;
 }
-    
+
+.nav-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100px;
+
+    background-color: $nav-bar-color;
+
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    z-index: 1;
+
+    &--item {
+        display: flex;
+        flex-direction: row;
+
+        height: 60px;
+        min-width: 100px;
+        margin-right: 10px;
+
+        align-items: center;
+        justify-content: flex-end;
+
+        & div {
+
+            right: 0;
+            top: 0;
+
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+
+            & a {
+                border-radius: $btn-radius; // button look
+                color: $nav-bar-items-color;
+
+                width: 33%;
+                height: 100%;
+                font-size: 25px;
+
+                text-decoration: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &:hover { 
+                    background-color: $myte-orange; 
+                }
+            }
+        }
+    }
+}
+.collapsible {
+    background-image: url('../images/btn.png');
+    border: none;
+    appearance: none;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    width: 40px;
+    height: 30px;
+}
+.logo {
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 20%;
+    height: 60px;
+    & img {
+        width: 60px;
+        height: 60px;
+        }
+}

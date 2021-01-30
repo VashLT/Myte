@@ -11,12 +11,31 @@
 
 <body>
     <div class="nav-bar">
-
+        <div class="container-collapsible">
+            <div>
+                <button class="collapsible">
+                    <!-- <p>Testing</p> -->
+                </button>
+            </div>
+        </div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Myte">
+        </div>
+        <div class="nav-bar--item" style="width: 60%;">
+            <div>
+                <a href="{{ url_for('login') }}">Log in</a>
+                <a href="#">About us</a>
+                <a href="#">Other</a>
+            </div>
+        </div>
     </div>
     <div id="1" name="base" class="container-base">
         {% block content %}
         {% endblock %}
     </div>
+
+    <script type=text/javascript src="{{
+                  url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 
