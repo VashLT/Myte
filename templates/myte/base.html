@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/gen/style.css" />
+    {% assets "scss_all" %}
+    <title>{% block title%} Myte {% endblock %}</title>
+    {% endassets %}
+</head>
+
+<body>
+    <div class="nav-bar">
+
+    </div>
+    <div id="1" name="base" class="container-base">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+
+</html>
