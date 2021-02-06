@@ -5,7 +5,6 @@ from flask_assets import Environment, Bundle
 def build_myte():
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object('config.Config')
-    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
     # SCSS rendering
     assets = Environment(app)
