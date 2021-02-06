@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/gen/style.css" />
+    {% assets "scss_all" %}
+    <title>{% block title %} Myte {% endblock %}</title>
+    {% endassets %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+
+<body>
+    {% block body %}
+    <div class="side-bar">
+
+    </div>
+    <nav class="nav-bar">
+        <div class="container-collapsible">
+            <div>
+                <button type="button" class="collapsible">
+                </button>
+            </div>
+        </div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Myte">
+        </div>
+        <div class="nav-bar--item" style="width: 60%;">
+            <div>
+                <a href="{{ url_for('auth.login') }}">Log in</a>
+                <a href="#">About us</a>
+                <a href="#">Other</a>
+            </div>
+        </div>
+    </nav>
+    <div id="1" name="base" class="container-base">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% endblock %}
+
+    <script type=text/javascript src="{{
+                  url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>
