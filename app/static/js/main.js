@@ -5,7 +5,7 @@ $.fn.hasAttr = function (name) {
 $(document).ready(function () {
     var $side_bar = $('.side-bar');
 
-    $(".collapsible").click(function () { // click on hamburger button
+    $(".hamburger").click(function () { // click on hamburger button
         event.preventDefault();
         $side_bar.animate({ width: "toggle" }, 300);
         if (!$side_bar.hasAttr("state") || $side_bar.attr("state") == "hidden") {
