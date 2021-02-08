@@ -13,19 +13,37 @@
 <body>
     {% block body %}
     <div class="side-bar">
-
+        <div class="side-bar--info">
+            <h2>Myte</h2>
+            <h3>vBeta</h3>
+            <div></div> 
+        </div>
+        <div class="side-bar--item">
+            <img src="{{ url_for('static', filename='images/premium.png') }}">
+            <a href="#" style="margin-left: 20px;"><strong>Premium</strong></a>
+        </div>
+        <div class="side-bar--item">
+            <img src="{{ url_for('static', filename='images/git.png') }}">
+            <a 
+                href="https://github.com/VashLT/Myte" 
+                title="Myte source code" 
+                style="margin-left: 20px;"
+                target="_blank"
+            ><strong>Repositorio</strong></a>
+        </div>
     </div>
     <nav class="nav-bar">
-        <div class="container-collapsible">
-            <div>
-                <button type="button" class="collapsible">
-                </button>
+        <div class="container-hamburger">
+            <div class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
         </div>
         <div class="logo">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Myte">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" title="Myte">
         </div>
-        <div class="nav-bar--item" style="width: 60%;">
+        <div class="nav-bar--item">
             <div>
                 <a href="{{ url_for('auth.login') }}">Log in</a>
                 <a href="#">About us</a>
@@ -33,7 +51,7 @@
             </div>
         </div>
     </nav>
-    <div id="1" name="base" class="container-base">
+    <div name="base" class="container-base">
         {% block content %}
         {% endblock %}
     </div>
