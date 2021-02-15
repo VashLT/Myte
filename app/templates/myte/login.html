@@ -3,11 +3,37 @@
 Log In
 {% endblock %}
 
+{% block background %}id="body-login"{% endblock %}
+
 {% block body %}
 <div class="container-login center-full">
-    <div class="header--underlined">
-        <h1>Log In</h1>
-        <div></div>
-    </div>
+    <form method="POST" class="form">
+        <div class="header--underlined" style="margin-top:20px;">
+            <h1>Log In</h1>
+            <div></div>
+        </div>
+        <div class="container-input" style="margin-top:50px;">
+            <img src="{{ url_for('static', filename='images/user.png') }}">
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Enter username" 
+            />
+        </div>
+        <div class="container-input">
+            <img src="{{ url_for('static', filename='images/pw.png') }}">
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter password"
+            />
+        </div>
+        <div class="container-input" style="margin-top:80px;">
+            <input type="submit" placeholder="Enviar"/>
+        </div>
+        <a href="{{ url_for('auth.register')}}">Don't have an account yet?</a>
+    </form>
 </div>
 {% endblock %}
