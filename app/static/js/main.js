@@ -5,6 +5,10 @@ $.fn.hasAttr = function (name) {
 $(document).ready(function () {
     var $side_bar = $('.side-bar');
 
+    $("#login").click(function () {
+        $("body").css("background-color", "#212121");
+    });
+
     $(".hamburger").click(function () { // click on hamburger button
         event.preventDefault();
         $side_bar.animate({ width: "toggle" }, 300);
@@ -25,5 +29,6 @@ $(document).ready(function () {
         }
     });
 });
+
 
 
