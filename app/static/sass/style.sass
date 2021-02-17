@@ -44,7 +44,7 @@ html, body {
     font-family: $font-default;
 }
 #body-home { background-color: $bg-color; }
-#body-login {background-color: $gray-dark; }
+#body-login { background-color: $gray-dark; }
 
 .container-base {
     display: flex;
@@ -97,7 +97,7 @@ html, body {
     display: flex;
     flex-direction: column;
 
-    max-width: 100% - $home-margin-content;
+    width: 100% - $home-margin-content;
 
     margin-left: auto;
     margin-right: auto;
@@ -447,12 +447,15 @@ html, body {
         }
     }
     .container-home {
-        width: 90%;
+        max-width: 85%;
     }
 // half screen (1920x1080)
 @media screen and (max-width: 960px) {
-    .container-hamburger { width: 10% }
-    .container-home {width:98%;}
+    .container-hamburger { width: 10%; }
+    .container-home {
+        max-width: 95%;
+        width: 95%;
+        }
     .text-holder { width: 45%;}
     .img-holder { width: 45;}
     .logo { width: 10%; margin-left: 50px; }
@@ -467,7 +470,8 @@ html, body {
     .container-home {
         margin-left: 0px;
         margin-right: 0px;
-        width: 100%;
+        max-width: 98%;
+        width: 98%;
     }
     .home-content--definition {
         flex-direction: column;
