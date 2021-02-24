@@ -35,5 +35,10 @@ Log In
         </div>
         <a href="{{ url_for('auth.register')}}">Don't have an account yet?</a>
     </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p>{{ messages[0] }}</p>
+        {% endif %}
+    {% endwith %}
 </div>
 {% endblock %}
