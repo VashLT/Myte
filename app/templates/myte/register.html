@@ -1,0 +1,86 @@
+{% extends 'myte/base.html' %}
+{% block title %}
+Register
+{% endblock %}
+
+{% block background %}id="body-register"{% endblock %}
+{% block body %}
+<div class="container-register center-full">
+    <form method="POST" class="form">
+        {{ form.csrf_token }}
+        <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
+            <h2 style="color:#212121;">Tu gestor de formulas</h2>
+        </div>
+
+        <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
+            <div class="icon-holder">
+                <img src="{{ url_for('static', filename='images/user_white.png') }}">
+            </div>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Enter username" 
+                autocomplete="off"
+                class="input"
+            />
+        </div>
+        <div class="container-input--many" style="margin-bottom:5%;">
+            <div class="container-input" style="width:60%;">
+                <div class="icon-holder">
+                    <img 
+                        src="{{ url_for('static', filename='images/email_white.png') }}"
+                        style="height:15px;"
+                    >
+                </div>
+                <input 
+                    type="text" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter email" 
+                    autocomplete="off" 
+                    class="input--small" 
+                    style="width:70%;"
+                />
+            </div>
+            <div class="container-datepicker">
+                {{ form.date.label }} {{ form.date(class='datepicker', class_="datepicker" )}} {{form.hidden_tag()}}
+            </div>
+        </div>
+        <div class="container-input" style="margin-bottom: 5%;">
+            <div class="icon-holder">
+                <img src="{{ url_for('static', filename='images/pw_white.png') }}">
+            </div>
+            <input 
+                type="password" 
+                id="password1" 
+                name="password1" 
+                placeholder="Enter password" 
+                autocomplete="new-password"
+                class="input"
+            />
+        </div>
+        <div class="container-input" style="margin-bottom: 5%;">
+            <div class="icon-holder">
+                <img src="{{ url_for('static', filename='images/pw_white.png') }}">
+            </div>
+            <input 
+                type="password" 
+                id="password2" 
+                name="password2" 
+                placeholder="Re-type password"
+                autocomplete="new-password"
+                class="input"
+            />
+        </div>
+        <div class="container-input" style="margin-top:50px; justify-content: center;">
+            <input type="submit" placeholder="Enviar" class="btn-submit--orange"/>
+        </div>
+        <a href="{{ url_for('auth.login')}}" style="margin-top: 30px;">Already have an account?</a>
+
+    </form>
+</div>
+
+
+{% endblock %}
