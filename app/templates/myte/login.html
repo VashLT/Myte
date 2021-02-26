@@ -8,30 +8,43 @@ Log In
 {% block body %}
 <div class="container-login center-full">
     <form method="POST" class="form">
-        <div class="header--underlined" style="margin-top:20px;">
-            <h1>Log In</h1>
-            <div></div>
+        <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" title="Myte" style="width:100px;height:100px;">
+            <h2 style="margin-top:40px; margin-bottom:20px; color:#c57e63">Log In</h2>
         </div>
-        <div class="container-input" style="margin-top:50px;">
-            <img src="{{ url_for('static', filename='images/user.png') }}">
+        <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
+            <div class="icon-holder">
+                <img src="{{ url_for('static', filename='images/user_white.png') }}">
+            </div>
             <input 
                 type="text" 
                 id="username" 
                 name="username" 
                 placeholder="Enter username" 
+                class="input"
+                style = "background-color: rgba(79, 82, 90, 0.5);color:#fff;"
             />
         </div>
-        <div class="container-input">
-            <img src="{{ url_for('static', filename='images/pw.png') }}">
+        <div class="container-input" style="margin-bottom: 5%;">
+            <div class="icon-holder">
+                <img src="{{ url_for('static', filename='images/pw_white.png') }}">
+            </div>
             <input
                 type="password"
                 id="password"
                 name="password"
                 placeholder="Enter password"
+                class="input"
+                style="background-color: rgba(79, 82, 90, 0.5);color:#fff;"
             />
         </div>
-        <div class="container-input" style="margin-top:80px;">
-            <input type="submit" placeholder="Enviar"/>
+        <div class="container-input" style="margin-top:40px; justify-content: center;">
+            <input 
+                type="submit" 
+                placeholder="Enviar"
+                style="margin-bottom:30px;"
+                class="btn-submit"
+            />
         </div>
         <a href="{{ url_for('auth.register')}}">Don't have an account yet?</a>
     </form>

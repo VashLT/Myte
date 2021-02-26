@@ -7,11 +7,13 @@ $white: #d8d7d7;
 $gray: #353535;
 $gray-dark: #212121;
 $blue-dark: #212535;
+$blue-dark_b: #1a1c23;
 $blue-link: #67a5a7;
 
 $myte-blue: #383E56;
 $myte-blue_b: #48506e;
-$myte-orange: #c57e63;
+$myte-orange: rgb(246, 158, 123);
+$myte-orange_b: #c57e63;
 $myte-skin: #eedad1;
 $default-indent: 10%;
 
@@ -26,6 +28,7 @@ $nav-bar-items-color: #d8d7d7;
 
 // hover colors
 $myte-blue_b--hover: #727faa;
+$myte-orange_b--hover: #a86d55;
 $gray--hover: #464646;
 $gray-dark--hover: #353535;
 $btn-green--hover: #66b624;
@@ -45,6 +48,7 @@ html, body {
 }
 #body-home { background-color: $bg-color; }
 #body-login { background-color: $gray-dark; }
+#body-register { background-color: $myte-skin; }
 
 .container-base {
     display: flex;
@@ -78,7 +82,7 @@ html, body {
 
         & h1 {
             font-size: 35px;
-            color: $myte-orange;
+            color: $myte-orange_b;
             margin-top: 20px;
             margin-bottom: 2px;
         }
@@ -122,65 +126,137 @@ html, body {
     }
 
 .container-login {
-    height: 500px;
-    width: 600px;
+    height: 600px;
+    width: 700px;
     border: none;
     overflow: auto;
-    background-color: $myte-blue;
+    background-color: $blue-dark_b;
     border-radius: $btn-radius;
 
     &:hover {
-        box-shadow: 2px 2px 2px 2px #2d2d2d;
+        box-shadow: 0 4px 8px 0 #131313, 0 6px 20px 0 #151414;
+        }
+    }
+
+.container-register {
+    height: 750px;
+    width: 600px;
+    border: none;
+    overflow: auto;
+    background-color: #ffffff;
+    border-radius: $btn-radius;
+
+    &:hover {
+        box-shadow: 0 4px 8px 0 #c7c6c6, 0 6px 20px 0 #bcbbbb;
         }
     }
 
 .container-input {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    margin-bottom: 5%;
-    justify-content: center;
-    justify-items: flex-start;
+    width: 80%;
+    padding: 0;
+}
+.container-input--many {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
+    width: 80%;
+    max-width: 80%;
+    max-height: 40px;
+}
 
-    & img {
-        z-index: 2;
-        margin-right: -35px;
-        margin-left: 10px;
-        background-repeat: no-repeat;
-        width: 16px;
-        height: 20px;
-        }
-
-    & input[type="text"], input[type="password"] {
-        z-index: 1;
-        text-indent: 35px;
-        margin-left: 10px;
-        width: 80%;
-        height: 40px;
-        border: 1px solid #8a8a8a;
-        border-radius: $btn-radius;
-        &:focus {
-            outline: none;
-            border: 2px solid #7bd3ee;
-            }
-        }
-    & input[type="submit"] {
-        border: none;
-        background-color: $btn-blue;
-        margin-right: 0;
-        width: 40%;
-        height: 40px;
-        font-size: 25px;
-        border-radius: $btn-radius;
-        color: #f2f2f2;
-        &:hover {
-            background-color: $btn-blue--hover;
-            cursor: pointer;
-            }
-
+.container-datepicker {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    & label {
+        align-self: center;
+        color: #707070;
+        font-size: 15px;
+        margin-right: 10px;
         }
     }
+
+.input {
+    font-family: $font-home;
+    z-index: 1;
+    text-indent: 10px;
+    width: 90%;
+    padding: 0;
+    height: 40px;
+    border: 1px solid #a2a2a2;
+    border-radius: 0 $btn-radius $btn-radius 0;
+    &:focus {
+        box-shadow: #7bd3ee 0px 0px 0px 1px;
+        outline: none;
+        }
+    }
+
+.icon-holder {
+    display: flex;
+    flex-direction: row;
+    background-color: $myte-blue;
+    border-radius: $btn-radius 0 0 $btn-radius;
+    margin: 0;
+
+    width: 52px;
+    height: 42px;
+    max-height: 100%;
+    align-items: flex-start;
+    justify-self: flex-start;
+    justify-content: center;
+
+    & img {
+        align-self: center;
+        justify-self: center;
+        z-index: 2;
+        // background-repeat: no-repeat;
+        width: 17px;
+        height: 20px;
+    }
+}
+
+#email-register {
+    margin-left: 10px;
+    align-self: flex-start;
+    }
+
+.input--small {@extend .input ; width: 40%; margin:0;}
+
+.datepicker {
+    background-color: #ffffff;
+    border-radius: $btn-radius;
+    border: 1px solid #a2a2a2;
+    height: 30px;
+    align-items: center;
+    width: 70%;
+}
+
+.btn-submit {
+    border: none;
+    background-color: $btn-blue;
+    margin-right: 0;
+    width: 40%;
+    height: 40px;
+    font-size: 25px;
+    border-radius: $btn-radius;
+    color: #f2f2f2;
+    &:hover {
+        background-color: $btn-blue--hover;
+        cursor: pointer;
+        }
+    }
+
+.btn-submit--orange {
+    @extend .btn-submit ;
+    background-color: $myte-orange;
+    &:hover {
+        background-color: $myte-orange_b;
+        cursor: pointer;
+    }
+}
 
 .container-hamburger {
     width: 16%;
@@ -311,7 +387,7 @@ html, body {
                 align-items: center;
 
                 &:hover {
-                    background-color: $myte-orange;
+                    background-color: $myte-orange_b;
                 }
             }
         }
