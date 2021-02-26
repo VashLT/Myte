@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_assets import Environment, Bundle
 from flask_sqlalchemy import SQLAlchemy
+from flask_datepicker import datepicker
 
 db = SQLAlchemy()
 
@@ -25,5 +26,6 @@ def build_myte():
     app.register_blueprint(auth, url_prefix="/")
 
     db.init_app(app)
+    datepicker(app)
 
     return app
