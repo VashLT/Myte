@@ -8,11 +8,10 @@ load_dotenv(dotenv_path=env_path)
 # database use
 ADAPTER = "mysql"
 
-DB_NAME = "database."
+DB_NAME = "myte"
 SERVER = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
-DB_PORT = int(os.getenv('DB_PORT'))
 
 
 class Config:
@@ -21,7 +20,7 @@ class Config:
     FLASK_DEBUG = os.getenv('FLASK_DEBUG')
     SECRET_KEY = os.getenv('SECRET_KEY')
 
-    SQLALCHEMY_DATABASE_URI = f'{ADAPTER}:////{DB_USER}:{DB_PASSWORD}@{SERVER}:{DB_PORT}/{DB_NAME}'
+    SQLALCHEMY_DATABASE_URI = f'{ADAPTER}:////{DB_USER}:{DB_PASSWORD}@{SERVER}//{DB_NAME}'
 
     SERVER = os.getenv('SERVER')
     PORT = os.getenv('PORT')

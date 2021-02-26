@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint, render_template, request, flash, url_for, session
+from flask import Blueprint, render_template, request, flash, url_for, session, redirect
 
 from flask_wtf import FlaskForm
 
@@ -8,8 +8,9 @@ from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
 from wtforms import validators, SubmitField
 
-from .models import User
+from .models import Usuario, MetaUsuario
 from . import db
+from . import utils
 
 
 auth = Blueprint("auth", __name__)
@@ -42,8 +43,25 @@ def login():
 @auth.route("/register", methods=["POST", "GET"])
 def register():
     form = DateForm()
-    print(form.date)
     if form.validate_on_submit():
-        session['date'] = form.date.data
         print(request.form)
+        new_user = check_user(request.form)
+        if new_user:
+            # TODO: add user to database
+            pass
     return render_template("myte/register.html", current_date=datetime.now().strftime(TIME_FORMAT),  form=form)
+
+
+def check_user(user_data):
+    if user_data["password1"] != user_data["password2"]:
+        flash("Passwords must be the same!", category="error")
+    meta = MetaUsuario(
+        nombre_usuario=user_data["username"],
+        clave_encriptada=utils.encrypt(user_data["password1"])
+    )
+    return Usuario(
+        nombre_usuario=meta.nombre_usuario,
+        nombre=utils.format_name(user_data["name"]),
+        email=user_data["email"],
+        fecha_nacimiento=user_data["date"]
+    )
