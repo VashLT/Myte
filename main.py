@@ -6,7 +6,7 @@ myte = build_myte()
 
 if __name__ == "__main__":
     myte.run(
-        host=str(Config.SERVER),
-        port=int(Config.PORT),
-        debug=bool(Config.FLASK_DEBUG)
+        host=Config.SERVER,
+        port=Config.PORT,
+        debug=Config.FLASK_DEBUG
     )

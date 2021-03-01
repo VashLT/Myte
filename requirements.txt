@@ -9,3 +9,4 @@ wrapt==1.12.1
 python-dotenv==0.15.0
 Flask-Datepicker==0.14
 Flask-WTF==0.14.3
+mysqlclient==2.0.3
