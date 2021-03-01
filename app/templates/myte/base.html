@@ -38,6 +38,7 @@
         </div>
     </div>
     <nav class="nav-bar">
+        {% block nav_content %}
         <div class="container-hamburger">
             <div class="hamburger">
                 <div></div>
@@ -55,6 +56,7 @@
                 <a href="#">Other</a>
             </div>
         </div>
+        {% endblock %}
     </nav>
     <div name="base" class="container-base">
         {% block content %}
