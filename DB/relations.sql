@@ -6,10 +6,6 @@ ALTER TABLE Usuario
 ADD CONSTRAINT fk_usuario_metausuario
     FOREIGN KEY (nombre_usuario) REFERENCES MetaUsuario(nombre_usuario);
 
-ALTER TABLE Usuario
-ADD CONSTRAINT fk_usuario_historial
-    FOREIGN KEY (id_historial) REFERENCES Historial(id_historial);
-
 ALTER TABLE Tag
 ADD CONSTRAINT fk_tag_usuario
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario);
