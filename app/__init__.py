@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_assets import Environment, Bundle
 from flask_sqlalchemy import SQLAlchemy
+from flaskext.mysql import MySQL
 from flask_datepicker import datepicker
 
 db = SQLAlchemy()
+mysql = MySQL()
 
 
 def build_myte():
@@ -26,6 +28,7 @@ def build_myte():
     app.register_blueprint(auth, url_prefix="/")
 
     db.init_app(app)
+    mysql.init_app(app)
     datepicker(app)
 
     return app

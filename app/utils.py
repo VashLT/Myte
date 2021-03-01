@@ -1,4 +1,5 @@
 from hashlib import sha256
+import re
 
 def format_name(name):
     return " ".join([
@@ -13,6 +14,11 @@ def encrypt(password):
             output: password encrypted
         """
     return sha256(password.encode()).hexdigest()
+
+def is_email(email):
+    return re.match(
+        r"[A-Za-z0-9.]+@[A-Za-z.]*[A-Za-z]$", email
+    )
 
 
 
