@@ -1,0 +1,10 @@
+@import "./constants";
+
+show-user {
+  margin-right: auto;
+  margin-left: 30px;
+  & p {
+    font-family: Apple Chancery, cursive;
+    color: gold;
+  }
+}

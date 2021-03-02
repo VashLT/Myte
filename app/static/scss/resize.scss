@@ -1,0 +1,69 @@
+// on resize
+@media screen and (max-width: 1400px) {
+  .logo {
+    width: 15%;
+  }
+
+  .container-hamburger {
+    width: 15%;
+  }
+
+  .nav-bar--item {
+    right: 0;
+    width: 70%;
+  }
+
+  .container-home {
+    max-width: 85%;
+  }
+}
+
+// half screen (1920x1080)
+@media screen and (max-width: 960px) {
+  .container-hamburger {
+    width: 10%;
+  }
+  .container-home {
+    max-width: 95%;
+    width: 95%;
+  }
+  .text-holder {
+    width: 45%;
+  }
+  .img-holder {
+    width: 45px;
+  }
+  .logo {
+    width: 10%;
+    margin-left: 50px;
+  }
+  .nav-bar--item {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container-home {
+    margin-left: 0px;
+    margin-right: 0px;
+    max-width: 98%;
+    width: 98%;
+  }
+  .home-content--definition {
+    flex-direction: column;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .text-holder {
+    width: 95%;
+  }
+  .img-holder {
+    width: 95%;
+  }
+  .nav-bar--item {
+    display: none;
+  }
+  .logo {
+    margin-right: 20px;
+  }
+}
