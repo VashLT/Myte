@@ -3,6 +3,8 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
+# pylint: disable=pylint(no-member)
+
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuario'
@@ -23,12 +25,16 @@ class Usuario(db.Model, UserMixin):
     def __repr__(self):
         return "<User %r>" % self.nombre
 
+    def get_id(self):
+        return self.id_usuario
+
 
 class MetaUsuario(db.Model):
     __tablename__ = 'metausuario'
     nombre_usuario = db.Column(db.String(100), primary_key=True)
     clave_encriptada = db.Column(db.String(100))
-    usuario = db.relationship('Usuario', backref='metausuario', lazy=True)
+    usuario = db.relationship(
+        'Usuario', backref='metausuario', lazy=True, uselist=False)
 
 
 class Formula(db.Model):
@@ -45,4 +51,5 @@ class Rol(db.Model):
     __tablename__ = 'rol'
     id = db.Column("id_rol", db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
-    usuario = db.relationship('Usuario', backref='rol', lazy=True)
+    usuario = db.relationship('Usuario', backref='rol',
+                              lazy=True, uselist=False)
