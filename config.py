@@ -34,5 +34,5 @@ class Config:
     if not bool(os.getenv('ENABLE_CACHE')):
         SEND_FILE_MAX_AGE_DEFAULT = 0
 
-    # if FLASK_DEBUG:
-    #     SQLALCHEMY_ECHO = True
+    if FLASK_DEBUG:
+        SQLALCHEMY_ECHO = True
