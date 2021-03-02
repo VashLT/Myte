@@ -12,6 +12,27 @@
 </head>
 
 <body {% block background %}id="body-home"{% endblock %}>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="container-flash">
+            {% for category, message in messages %}
+            {% if category == 'error' %}
+            <div class="flash-box--error">
+                <p class="center-v">{{ message }}</p>
+            </div>
+            {% elif category == 'info' %}
+            <div class="flash-box--info">
+                <p class="center-v">{{ message }}</p>
+            </div>
+            {% else %}
+            <div class="flash-box">
+                <p class="center-v">{{ message }}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
     {% block body %}
     <div class="side-bar">
         <div class="side-bar--info">
@@ -49,12 +70,10 @@
         <div class="logo">
             <img src="{{ url_for('static', filename='images/logo.png') }}" title="Myte">
         </div>
-        <div class="nav-bar--item">
-            <div>
-                <a href="{{ url_for('auth.login') }}" id="login">Log in</a>
-                <a href="#">About us</a>
-                <a href="#">Other</a>
-            </div>
+        <div class="nav-bar--item" style="margin-left: auto; margin-right: 10px;">
+            <a href="{{ url_for('auth.login') }}" id="login" class="btn-link">Ingresar</a>
+            <a href="#" class="btn-link">Acerca de</a>
+            <a href="#" class="btn-link">Otros</a>
         </div>
         {% endblock %}
     </nav>

@@ -4,18 +4,8 @@ Register
 {% endblock %}
 
 {% block background %}id="body-register"{% endblock %}
+
 {% block body %}
-{% with messages = get_flashed_messages(category_filter=["error"]) %}
-    {% if messages %}
-        <div class="container-flash">
-            {% for message in messages %}
-                <div class="flash-box--error">   
-                    <h3>{{ message }}</h3>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
 <div class="container-stages">
     <span class="step"></span>
     <span class="step"></span>
@@ -32,13 +22,13 @@ Register
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/user_white.png') }}">
             </div>
-            <input type="text" id="username" name="username" placeholder="Enter username" autocomplete="off" class="input" />
+            <input type="text" id="username" name="username" placeholder="Nombre de usuario" autocomplete="off" class="input" />
         </div>
         <div class="container-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/name_white.png') }}" style="height:14px;">
             </div>
-            <input type="text" id="name" name="name" placeholder="Enter your full name" autocomplete="off" class="input" />
+            <input type="text" id="name" name="name" placeholder="Nombre completo" autocomplete="off" class="input" />
         </div>
         <div class="container-input--many" style="margin-bottom:5%;">
             <div class="container-input" style="width:60%;">
@@ -56,14 +46,14 @@ Register
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/pw_white.png') }}">
             </div>
-            <input type="password" id="password1" name="password1" placeholder="Enter password" autocomplete="new-password"
+            <input type="password" id="password1" name="password1" placeholder="Contraseña" autocomplete="new-password"
                 class="input" />
         </div>
         <div class="container-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/pw_white.png') }}">
             </div>
-            <input type="password" id="password2" name="password2" placeholder="Re-type password" autocomplete="new-password"
+            <input type="password" id="password2" name="password2" placeholder="Re ingresar contraseña" autocomplete="new-password"
                 class="input" />
         </div>
         <div class="container-input--many" style="margin-top:30px; justify-content:space-around;">
@@ -75,12 +65,10 @@ Register
                 <input type="submit" value="Siguiente" class="btn-submit--orange" id="next-btn" style="width: 100%;" />
             </div>
         </div>
-        <a href="{{ url_for('auth.login')}}" style="margin-top: 30px;">Already have an account?</a>
+        <a href="{{ url_for('auth.login')}}" style="margin-top: 30px;">Ya tienes una cuenta?</a>
         <div class="form-register--extra tab" style="display: none;">
             <p>Testing</p>
         </div>
     </form>
 </div>
-
-
 {% endblock %}

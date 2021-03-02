@@ -6,6 +6,7 @@ Log In
 {% block background %}id="body-login"{% endblock %}
 
 {% block body %}
+
 <div class="container-login center-full">
     <form method="POST" class="form">
         <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
@@ -41,17 +42,12 @@ Log In
         <div class="container-input" style="margin-top:40px; justify-content: center;">
             <input 
                 type="submit" 
-                placeholder="Enviar"
+                value="Enviar"
                 style="margin-bottom:30px;"
                 class="btn-submit"
             />
         </div>
-        <a href="{{ url_for('auth.register')}}">Don't have an account yet?</a>
+        <a href="{{ url_for('auth.register')}}">No tienes una cuenta todavia?</a>
     </form>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <p>{{ messages[0] }}</p>
-        {% endif %}
-    {% endwith %}
 </div>
 {% endblock %}

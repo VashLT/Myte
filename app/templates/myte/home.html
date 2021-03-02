@@ -1,11 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'myte/base.html' %}
+
+{% block title %}Home{% endblock %}
 
 {% block nav_content %}
 <div class="nav-bar--item">
-    <div>
-        <a href="#">Detalles</a>
-        <a href="#">Upgrade</a>
-        <a href="{{ url_for('auth.logout') }}" id="logout">Log out</a>
+    <div class="item-btns__home">
+        <a href="#" class="btn-link">Detalles</a>
+        <a href="#" class="btn-link">Mejorar</a>
+        <a href="{{ url_for('auth.logout') }}" id="logout" class="btn-link">Salir</a>
+    </div>
+</div>
+<div class="nav-bar--item" style="background-color: crimson;">
+    <div class="show-user">
+        <p>{{ user.username }}</p>
     </div>
 </div>
 {% endblock %}
