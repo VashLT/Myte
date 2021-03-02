@@ -3,6 +3,7 @@ from flask_assets import Environment, Bundle
 from flask_sqlalchemy import SQLAlchemy
 from flaskext.mysql import MySQL
 from flask_datepicker import datepicker
+from flask_login import LoginManager
 
 db = SQLAlchemy()
 mysql = MySQL()
@@ -14,6 +15,7 @@ def build_myte():
 
     from .auth import auth
     from .views import views
+    from .models import Usuario
 
     # SCSS rendering
     assets = Environment(app)
@@ -21,14 +23,27 @@ def build_myte():
     assets.url = app.static_url_path
     assets.debug = True
 
-    scss = Bundle('sass\style.sass', filters='pyscss', output='gen/style.css')
+    scss = Bundle('scss\style.scss', filters='pyscss',
+                  depends=('**/*.scss'), output='gen/style.css')
     assets.register('scss_all', scss)
 
+    # views
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
+    # login utils
+    login_manager = LoginManager()
+    # default view to redirect when user is not logged in
+    login_manager.login_view = 'auth.login'
+
+    @login_manager.user_loader
+    def load_user(id):
+        return Usuario.query.filter_by(id_usuario=int(id)).first()
+
     db.init_app(app)
+    login_manager.init_app(app)
     mysql.init_app(app)
+
     datepicker(app)
 
     return app

@@ -8,6 +8,8 @@ from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
 from wtforms import validators, SubmitField
 
+from flask_login import login_user, login_required, logout_user, current_user
+
 from .models import Usuario, MetaUsuario, Rol
 from . import db, mysql
 from . import utils
@@ -34,10 +36,14 @@ def login():
         name = details["username"]
         pw = details["password"]
 
-        print(name, " and pw")
-
-        flash("Succesfully logged in")
-
+        meta = MetaUsuario.query.filter_by(
+            nombre_usuario=name, clave_encriptada=utils.encrypt(pw)).first()
+        if meta:
+            flash("Succesfully logged in", category="success")
+            login_user(meta.usuario, remember=True)
+            return redirect(url_for('views.home'))
+        else:
+            flash("Nombre de usuario o contraseña incorrectos", category="error")
     return render_template("myte/login.html")
 
 
@@ -48,30 +54,33 @@ def register():
     if form.validate_on_submit():
         new_user = None
         user_data = request.form
-        print("checking user data ...")
         if check_user(user_data):
 
             meta = MetaUsuario(
                 nombre_usuario=user_data["username"],
                 clave_encriptada=utils.encrypt(user_data["password1"])
             )
-            rol = Rol.query.get(ID_ROL)
             new_user = Usuario(
                 nombre_usuario=meta.nombre_usuario,
                 nombre=utils.format_name(user_data["name"]),
-                id_rol=rol.id,
+                id_rol=Rol.query.get(ID_ROL).id,
                 email=user_data["email"],
                 fecha_nacimiento=user_data["date"]
             )
-            
         if new_user:
-            print(new_user)
-            print("adding models ...")
             db.session.add(meta)
             db.session.add(new_user)
             db.session.commit()
+            login_user(new_user, remember=True)
             return redirect(url_for('views.home'))
     return render_template("myte/register.html", form=form)
+
+
+@auth.route("/logout", methods=["POST", "GET"])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('views.welcome'))
 
 
 def check_user(user_data):
