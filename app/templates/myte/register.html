@@ -6,37 +6,55 @@ Register
 {% block background %}id="body-register"{% endblock %}
 
 {% block body %}
-<div class="container-stages">
+<div class="container-stages center-h" style="margin-top: 60px;">
     <span class="step"></span>
     <span class="step"></span>
 </div>
 <div class="container-register center-full">
     <form method="POST" class="form" id="register-form">
         {{ form.csrf_token }}
+        <div class="form-register tab">
         <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
             <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
             <h2 style="color:#212121;">Tu gestor de formulas</h2>
         </div>
-        
         <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/user_white.png') }}">
             </div>
-            <input type="text" id="username" name="username" placeholder="Nombre de usuario" autocomplete="off" class="input" />
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Nombre de usuario" 
+                autocomplete="off"
+                class="input" />
         </div>
         <div class="container-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/name_white.png') }}" style="height:14px;">
             </div>
-            <input type="text" id="name" name="name" placeholder="Nombre completo" autocomplete="off" class="input" />
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                placeholder="Nombre completo" 
+                autocomplete="off" 
+                class="input" />
         </div>
-        <div class="container-input--many" style="margin-bottom:5%;">
-            <div class="container-input" style="width:60%;">
+        <div class="container-input--many" style="margin-bottom:5%; justify-content: space-between;">
+            <div class="container-input" style="width:50%;">
                 <div class="icon-holder">
                     <img src="{{ url_for('static', filename='images/email_white.png') }}" style="height:14px;">
                 </div>
-                <input type="text" id="email" name="email" placeholder="Enter email" autocomplete="off" class="input--small"
-                    style="width:70%;" />
+                <input 
+                    type="text" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter email" 
+                    autocomplete="off"
+                    class="input--small"
+                    style="width:100%;" />
             </div>
             <div class="container-datepicker">
                 {{ form.date.label }} {{ form.date(class='datepicker', class_="datepicker" )}} {{form.hidden_tag()}}
@@ -46,29 +64,58 @@ Register
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/pw_white.png') }}">
             </div>
-            <input type="password" id="password1" name="password1" placeholder="Contraseña" autocomplete="new-password"
+            <input 
+                type="password" 
+                id="password1" 
+                name="password1" 
+                placeholder="Contraseña" 
+                autocomplete="new-password"
                 class="input" />
         </div>
         <div class="container-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{{ url_for('static', filename='images/pw_white.png') }}">
             </div>
-            <input type="password" id="password2" name="password2" placeholder="Re ingresar contraseña" autocomplete="new-password"
+            <input 
+                type="password" 
+                id="password2" 
+                name="password2" 
+                placeholder="Re ingresar contraseña" 
+                autocomplete="new-password"
                 class="input" />
         </div>
-        <div class="container-input--many" style="margin-top:30px; justify-content:space-around;">
+        </div>
+        <div class="form-register tab">
+            <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
+                <h2 style="color:#212121;">Tu gestor de formulas</h2>
+            </div>
+            <div style="width: 80%; height: 40px;">
+                <select>
+                    <option value="Secundaria">Estudiante</option>
+                    <option value="Pregrado">Pregrado</option>
+                    <option value="Postgrado">Postgrado</option>
+                </select>
+            </div>
+            <div style="width: 80%; height: 40px;">
+                <select>
+                    <option value="Ingeniería">Ingeniería</option>
+                    <option value="Matemáticas">Matemát</option>
+                    <option value="Física">Física</option>
+                </select>
+            </div>
+        </div>
+        <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
             <div class="container-input" style="width: 30%;margin-left: 60px;">
-                <input 
-                    type="submit" value="Anterior" class="btn-submit--orange" id="previous-btn" style="width: 100%;" />
+                <button type="button" class="btn-submit--orange" id="previous-btn" onclick="nextTab(-1)"
+                    style="width: 100%;">Anterior</button>
             </div>
             <div class="container-input" style="width: 30%;margin-right: 60px;">
-                <input type="submit" value="Siguiente" class="btn-submit--orange" id="next-btn" style="width: 100%;" />
+                <button type="button" class="btn-submit--orange" id="next-btn" onclick="nextTab(1)"
+                    style="width: 100%;">Siguiente</button>
             </div>
         </div>
-        <a href="{{ url_for('auth.login')}}" style="margin-top: 30px;">Ya tienes una cuenta?</a>
-        <div class="form-register--extra tab" style="display: none;">
-            <p>Testing</p>
-        </div>
+        <a href="{{ url_for('auth.login')}}" class="redirect" style="margin-top: 30px; align-self: center;">Ya tienes una cuenta?</a>
     </form>
 </div>
 {% endblock %}

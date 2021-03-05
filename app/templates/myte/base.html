@@ -19,6 +19,7 @@
             {% if category == 'error' %}
             <div class="flash-box--error">
                 <p class="center-v">{{ message }}</p>
+                <span class="dismissible" style="background-color: darkgreen;">X</span>
             </div>
             {% elif category == 'info' %}
             <div class="flash-box--info">
@@ -85,6 +86,7 @@
 
     <script type=text/javascript src="{{
                   url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script type="text/javascript">
         {% block scripts %}
         {% endblock %}

@@ -23,7 +23,7 @@ ID_ROL = 1
 
 class DateForm(FlaskForm):
     date = DateField(
-        'Birthdate: ',
+        'Nacimiento: ',
         format=TIME_FORMAT,
         validators=(validators.DataRequired(),)
     )
@@ -70,7 +70,6 @@ def register():
         if new_user:
             db.session.add(meta)
             db.session.add(new_user)
-            db.session.commit()
             login_user(new_user, remember=True)
             return redirect(url_for('views.home'))
     return render_template("myte/register.html", form=form)

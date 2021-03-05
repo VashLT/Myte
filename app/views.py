@@ -19,6 +19,7 @@ def error_404():
 @views.route('/home')
 @login_required
 def home():
+    print(current_user)
     return render_template("myte/home.html", user=current_user)
 
 

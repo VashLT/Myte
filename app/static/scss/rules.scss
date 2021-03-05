@@ -36,11 +36,15 @@ input.invalid {
   margin: 0;
 }
 
+.redirect {
+  color: $blue-link;
+  font-size: 15px;
+}
+
 .form {
   display: flex;
   flex-direction: column;
 
-  justify-content: center;
   align-items: center;
   height: auto;
   width: 80%;
@@ -50,6 +54,7 @@ input.invalid {
     font-size: 15px;
   }
 }
+
 
 .datepicker {
   background-color: #ffffff;
@@ -192,6 +197,7 @@ input.invalid {
     height: 60px;
     width: 30%;
     margin-right: 10px;
+
     align-items: center;
     justify-content: flex-end;
   }
@@ -247,19 +253,23 @@ input.invalid {
   }
 }
 
-.tab {
-  display: flex;
-}
-
 .step {
   height: 15px;
   width: 15px;
   margin: 0 2px;
-  background-color: #bbbbbb;
+  background-color: #aaa9a9;
   border: none;
   border-radius: 50%;
   display: inline-block;
   opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+.step.finish {
+  background-color: #a4f39d;
 }
 
 .btn-link {
@@ -283,6 +293,10 @@ input.invalid {
 
 .step.finish {
   background-color: #4caf50;
+}
+
+.tab {
+  display: none;
 }
 
 .text-holder {
@@ -323,7 +337,13 @@ input.invalid {
   width: 100%;
   border-radius: $btn-radius;
   justify-items: center;
+  align-content: space-between;
   background-color: #9eff95;
+  & span {
+    color: rgb(1, 1, 1);
+    margin-right: auto;
+  }
+
   & p {
     margin-left: 10px;
     font-size: 20px;

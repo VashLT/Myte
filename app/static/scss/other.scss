@@ -1,10 +1,20 @@
 @import "./constants";
 
-show-user {
-  margin-right: auto;
-  margin-left: 30px;
+.show-user {
+  max-height: 100%;
+  align-content: center;
   & p {
+    text-align: center;
+    margin: auto;
+    font-size: 25px;
     font-family: Apple Chancery, cursive;
-    color: gold;
+    color: rgb(133, 199, 127);
   }
+}
+
+.left {
+  margin-right: auto;
+}
+.right {
+  margin-left: auto;
 }

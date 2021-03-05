@@ -3,16 +3,15 @@
 {% block title %}Home{% endblock %}
 
 {% block nav_content %}
-<div class="nav-bar--item">
-    <div class="item-btns__home">
-        <a href="#" class="btn-link">Detalles</a>
-        <a href="#" class="btn-link">Mejorar</a>
-        <a href="{{ url_for('auth.logout') }}" id="logout" class="btn-link">Salir</a>
-    </div>
-</div>
-<div class="nav-bar--item" style="background-color: crimson;">
+<div class="nav-bar--item left" style="width: 20%; justify-content: center;">
     <div class="show-user">
-        <p>{{ user.username }}</p>
+        <p>{{ user.nombre_usuario.capitalize() }}</p>
     </div>
 </div>
+<div class="nav-bar--item right">
+    <a href="#" class="btn-link">Detalles</a>
+    <a href="#" class="btn-link">Mejorar</a>
+    <a href="{{ url_for('auth.logout') }}" id="logout" class="btn-link">Salir</a>
+</div>
+
 {% endblock %}
