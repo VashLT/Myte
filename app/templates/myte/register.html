@@ -7,85 +7,98 @@ Register
 
 {% block body %}
 <div class="container-stages center-h" style="margin-top: 60px;">
-    <span class="step"></span>
-    <span class="step"></span>
+    {% if stage == 1 %}
+        <span class="step active"></span>
+        <span class="step"></span>
+    {% else %}
+        <span class="step finish"></span>
+        <span class="step active"></span>
+    {% endif %}
 </div>
 <div class="container-register center-full">
-    <form method="POST" class="form" id="register-form">
+    <form method="POST" class="form" id="register-form" action="">
         {{ form.csrf_token }}
-        <div class="form-register tab">
-        <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
-            <h2 style="color:#212121;">Tu gestor de formulas</h2>
-        </div>
-        <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
-            <div class="icon-holder">
-                <img src="{{ url_for('static', filename='images/user_white.png') }}">
+        {% if stage == 1 %}
+            <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
+                <h2 style="color:#212121;">Tu gestor de formulas</h2>
             </div>
-            <input 
-                type="text" 
-                id="username" 
-                name="username" 
-                placeholder="Nombre de usuario" 
-                autocomplete="off"
-                class="input" />
-        </div>
-        <div class="container-input" style="margin-bottom: 5%;">
-            <div class="icon-holder">
-                <img src="{{ url_for('static', filename='images/name_white.png') }}" style="height:14px;">
-            </div>
-            <input 
-                type="text" 
-                id="name" 
-                name="name" 
-                placeholder="Nombre completo" 
-                autocomplete="off" 
-                class="input" />
-        </div>
-        <div class="container-input--many" style="margin-bottom:5%; justify-content: space-between;">
-            <div class="container-input" style="width:50%;">
+            <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
                 <div class="icon-holder">
-                    <img src="{{ url_for('static', filename='images/email_white.png') }}" style="height:14px;">
+                    <img src="{{ url_for('static', filename='images/user_white.png') }}">
                 </div>
                 <input 
                     type="text" 
-                    id="email" 
-                    name="email" 
-                    placeholder="Enter email" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Nombre de usuario" 
+                    {% if prefill and cache_user %}
+                        value = "{{ cache_user.nombre_usuario }}"
+                    {% endif %}
                     autocomplete="off"
-                    class="input--small"
-                    style="width:100%;" />
+                    class="input" />
             </div>
-            <div class="container-datepicker">
-                {{ form.date.label }} {{ form.date(class='datepicker', class_="datepicker" )}} {{form.hidden_tag()}}
+            <div class="container-input" style="margin-bottom: 5%;">
+                <div class="icon-holder">
+                    <img src="{{ url_for('static', filename='images/name_white.png') }}" style="height:14px;">
+                </div>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="Nombre completo" 
+                    {% if prefill and cache_user %}
+                        value = "{{ cache_user.nombre }}"
+                    {% endif %}
+                    autocomplete="off" 
+                    class="input" />
             </div>
-        </div>
-        <div class="container-input" style="margin-bottom: 5%;">
-            <div class="icon-holder">
-                <img src="{{ url_for('static', filename='images/pw_white.png') }}">
+            <div class="container-input--many" style="margin-bottom:5%; justify-content: space-between;">
+                <div class="container-input" style="width:50%;">
+                    <div class="icon-holder">
+                        <img src="{{ url_for('static', filename='images/email_white.png') }}" style="height:14px;">
+                    </div>
+                    <input 
+                        type="text" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Enter email" 
+                        autocomplete="off"
+                        class="input--small"
+                        {% if prefill and cache_user %}
+                            value = "{{ cache_user.email }}"
+                        {% endif %}
+                        style="width:100%;" />
+                </div>
+                <div class="container-datepicker">
+                    {{ form.date.label }} {{ form.date(class='datepicker', class_="datepicker" )}} {{form.hidden_tag()}}
+                </div>
             </div>
-            <input 
-                type="password" 
-                id="password1" 
-                name="password1" 
-                placeholder="Contraseña" 
-                autocomplete="new-password"
-                class="input" />
-        </div>
-        <div class="container-input" style="margin-bottom: 5%;">
-            <div class="icon-holder">
-                <img src="{{ url_for('static', filename='images/pw_white.png') }}">
+            <div class="container-input" style="margin-bottom: 5%;">
+                <div class="icon-holder">
+                    <img src="{{ url_for('static', filename='images/pw_white.png') }}">
+                </div>
+                <input 
+                    type="password" 
+                    id="password1" 
+                    name="password1" 
+                    placeholder="Contraseña" 
+                    autocomplete="new-password"
+                    class="input" />
             </div>
-            <input 
-                type="password" 
-                id="password2" 
-                name="password2" 
-                placeholder="Re ingresar contraseña" 
-                autocomplete="new-password"
-                class="input" />
-        </div>
-        </div>
-        <div class="form-register tab">
+            <div class="container-input" style="margin-bottom: 5%;">
+                <div class="icon-holder">
+                    <img src="{{ url_for('static', filename='images/pw_white.png') }}">
+                </div>
+                <input 
+                    type="password" 
+                    id="password2" 
+                    name="password2" 
+                    placeholder="Re ingresar contraseña" 
+                    autocomplete="new-password"
+                    class="input" />
+            </div>
+        {% else %}
             <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
                 <h2 style="color:#212121;">Tu gestor de formulas</h2>
@@ -104,15 +117,35 @@ Register
                     <option value="Física">Física</option>
                 </select>
             </div>
-        </div>
+        {% endif %}
         <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
             <div class="container-input" style="width: 30%;margin-left: 60px;">
-                <button type="button" class="btn-submit--orange" id="previous-btn" onclick="nextTab(-1)"
-                    style="width: 100%;">Anterior</button>
+                {% if stage == 1 %}
+                    <button 
+                        class="btn-submit" 
+                        id="previous-btn" 
+                        style="width: 100%; background-color: darkgray;" disabled>Anterior</button>
+                {% else %}
+                    <button 
+                        class="btn-submit--orange" 
+                        id="previous-btn" 
+                        name="back" 
+                        style="width: 100%;">Anterior</button>
+                {% endif %}
             </div>
             <div class="container-input" style="width: 30%;margin-right: 60px;">
-                <button type="button" class="btn-submit--orange" id="next-btn" onclick="nextTab(1)"
+                {% if stage == 1 %}
+                <button 
+                    class="btn-submit--orange" 
+                    id="next-btn"
                     style="width: 100%;">Siguiente</button>
+                {% else %}
+                <button 
+                    class="btn-submit" 
+                    id="next-btn" 
+                    name="completed" 
+                    style="width: 100%;">Enviar</button>
+                {% endif %}
             </div>
         </div>
         <a href="{{ url_for('auth.login')}}" class="redirect" style="margin-top: 30px; align-self: center;">Ya tienes una cuenta?</a>

@@ -21,8 +21,3 @@ def error_404():
 def home():
     print(current_user)
     return render_template("myte/home.html", user=current_user)
-
-
-@views.route("/<name>")
-def user(name):
-    return "Welcome <strong>%s</strong>" % name
