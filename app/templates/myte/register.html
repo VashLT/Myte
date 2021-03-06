@@ -33,7 +33,7 @@ Register
                     name="username" 
                     placeholder="Nombre de usuario" 
                     {% if prefill and cache_user %}
-                        value = "{{ cache_user.nombre_usuario }}"
+                        value = "{{ cache_user['nombre_usuario'] }}"
                     {% endif %}
                     autocomplete="off"
                     class="input" />
@@ -48,7 +48,7 @@ Register
                     name="name" 
                     placeholder="Nombre completo" 
                     {% if prefill and cache_user %}
-                        value = "{{ cache_user.nombre }}"
+                        value = "{{ cache_user['nombre'] }}"
                     {% endif %}
                     autocomplete="off" 
                     class="input" />
@@ -66,7 +66,7 @@ Register
                         autocomplete="off"
                         class="input--small"
                         {% if prefill and cache_user %}
-                            value = "{{ cache_user.email }}"
+                            value = "{{ cache_user['email'] }}"
                         {% endif %}
                         style="width:100%;" />
                 </div>
@@ -103,20 +103,34 @@ Register
                 <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
                 <h2 style="color:#212121;">Tu gestor de formulas</h2>
             </div>
-            <div style="width: 80%; height: 40px;">
-                <select>
-                    <option value="Secundaria">Estudiante</option>
-                    <option value="Pregrado">Pregrado</option>
-                    <option value="Postgrado">Postgrado</option>
+            <div class="container-select" style="margin-top: 40px;">
+                <p>¿Cuál es tu nivel educativo?</p>
+                <select class="drop-menu" style="width:200px;">
+                    <option value="select">Nivel educativo</option>
+                    <option value="estudiante">Secundaria</option>
+                    <option value="pregrado">Pregrado</option>
+                    <option value="postgrado">Postgrado</option>
+                    <option value="otro">Otro</option>
                 </select>
             </div>
-            <div style="width: 80%; height: 40px;">
-                <select>
-                    <option value="Ingeniería">Ingeniería</option>
-                    <option value="Matemáticas">Matemát</option>
-                    <option value="Física">Física</option>
+            <div class="container-select" style="margin-top: 30px; margin-bottom: 60px;">
+                <p>¿Qué carrera estudias?</p>
+                <select class="drop-menu" style="width:200px;">
+                    <option value="select">Seleccionar carrera</option>
+                    <option value="ingenieria">Ingeniería</option>
+                    <option value="matematicas">Matemáticas</option>
+                    <option value="fisica">Física</option>
+                    <option value="otra">Otra</option>
+                    <option value="none">Ninguna</option>
                 </select>
             </div>
+            <script>
+                var $container = $(".container-register");
+                $container.css("height", "600px");
+                $container.removeClass("center-full");
+                $container.addClass("center-h");
+                $container.css("margin-top", "100px");
+            </script>
         {% endif %}
         <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
             <div class="container-input" style="width: 30%;margin-left: 60px;">
@@ -133,7 +147,7 @@ Register
                         style="width: 100%;">Anterior</button>
                 {% endif %}
             </div>
-            <div class="container-input" style="width: 30%;margin-right: 60px;">
+            <div class="container-input" style="width: 30%; margin-right: 60px;">
                 {% if stage == 1 %}
                 <button 
                     class="btn-submit--orange" 

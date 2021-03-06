@@ -118,6 +118,20 @@ $login-form-width: 700px;
   }
 }
 
+.container-select {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  vertical-align: middle;
+  & p {
+    color: rgb(29, 29, 29);
+    font-size: 15px;
+    top: 50%;
+  }
+}
+
 .container-stages {
   margin-bottom: 30px;
   display: flex;
