@@ -23,6 +23,10 @@ TIME_FORMAT = r"%Y-%m-%d"
 ID_ROL = 1
 
 
+class Cache(object):
+    register = {}
+
+
 class DateForm(FlaskForm):
     date = DateField(
         'Fecha de Nacimiento: ',
@@ -49,79 +53,82 @@ def login():
     return render_template("myte/login.html")
 
 
-@auth.route("/register", methods=["POST", "GET"], defaults={'stage': '1', 'id': None})
-@auth.route("/register/<stage>", methods=["POST", "GET"], defaults={'id': None})
-@auth.route("/register/<stage>-<id>", methods=["POST", "GET"])
-def register(stage, id):
+@auth.route("/register", methods=["POST", "GET"], defaults={"stage": "1"})
+@auth.route("/register/<stage>", methods=["POST", "GET"])
+def register(stage):
     form = DateForm()
-    prefill = new_user = None
     c = mysql.get_db().cursor()
-    try:
-        if stage == '2':
-            if request.method == 'GET':
-                return render_template('myte/register.html', form=form, stage=2, prefill=prefill, cache_user=new_user)
-            else:
-                # TODO: assign formulas based on given data about academical level and career
-                new_user = Usuario.query.filter_by(
-                    nombre_usuario=id).first()
-                print(new_user)
-                if 'back' in request.form:
-                    return redirect(url_for(
-                        'auth.register',
-                        stage=1,
-                        id=new_user.nombre_usuario,
-                    ))
-                    return render_template('myte/register.html', form=form, stage=1, prefill=True, cache_user=new_user)
-
-                elif 'completed' in request.form:
-                    db.session.commit()
-                    login_user(new_user, remember=True)
-                    return redirect(url_for('views.home'))
+    if stage == '2':
+        if request.method == 'GET':
+            if not Cache.register:
                 return redirect(url_for(
                     'auth.register',
-                    stage=2,
-                    id=new_user.nombre_usuario,
+                    stage=1
                 ))
-        elif stage == '1':
-            user_data = request.form
-            if request.method == 'GET':
-                if MetaUsuario.query.get(id):
-                    prefill = True
-                    new_user = Usuario.query.filter_by(
-                        nombre_usuario=id).first()
-                return render_template('myte/register.html', form=form, stage=1, prefill=True, cache_user=new_user)
+            return render_template('myte/register.html', form=form, stage=2, prefill=False)
+        else:
+            # TODO: assign formulas based on given data about academical level and career
+            if not "user" in Cache.register:
+                raise Exception(
+                    "Expected user data from previous stage")
+            user_data = Cache.register["user"]
 
-            meta = db.session.query(MetaUsuario).get(id)
-            print(meta)
-            if not form.validate_on_submit() or not check_user(user_data, cache=bool(meta)):
-                return render_template('myte/register.html', form=form, stage=1, prefill=False, cache_user=None)
+            if 'back' in request.form:
+                return redirect(url_for(
+                    'auth.register',
+                    stage=1
+                ))
 
-            if meta:
-                check_changes(meta, user_data)
-            else:
+            elif 'completed' in request.form:
                 meta = MetaUsuario(
-                    nombre_usuario=user_data["username"],
-                    clave_encriptada=utils.encrypt(user_data["password1"])
+                    nombre_usuario=user_data["nombre_usuario"],
+                    clave_encriptada=utils.encrypt(
+                        Cache.register["meta"])
                 )
                 new_user = Usuario(
-                    nombre_usuario=meta.nombre_usuario,
-                    nombre=utils.format_name(user_data["name"]),
                     id_rol=Rol.query.get(ID_ROL).id,
-                    email=user_data["email"],
-                    fecha_nacimiento=user_data["date"]
+                    **user_data
                 )
+                new_user.nombre_usuario = utils.format_name(
+                    user_data["nombre_usuario"])
+                Cache.register = {}  # register end and cache is claned
                 db.session.add(meta)
                 db.session.add(new_user)
-            db.session.commit()
+                db.session.commit()
+                login_user(new_user, remember=True)
+                return redirect(url_for('views.home'))
 
-            return redirect(url_for('auth.register', stage=2, id=new_user.nombre_usuario))
+            return redirect(url_for(
+                'auth.register',
+                stage=2,
+            ))
+    elif stage == '1':
+        post_data = request.form
+        if "user" in Cache.register:
+            cache_user = Cache.register["user"]
         else:
-            return render_template('myte/404.html', title="Page not found", description="Stage argument failed.")
+            cache_user = None
 
-    except Exception as ex:
-        print(ex)
-        db.session.rollback()
-        return render_template('myte/404.html', title="Page not found", description="Something went wrong")
+        if request.method == 'GET':
+            return render_template('myte/register.html', form=form, stage=1, prefill=True, cache_user=cache_user)
+
+        if not form.validate_on_submit() or not check_user(post_data, cache=bool(cache_user)):
+            return render_template('myte/register.html', form=form, stage=1, prefill=False, cache_user=None)
+
+        data = {}
+        data.setdefault("nombre_usuario", post_data["username"])
+        data.setdefault("nombre", post_data["name"])
+        data.setdefault("email", post_data["email"])
+        data.setdefault("fecha_nacimiento", post_data["date"])
+
+        Cache.register["meta"] = post_data["password1"]
+        Cache.register["user"] = data
+
+        return redirect(url_for('auth.register', stage=2))
+    else:
+        return render_template('myte/404.html', title="Page not found", description="Stage argument failed.")
+
+        # return render_template('myte/404.html', title="Page not found", description="Something went wrong")
 
 
 @auth.route("/logout", methods=["POST", "GET"])
