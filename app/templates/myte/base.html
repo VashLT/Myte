@@ -7,34 +7,56 @@
     {% assets "scss_all" %}
     <title>{% block title %} Myte {% endblock %}</title>
     {% endassets %}
+    <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            text: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        }
+    </script>
 </head>
 
 <body {% block background %}id="body-home"{% endblock %}>
+    <!-- flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="container-flash">
-            {% for category, message in messages %}
-            {% if category == 'error' %}
-            <div class="flash-box--error">
-                <p class="center-v">{{ message }}</p>
-                <span class="dismissible" style="background-color: darkgreen;">X</span>
-            </div>
-            {% elif category == 'info' %}
-            <div class="flash-box--info">
-                <p class="center-v">{{ message }}</p>
-            </div>
-            {% else %}
-            <div class="flash-box">
-                <p class="center-v">{{ message }}</p>
-            </div>
-            {% endif %}
-            {% endfor %}
+    {% if messages %}
+    <div class="container-flash">
+        {% for category, message in messages %}
+        {% if category == 'error' %}
+        <div class="flash-box--error">
+            <p>{{ message }}</p>
+            <span class="dismissible">X</span>
+        </div>
+        {% elif category == 'info' %}
+        <div class="flash-box--info">
+            <p>{{ message }}</p>
+            <span class="dismissible">X</span>
+        </div>
+        {% else %}
+        <div class="flash-box">
+            <p>{{ message }}</p>
+            <span class="dismissible">X</span>
         </div>
         {% endif %}
+        {% endfor %}
+        <script>
+
+        </script>
+    </div>
+    {% endif %}
     {% endwith %}
+
     {% block body %}
+    {% block side_bar %}
     <div class="side-bar">
         <div class="side-bar--info">
             <h2>Myte</h2>
@@ -59,6 +81,7 @@
             ><strong>Repositorio</strong></a>
         </div>
     </div>
+    {% endblock %}
     <nav class="nav-bar">
         {% block nav_content %}
         <div class="container-hamburger">

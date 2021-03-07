@@ -5,7 +5,7 @@
 {% block nav_content %}
 <div class="nav-bar--item left" style="width: 20%; justify-content: center;">
     <div class="show-user">
-        <p>{{ user.nombre_usuario.capitalize() }}</p>
+        <p>$$\text{ {{ user.nombre_usuario.capitalize() }} }$$</p>
     </div>
 </div>
 <div class="nav-bar--item right">
@@ -13,5 +13,40 @@
     <a href="#" class="btn-link">Mejorar</a>
     <a href="{{ url_for('auth.logout') }}" id="logout" class="btn-link">Salir</a>
 </div>
+{% endblock %}
 
+{% block side_bar %}
+<div class="side-bar--home">
+    <div class="side-bar--info">
+        <h2>Myte</h2>
+        <h3>vBeta</h3>
+        <div></div>
+    </div>
+    <div class="side-bar--item">
+        <img src="{{ url_for('static', filename='images/theme.png') }}">
+        <a href="#" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
+    </div>
+    <div class="side-bar--item">
+        <img src="{{ url_for('static', filename='images/premium.png') }}">
+        <a href="#" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
+    </div>
+    <div class="side-bar--item">
+        <img src="{{ url_for('static', filename='images/git.png') }}">
+        <a href="https://github.com/VashLT/Myte" title="Myte source code" style="margin-left: 20px;"
+            target="_blank"><strong>Mis formulas</strong></a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="center-full">
+    <p>$$e^{i\cdot \pi} = -1$$</p>
+</div>
+<div class="expand-bar">
+    <h2> > </h2>
+</div>
+<div class="expand-bar" style="left: auto; right: 6%;">
+    <h2> + </h2>
+</div>
 {% endblock %}

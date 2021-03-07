@@ -24,6 +24,7 @@ ID_ROL = 1
 
 
 class Cache(object):
+    """ store inputted data at register stage """
     register = {}
 
 
@@ -57,8 +58,32 @@ def login():
 @auth.route("/register/<stage>", methods=["POST", "GET"])
 def register(stage):
     form = DateForm()
-    c = mysql.get_db().cursor()
-    if stage == '2':
+    mysql_cursor = mysql.get_db().cursor()
+    if stage == '1':
+        post_data = request.form
+        if "user" in Cache.register:
+            cache_user = Cache.register["user"]
+        else:
+            cache_user = None
+
+        if request.method == 'GET':
+            return render_template('myte/register.html', form=form, stage=1, prefill=True, cache_user=cache_user)
+
+        if not form.validate_on_submit() or not check_user(post_data):
+            return render_template('myte/register.html', form=form, stage=1, prefill=False, cache_user=None)
+
+        data = {}
+        data.setdefault("nombre_usuario", post_data["username"])
+        data.setdefault("nombre", post_data["name"])
+        data.setdefault("email", post_data["email"])
+        data.setdefault("fecha_nacimiento", post_data["date"])
+
+        Cache.register["meta"] = post_data["password1"]
+        Cache.register["user"] = data
+
+        return redirect(url_for('auth.register', stage=2))
+
+    elif stage == '2':
         if request.method == 'GET':
             if not Cache.register:
                 return redirect(url_for(
@@ -79,7 +104,8 @@ def register(stage):
                     stage=1
                 ))
 
-            elif 'completed' in request.form:
+            # registration is valid and store in db
+            elif 'completed' in request.form and check_extra_data(request.form):
                 meta = MetaUsuario(
                     nombre_usuario=user_data["nombre_usuario"],
                     clave_encriptada=utils.encrypt(
@@ -89,58 +115,42 @@ def register(stage):
                     id_rol=Rol.query.get(ID_ROL).id,
                     **user_data
                 )
-                new_user.nombre_usuario = utils.format_name(
-                    user_data["nombre_usuario"])
+                new_user.nombre = utils.format_name(
+                    user_data["nombre"])
                 Cache.register = {}  # register end and cache is claned
-                db.session.add(meta)
-                db.session.add(new_user)
-                db.session.commit()
-                login_user(new_user, remember=True)
-                return redirect(url_for('views.home'))
+                try:
+                    db.session.add(meta)
+                    db.session.add(new_user)
+                    db.session.commit()
+                    login_user(new_user, remember=True)
+                    mysql_cursor.execute(
+                        """SELECT @current_user := id_usuario FROM Usuario WHERE nombre_usuario = '%s'""" % new_user.nombre_usuario)
+                    flash("Welcome %s" % new_user.nombre_usuario)
+                    return redirect(url_for('views.home'))
+                except:
+                    db.session.rollback()
 
             return redirect(url_for(
                 'auth.register',
                 stage=2,
             ))
-    elif stage == '1':
-        post_data = request.form
-        if "user" in Cache.register:
-            cache_user = Cache.register["user"]
-        else:
-            cache_user = None
-
-        if request.method == 'GET':
-            return render_template('myte/register.html', form=form, stage=1, prefill=True, cache_user=cache_user)
-
-        if not form.validate_on_submit() or not check_user(post_data, cache=bool(cache_user)):
-            return render_template('myte/register.html', form=form, stage=1, prefill=False, cache_user=None)
-
-        data = {}
-        data.setdefault("nombre_usuario", post_data["username"])
-        data.setdefault("nombre", post_data["name"])
-        data.setdefault("email", post_data["email"])
-        data.setdefault("fecha_nacimiento", post_data["date"])
-
-        Cache.register["meta"] = post_data["password1"]
-        Cache.register["user"] = data
-
-        return redirect(url_for('auth.register', stage=2))
     else:
         return render_template('myte/404.html', title="Page not found", description="Stage argument failed.")
 
-        # return render_template('myte/404.html', title="Page not found", description="Something went wrong")
 
-
-@auth.route("/logout", methods=["POST", "GET"])
-@login_required
+@ auth.route("/logout", methods=["POST", "GET"])
+@ login_required
 def logout():
     logout_user()
     return redirect(url_for('views.welcome'))
 
 
-def check_user(user_data, cache=False):
+def check_user(user_data):
+    """
+        validate user data to create user
+    """
     state = True
-    if MetaUsuario.query.get(user_data["username"]) and not cache:
+    if MetaUsuario.query.get(user_data["username"]):
         flash("Username already exists", category="error")
         state = False
     if user_data["password1"] != user_data["password2"]:
@@ -148,6 +158,17 @@ def check_user(user_data, cache=False):
         state = False
     if not utils.is_email(user_data["email"]):
         flash("Incorrect email", category="error")
+        state = False
+    return state
+
+
+def check_extra_data(extra_data):
+    state = True
+    if extra_data["nivel"] == 'select':
+        flash("Selecciona un nivel educativo")
+        state = False
+    if extra_data["carrera"] == 'select':
+        flash("Selecciona una carrera")
         state = False
     return state
 

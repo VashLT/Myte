@@ -46,6 +46,9 @@ class Formula(db.Model):
     creada = db.Column(db.Boolean, nullable=False)
     eliminada = db.Column(db.Boolean, nullable=False)
 
+    def __repr__(self):
+        return "<Formula %r>" % self.nombre
+
 
 class Rol(db.Model):
     __tablename__ = 'rol'

@@ -17,7 +17,7 @@ def encrypt(password):
 
 def is_email(email):
     return re.match(
-        r"[A-Za-z0-9.]+@[A-Za-z.]*[A-Za-z]$", email
+        r"[A-Za-z0-9.]+@[A-Za-z.]+[A-Za-z]$", email
     )
 
 
