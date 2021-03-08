@@ -26,9 +26,12 @@ $(document).ready(function () {
     if ($messages.length) {
         if ($(".nav-bar").length) {
             $messages.attr('style', 'margin-top: '.concat($(".nav-bar").css("height")));
+        } else if ($(".nav-bar--home").length) {
+            $messages.attr('style', 'margin-top: '.concat($(".nav-bar--home").css("height")));
         }
         $messages.children().each(function (i) {
             $(this).delay(400 * i).fadeIn(300);
+            $(this).attr("style", "display: flex");
         });
     }
 

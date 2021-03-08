@@ -8,7 +8,6 @@ views = Blueprint("views", __name__)
 
 @views.route('/')
 def welcome():
-    flash("testing", category="success")
     return render_template("myte/welcome.html")
 
 
@@ -23,6 +22,23 @@ def home():
     formulas = load_formulas()
     return render_template("myte/home.html", user=current_user, formulas=formulas)
 
+
+@views.route('/home/add')
+@login_required
+def add_formula():
+    return render_template("myte/add.html")
+
+
+@views.route('/home/delete')
+@login_required
+def delete_formula():
+    return render_template("myte/delete.html")
+
+
+@views.route('/home/formulas')
+@login_required
+def formulas():
+    return render_template("myte/formulas.html")
 
 def load_formulas():
     user = current_user

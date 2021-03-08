@@ -25,7 +25,7 @@
     </script>
 </head>
 
-<body {% block background %}id="body-home"{% endblock %}>
+<body {% block background %}id="body-welcome"{% endblock %}>
     <!-- flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -82,8 +82,8 @@
         </div>
     </div>
     {% endblock %}
+    {% block nav %}
     <nav class="nav-bar">
-        {% block nav_content %}
         <div class="container-hamburger">
             <div class="hamburger">
                 <div></div>
@@ -99,8 +99,8 @@
             <a href="#" class="btn-link">Acerca de</a>
             <a href="#" class="btn-link">Otros</a>
         </div>
-        {% endblock %}
     </nav>
+    {% endblock %}
     <div name="base" class="container-base">
         {% block content %}
         {% endblock %}

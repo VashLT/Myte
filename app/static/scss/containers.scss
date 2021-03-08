@@ -107,6 +107,14 @@ $login-form-width: 700px;
   z-index: 4;
 }
 
+.container-formula {
+  width: 400px;
+  height: 370px;
+  &:hover {
+    box-shadow: 0 4px 8px 0 #e0dede, 0 6px 20px 0 #dbdada;
+  }
+}
+
 .container-tag {
   display: flex;
   flex-direction: column;

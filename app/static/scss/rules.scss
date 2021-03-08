@@ -188,6 +188,8 @@ input.invalid {
 .side-bar--home {
   @extend .side-bar;
   width: 400px;
+  border-radius: 0 $btn-radius $btn-radius 0;
+  background-color: $bg-color;
   // height: 100%;
 }
 
@@ -220,6 +222,16 @@ input.invalid {
   }
 }
 
+.item {
+  @extend .side-bar--item;
+  height: 60px;
+  border-radius: 0 $btn-radius $btn-radius 0;
+  &:hover {
+    background-color: $myte-blue;
+    cursor: pointer;
+  }
+}
+
 .nav-bar {
   position: absolute;
   left: 0;
@@ -246,6 +258,11 @@ input.invalid {
     align-items: center;
     justify-content: flex-end;
   }
+}
+
+.nav-bar--home {
+  @extend .nav-bar;
+  background-color: $blue-dark_b;
 }
 
 .item-btns__home {
