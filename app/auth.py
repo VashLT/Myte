@@ -38,6 +38,7 @@ class DateForm(FlaskForm):
 
 @auth.route("/login", methods=["POST", "GET"])
 def login():
+    mysql_cursor = mysql.get_db().cursor()
     if request.method == "POST":
         details = request.form
         name = details["username"]
@@ -48,6 +49,13 @@ def login():
         if meta:
             flash("Succesfully logged in", category="success")
             login_user(meta.usuario, remember=True)
+            # mysql_cursor.execute(
+            #     """SELECT @current_user := id_usuario FROM Usuario WHERE nombre_usuario = %s""", meta.nombre_usuario)
+            mysql_cursor.execute("""
+                UPDATE MyteVar SET valor = %s WHERE nombre = "current_user"
+            """, (meta.usuario.id))
+            mysql.get_db().commit()
+            print(meta.usuario.id)
             return redirect(url_for('views.home'))
         else:
             flash("Nombre de usuario o contraseña incorrectos", category="error")
@@ -124,7 +132,7 @@ def register(stage):
                     db.session.commit()
                     login_user(new_user, remember=True)
                     mysql_cursor.execute(
-                        """SELECT @current_user := id_usuario FROM Usuario WHERE nombre_usuario = '%s'""" % new_user.nombre_usuario)
+                        """SELECT @current_user := id_usuario FROM Usuario WHERE nombre_usuario = %s""", new_user.nombre_usuario)
                     flash("Welcome %s" % new_user.nombre_usuario)
                     return redirect(url_for('views.home'))
                 except:
@@ -165,33 +173,31 @@ def check_user(user_data):
 def check_extra_data(extra_data):
     state = True
     if extra_data["nivel"] == 'select':
-        flash("Selecciona un nivel educativo")
+        flash("Selecciona un nivel educativo", category="error")
         state = False
     if extra_data["carrera"] == 'select':
-        flash("Selecciona una carrera")
+        flash("Selecciona una carrera", category="error")
         state = False
     return state
 
 
-def check_changes(meta, data):
-    new_user = meta.usuario
-    if meta.nombre_usuario != data['username']:
-        print("raise error")
-        meta.nombre_usuario = new_user.nombre_usuario = data["username"]
-        print("raise error?")
+# def check_changes(meta, data):
+#     new_user = meta.usuario
+#     if meta.nombre_usuario != data['username']:
+#         meta.nombre_usuario = new_user.nombre_usuario = data["username"]
 
-        flag_modified(new_user, "nombre_usuario")
-        flag_modified(meta, "nombre_usuario")
-    if meta.clave_encriptada != utils.encrypt(data["password1"]):
-        meta.nombre_usuario = utils.encrypt(data["password1"])
-        flag_modified(meta, "clave_encriptada")
-    if new_user.email != data["email"]:
-        new_user.email = data["email"]
-        flag_modified(new_user, "email")
-    if new_user.fecha_nacimiento != data["date"]:
-        new_user.fecha_nacimiento = data["date"]
-        flag_modified(new_user, "fecha_nacimiento")
+#         flag_modified(new_user, "nombre_usuario")
+#         flag_modified(meta, "nombre_usuario")
+#     if meta.clave_encriptada != utils.encrypt(data["password1"]):
+#         meta.nombre_usuario = utils.encrypt(data["password1"])
+#         flag_modified(meta, "clave_encriptada")
+#     if new_user.email != data["email"]:
+#         new_user.email = data["email"]
+#         flag_modified(new_user, "email")
+#     if new_user.fecha_nacimiento != data["date"]:
+#         new_user.fecha_nacimiento = data["date"]
+#         flag_modified(new_user, "fecha_nacimiento")
 
-    db.session.merge(meta)
-    db.session.merge(new_user)
-    db.session.flush()
+#     db.session.merge(meta)
+#     db.session.merge(new_user)
+#     db.session.flush()
