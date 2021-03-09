@@ -20,7 +20,8 @@ CREATE TABLE Historial(
 CREATE TABLE Indice(
     id_index INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario INT,
-    id_formula INT
+    id_formula INT,
+    numero_usos INT DEFAULT 0
 );
 CREATE TABLE Tag(
     id_tag INT PRIMARY KEY AUTO_INCREMENT,
@@ -107,4 +108,9 @@ CREATE TABLE Recomendacion(
     id_niveleducativo INT,
     id_carrera INT,
     nombre VARCHAR(100)
+);
+
+CREATE TABLE MyteVar(
+    nombre VARCHAR(50) PRIMARY KEY,
+    valor INT NOT NULL
 );

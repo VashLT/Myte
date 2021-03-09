@@ -3,7 +3,7 @@ CREATE TRIGGER new_formula AFTER INSERT ON Formula
 FOR EACH ROW
 BEGIN
     INSERT INTO Historial (id_usuario, id_formula, fecha_registro) VALUES (
-        @current_user,
+        (SELECT valor FROM MyteVar WHERE nombre="current_user"),
         NEW.id_formula,
         CURDATE()
     );
@@ -19,3 +19,6 @@ BEGIN
 END; 
 $$
 delimiter ;
+
+
+
