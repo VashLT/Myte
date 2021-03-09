@@ -30,7 +30,7 @@
     margin: 0;
     top: 50%;
     font-size: 25px;
-    color: silver;
+    color: rgb(23, 23, 44);
   }
 }
 
@@ -69,6 +69,62 @@
   & p {
     text-align: center;
     align-self: center;
+  }
+}
+
+.option {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  background-color: $gray--hover;
+  text-decoration: none;
+  color: $bg-color;
+  width: auto;
+  height: 30px;
+  font-size: 25px;
+  border-radius: $btn-radius;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.option--gray {
+  @extend .option;
+  background-color: #464646;
+  &:hover {
+    background-color: #383838;
+  }
+}
+
+.option--yellow {
+  @extend .option;
+  background-color: rgb(228, 238, 40);
+  &:hover {
+    background-color: rgb(184, 192, 33);
+  }
+}
+
+.option--skin {
+  @extend .option;
+  background-color: $myte-skin;
+  &:hover {
+    background-color: #d1bfb7;
+  }
+}
+
+.option--green {
+  @extend .option;
+  background-color: rgb(83, 150, 67);
+  &:hover {
+    background-color: rgb(59, 105, 47);
+  }
+}
+
+.option--blue {
+  @extend .option;
+  background-color: #383e56;
+  &:hover {
+    background-color: #2b2f42;
   }
 }
 

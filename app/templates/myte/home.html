@@ -4,9 +4,18 @@
 
 {% block background %}id="body-home"{% endblock %}
 
+{% block body %}
+<div class="overlay"></div>
+
 {% block nav %}
 <nav class="nav-bar--home">
-<div class="nav-bar--item" style="width: 30%; margin-left: 10px;">
+<div class="nav-bar--item left" style="width: 5%; margin-left: 10px; ">
+    <img 
+        src="{{ url_for('static', filename='images/logo.png') }}" 
+        title="Myte"
+        style="width: 70px; height: 70px;">
+</div>
+<div class="nav-bar--item" style="width: 50%; margin-left: 10px; justify-content: flex-start;">
 
 </div>
 <div class="nav-bar--item right" style="width: 40%;">
@@ -44,17 +53,17 @@
     </div>
 </div>
 {% endblock %}
-
+ 
 {% block content %}
 {% if formulas %}
     <div class="container-formulas">
         {% for formula in formulas %}
-        <div class="container-formula">
+        <div data-modal-target="#modal{{ loop.index }}" class="container-formula" id="f{{ loop.index }}">
             <div class="formula-header">
                 <h2>{{ formula["nombre"] }}</h2>
             </div>
             <div class="formula-content">
-                <p>$$ {{ formula["codigo_latex"] }}$$</p>
+                <p>$$ {{ formula["codigo_latex"] }} $$</p>
                 {% if formula["tags"] %}
                 <div class="container-tags">
                     {% for tag in formula["tags"] %}
@@ -66,6 +75,50 @@
                 {% endif %}
             </div>
         </div>
+        <div class="modal-formula" id="modal{{ loop.index }}">
+            <div class="augmented-header">
+                <h1>{{ formula["nombre"] }}</h1>
+            </div>
+            <div class="augmented-formula">
+                <p>$$ {{ formula["codigo_latex"] }} $$</p>
+            </div>
+            {% if formula["tags"] %}
+            <div class="augmented-tags">
+                {% for tag in formula["tags"] %}
+                <div>
+                    <p>{{ tag }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="augmented-options">
+                {% if formula["images"] %}
+                    <a 
+                        href="{{ url_for('views.formula_images', id_formula=formula['id']) }} "
+                        class = "option--yellow" 
+                        target="_blank">Imagenes</a>
+                {% else %}
+                    <a class="option" aria-disabled="true">Imagenes</a>
+                {% endif %}
+                {% if formula["script"] %}
+                    <a 
+                        href="{{ url_for('views.formula_script', id_formula = formula['id']) }}" 
+                        class = "option--skin" 
+                        target="_blank">Ejecutar script</a>
+                {% else %}
+                    <a class="option" aria-disabled="true">Ejecutar script</a>
+                {% endif %}
+                    <a 
+                        href="{{ url_for('views.edit_formula', id_formula=formula['id']) }}" 
+                        class = "option--green" 
+                        target="_blank">Editar</a>
+                    <a 
+                        href="{{ url_for('views.delete_formula', id_formula=formula['id']) }}" 
+                        class = "option--blue"
+                        target="_blank">Eliminar</a>
+            </div>  
+        </div>
+
         {% endfor %}
     </div>
 {% else %}
@@ -78,4 +131,5 @@
 <div class="expand-bar" style="left: auto; right: 6%;">
     <img src="{{ url_for('static', filename='images/add.png') }}">
 </div>
+{% endblock %}
 {% endblock %}

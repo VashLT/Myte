@@ -35,16 +35,36 @@ def add_formula():
     return render_template("myte/add.html")
 
 
-@views.route('/home/delete')
+@views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
+@views.route('/home/delete/<id_formula>', methods=["POST", "GET"])
 @login_required
-def delete_formula():
+def delete_formula(id_formula):
     return render_template("myte/delete.html")
+
+
+@views.route('/home/edit', methods=["POST", "GET"], defaults={"id_formula": None})
+@views.route('/home/edit/<id_formula>', methods=["POST", "GET"])
+@login_required
+def edit_formula(id_formula):
+    return render_template("myte/edit.html")
 
 
 @views.route('/home/formulas')
 @login_required
 def formulas():
     return render_template("myte/formulas.html")
+
+
+@views.route('/home/images/<id_formula>')
+@login_required
+def formula_images(id_formula):
+    return render_template("myte/images.html")
+
+
+@views.route('/home/images/<id_formula>')
+@login_required
+def formula_script(id_formula):
+    return render_template("myte/script.html")
 
 
 def load_formulas(cant_max=20):
@@ -57,7 +77,6 @@ def load_formulas(cant_max=20):
     formulas = []
     raw_result = mysql_cursor.fetchall()
     if raw_result:
-        print(raw_result)
         for record in raw_result:
             id = int(record[0])
             memo_id.add(id)
@@ -121,7 +140,6 @@ def more_formulas(freq_formulas, ids, cant_max):
         latex = formula.codigo_latex
         if r"\n" in latex:
             latex = utils.format_newline(formula.codigo_latex)
-            print(latex)
         tags = lookup_tags(id)
         if tags:
             tags = utils.format_tags(tags)

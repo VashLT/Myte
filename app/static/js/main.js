@@ -23,19 +23,15 @@ $(document).ready(function () {
     var $home_bar = $('.side-bar--home');
     var $messages = $('.container-flash');
     var $formulas = $('.container-formula');
+    var $overlay = $(".overlay");
 
-    $formulas.click(function () {
-        $(this).addClass("active");
-        $(".overlay").addClass("active")
+    $formulas.on("click", function () {
+        var $clicked_formula_id = $(this).attr('id');
+        var $modal = $("#modal" + $clicked_formula_id.substring(1));
+        $modal.addClass("active");
+        $overlay.addClass("active");
     })
-
-    $(".overlay").click(function () {
-        if ($(".overlay").hasClass("activate")) {
-            $(".overlay").removeClass("active");
-            $(".modal.activate").removeClass("active");
-        }
-    })
-
+    
     if ($messages.length) {
         if ($(".nav-bar").length) {
             $messages.attr('style', 'margin-top: '.concat($(".nav-bar").css("height")));
@@ -73,6 +69,15 @@ $(document).ready(function () {
         event.stopPropagation();
     })
 
+    $overlay.click(function () {
+        if ($overlay.hasClass("active")) {
+            event.preventDefault();
+            $(".overlay").removeClass("active");
+            $(".modal-formula.active").removeClass("active");
+            event.stopPropagation();
+        }
+    })
+
     $(".hamburger").click(function () { // click on hamburger button
         event.preventDefault();
         $side_bar.animate({ width: "toggle" }, 300);
@@ -85,6 +90,8 @@ $(document).ready(function () {
     $side_bar.click(function () {
         event.stopPropagation();
     })
+
+
 
     $("body").click(function () {
         if ($side_bar.hasAttr("state") && $side_bar.attr("state") === "active") {
