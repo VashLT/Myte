@@ -34,17 +34,22 @@
         {% if category == 'error' %}
         <div class="flash-box--error">
             <p>{{ message }}</p>
-            <span class="dismissible">X</span>
+            <span class="dismissible">&times;</span>
         </div>
         {% elif category == 'info' %}
         <div class="flash-box--info">
             <p>{{ message }}</p>
-            <span class="dismissible">X</span>
+            <span class="dismissible">&times;</span>
+        </div>
+        {% elif category == 'warning' %}
+        <div class="flash-box--warning">
+            <p>{{ message }}</p>
+            <span class="dismissible">&times;</span>
         </div>
         {% else %}
         <div class="flash-box">
             <p>{{ message }}</p>
-            <span class="dismissible">X</span>
+            <span class="dismissible">&times;</span>
         </div>
         {% endif %}
         {% endfor %}

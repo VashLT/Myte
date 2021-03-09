@@ -6,12 +6,10 @@
 
 {% block nav %}
 <nav class="nav-bar--home">
-<div class="nav-bar--item left" style="width: 20%; justify-content: center;">
-    <div class="show-user">
-        <p>$$\text{ {{ user.nombre_usuario.capitalize() }} }$$</p>
-    </div>
+<div class="nav-bar--item" style="width: 30%; margin-left: 10px;">
+
 </div>
-<div class="nav-bar--item right">
+<div class="nav-bar--item right" style="width: 40%;">
     <a href="#" class="btn-link">Detalles</a>
     <a href="#" class="btn-link">Mejorar</a>
     <a href="{{ url_for('auth.logout') }}" id="logout" class="btn-link">Salir</a>
@@ -21,21 +19,26 @@
 
 {% block side_bar %}
 <div class="side-bar--home">
-    <div class="side-bar--info">
-        <h2>Myte</h2>
-        <h3>vBeta</h3>
-        <div></div>
+    <div class="app-info">
+        <div style="width: 40%;">
+            <h2>Myte</h2>
+            <h3>vBeta</h3>
+        </div>
+        <div class="show-user" style="width: 60%;">
+            <p style="margin-top: 10px;">$$\text{ {{ user.nombre_usuario.capitalize() }} }$$</p>
+        </div>
     </div>
-    <div class="item">
-        <img src="{{ url_for('static', filename='images/premium.png') }}">
+    <div class="horizontal-bar" style="background-color: #6b4637;"></div>
+    <div class="item-home">
+        <img src="{{ url_for('static', filename='images/add_2.png') }}">
         <a href="{{ url_for('views.add_formula') }}" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
     </div>
-    <div class="item">
-        <img src="{{ url_for('static', filename='images/premium.png') }}">
+    <div class="item-home">
+        <img src="{{ url_for('static', filename='images/delete_gray.png') }}">
         <a href="{{ url_for('views.delete_formula') }}" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
     </div>
-    <div class="item">
-        <img src="{{ url_for('static', filename='images/premium.png') }}">
+    <div class="item-home">
+        <img src="{{ url_for('static', filename='images/list_formulas.png') }}">
         <a href="{{ url_for('views.formulas') }}" title="Myte source code" style="margin-left: 20px;"
             target="_blank"><strong>Mis formulas</strong></a>
     </div>
@@ -43,14 +46,36 @@
 {% endblock %}
 
 {% block content %}
+{% if formulas %}
+    <div class="container-formulas">
+        {% for formula in formulas %}
+        <div class="container-formula">
+            <div class="formula-header">
+                <h2>{{ formula["nombre"] }}</h2>
+            </div>
+            <div class="formula-content">
+                <p>$$ {{ formula["codigo_latex"] }}$$</p>
+                {% if formula["tags"] %}
+                <div class="container-tags">
+                    {% for tag in formula["tags"] %}
+                    <div>
+                        <p>{{ tag }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
 
-<div class="center-full">
-    <p>$$e^{i\cdot \pi} = -1$$</p>
-</div>
+{% endif %}
+
 <div class="expand-bar">
-    <h2> > </h2>
+    <img src="{{ url_for('static', filename='images/arrow.png') }}" style="width: 17px; height: 29px;">
 </div>
 <div class="expand-bar" style="left: auto; right: 6%;">
-    <h2> + </h2>
+    <img src="{{ url_for('static', filename='images/add.png') }}">
 </div>
 {% endblock %}
