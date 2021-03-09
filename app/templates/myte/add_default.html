@@ -5,85 +5,67 @@
 {% block background %} id="body-add_formula" {% endblock %}
 
 {% block body %}
-<div class="render-box">
-    <div class="render-box--header">
-        <h3 id="formula-view">Formula renderizada</h3>
+<div class="container-add-view">
+    <div class="render-box">
+        <div class="render-box--header">
+            <h3 id="formula-view">Formula renderizada</h3>
+        </div>
+        <div class="render-box--content">
+            {% if formula["codigo_latex"] %}
+            <p>$$ {{ formula["codigo_latex"] }} $$</p>
+            {% else %}
+            <p style="color: rgb(191, 191, 191); font-size: 20px; font-weight: 400;">No se ha renderizado</p>
+            {% endif %}
+        </div>
     </div>
-    <div class="render-box--content">
-        {% if formula["codigo_latex"] %}
-        <p>$$ {{ formula["codigo_latex"] }} $$</p>
-        {% else %}
-        <p style="color: rgb(191, 191, 191); font-size: 20px; font-weight: 400;">No se ha renderizado</p>
+    <div class="container-add_formula">
+        <form method="POST" class="form" id="add-form--normal" action="">
+            <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;"
+                    title="Myte">
+                <h2 style="color:#35241b;">Creación de formula</h2>
+            </div>
+            {% if stage == 1 %}
+            <div class="input-formula">
+                <p>Escribe el codigo en LaTeX:</p>
+                <textarea class="input-latex" id="ilatex" name="latex" cols="50" rows="10" placeholder="formula ..."
+                    style="margin-bottom: 20px;">{% if formula["codigo_latex"] %}{{ formula["codigo_latex"] }}{% endif %}</textarea>
+            </div>
+            {% else %}
+            <div class="container-input" style="flex-direction: column;">
+                <p>Ingresa el nombre de la formula</p>
+                <input type="text" id="title-formula" name="title" placeholder="Titulo de la formula" autocomplete="off"
+                    class="input" />
+            </div>
+            {% endif %}
+        </form>
+        <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
+            <div class="container-input" id="render-parent" style="width: 30%; margin-left: 15%">
+                <button class="btn-submit--green" id="render-btn" name="render"
+                    style="width: 100%;">Renderizar</button>
+            </div>
+            <div class="container-input" id="submit-parent" style="width: 30%; margin-right: 15%;">
+                <button class="btn-submit" id="next-btn" name="completed" style="width: 100%;">Continuar</button>
+            </div>
+        </div>
+        {% if stage == 2 %}
+        <script>
+            $("#formula-view").text("Formula");
+            $("#render-parent").css("display", "none");
+            var $container = $(".container-add_formula");
+            var $submitBtn = $("#next-btn");
+            $submitBtn.text("Completar");
+            $(".container-input--many").css({
+                "justify-content": "center",
+            });
+            $("#submit-parent").css({
+                "justify-content": "center",
+                "margin": "0px",
+            });
+            $container.css("height", "500px");
+        </script>
         {% endif %}
     </div>
-</div>
-
-<div class="container-add_formula">
-    <form method="POST" class="form" id="add-form--normal" action="">
-    <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
-        <h2 style="color:#35241b;">Creación de formula</h2>
-    </div>
-    {% if stage == 1 %}
-        <div class="input-formula">
-            <p>Escribe el codigo en LaTeX:</p>
-            <textarea 
-                class="input-latex" 
-                id="ilatex" 
-                name="latex" 
-                cols="50" 
-                rows="10"
-                placeholder="formula ..."
-                style="margin-bottom: 20px;"
-            >{% if formula["codigo_latex"] %}{{ formula["codigo_latex"] }}{% endif %}</textarea>
-        </div>
-    {% else %}
-        <div class="container-input" style="flex-direction: column;">
-            <p>Ingresa el nombre de la formula</p>
-            <input 
-                type="text" 
-                id="title-formula" 
-                name="title" 
-                placeholder="Titulo de la formula" 
-                autocomplete="off" 
-                class="input" />
-        </div>
-    {% endif %}
-    </form>
-    <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
-        <div class="container-input" style="width: 30%;">
-            <button 
-                class="btn-submit--green" 
-                id="render-btn" 
-                name="render"
-                style="width: 100%; margin-left: 60px;">Renderizar</button>
-        </div>
-        <div class="container-input" id ="submit-parent" style="width: 30%; margin-right: 60px;">
-            <button class="btn-submit" id="next-btn" name="completed" style="width: 100%;">Continuar</button>
-        </div>
-    </div>
-    {% if stage == 2 %}
-    <script>
-        $("#formula-view").text("Formula");
-        $("#render-btn").css("display", "none");
-        var $container = $(".container-add_formula");
-        var $submitBtn = $("#next-btn");
-        $submitBtn.text("Completar");
-        $(".container-input--many").css({
-            "justify-content": "center"
-        });
-        $("#submit-parent").css({
-                "display": "flex",
-                "margin-right": "180px",
-                "margin-top": "40px",
-                "justify-content": "center",
-            })  
-        $submitBtn.css({
-            "margin": "0px",
-        });
-        $container.css("height", "500px");
-    </script>
-    {% endif %}
 </div>
 
 {% endblock %}
