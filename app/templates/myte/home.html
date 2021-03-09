@@ -125,11 +125,13 @@
 
 {% endif %}
 
-<div class="expand-bar">
+<div class="expand-bar" id="ctrl-side-bar">
     <img src="{{ url_for('static', filename='images/arrow.png') }}" style="width: 17px; height: 29px;">
 </div>
-<div class="expand-bar" style="left: auto; right: 6%;">
-    <img src="{{ url_for('static', filename='images/add.png') }}">
+<div class="expand-bar" id="add-formula" style="left: auto; right: 6%;">
+    <a href="{{ url_for('views.add_formula') }}" target="_blank">
+        <img src="{{ url_for('static', filename='images/add.png') }}">
+    </a>
 </div>
 {% endblock %}
 {% endblock %}

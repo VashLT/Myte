@@ -16,6 +16,9 @@ class Cache(object):
     """ store inputted data at add formula """
     add = {}
 
+# pylint: disable=bad-option-value
+# pylint: disable=no-member
+
 
 @views.route('/')
 def welcome():
@@ -41,7 +44,6 @@ def add_formula(stage):
     mysql_cursor = mysql.get_db().cursor()
     if not current_user.is_premium():
         if stage == "1":
-            post_data = request.form
             if "formula" in Cache.add:
                 cache_formula = Cache.add["formula"]
             else:
@@ -50,16 +52,19 @@ def add_formula(stage):
             if request.method == "GET":
                 return render_template("myte/add_default.html", stage=1, formula=None)
 
+            post_data = request.form
+
             data = {}
             data.setdefault("codigo_latex", post_data["latex"])
             Cache.add["formula"] = data
             if "render" in post_data:
                 return render_template("myte/add_default.html", stage=1, formula=Cache.add["formula"])
-            return redirect(url_for("views.add", stage=2))
+            return redirect(url_for("views.add_formula", stage=2))
         else:
-            post_data = request.form
             if request.method == "GET":
-                return render_template("myte/add_default.html", stage=2)
+                return render_template("myte/add_default.html", stage=2, formula=Cache.add["formula"])
+            post_data = request.form
+            print(post_data)
             if "completed" in post_data:
                 Cache.add["formula"].setdefault("nombre", post_data["title"])
                 formula = Formula(
@@ -74,7 +79,6 @@ def add_formula(stage):
                     return redirect(url_for('views.home'))
                 except:
                     db.session.rollback()
-
 
     else:
         if stage == "1":
@@ -133,25 +137,30 @@ def load_formulas(cant_max=20):
     mysql_cursor = mysql.get_db().cursor()
     memo_id = set()
 
-    mysql_cursor.execute(f"""
-        SELECT id_formula FROM indice ORDER BY numero_usos DESC LIMIT {cant_max};
-    # """)
+    mysql_cursor.execute("""
+        SELECT id_formula FROM indice WHERE id_usuario = %s ORDER BY numero_usos DESC LIMIT %s
+    """, (current_user.id, cant_max))
     formulas = []
     raw_result = mysql_cursor.fetchall()
     if raw_result:
         for record in raw_result:
             id = int(record[0])
+            if id in memo_id:
+                continue
             memo_id.add(id)
             formula = Formula.query.get(id)
             latex = formula.codigo_latex
             if r"\n" in latex:
                 latex = utils.format_newline(formula.codigo_latex)
+            tags = lookup_tags(id)
+            if tags:
+                tags = utils.format_tags(tags)
             formulas.append(
                 {
                     "id": id,
                     "nombre": formula.nombre,
                     "codigo_latex": latex,
-                    "tags": lookup_tags(id),
+                    "tags": tags,
                     "images": formula.imagen,
                     "script": formula.script
                 }

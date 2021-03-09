@@ -3,7 +3,8 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
-# pylint: disable=pylint(no-member)
+# pylint: disable=bad-option-value
+# pylint: disable=no-member
 
 
 class Usuario(db.Model, UserMixin):

@@ -76,20 +76,28 @@ $(document).ready(function () {
         });
     }
 
+
+    $("#render-btn").click(function () {
+        var $form = $("#add-form--normal");
+        $form.append('<input type="hidden" name="render" />');
+        $("#add-form--normal").submit();
+    })
+
     $("#next-btn").click(function () {
         if ($("#register-form").length) {
             if (validForm("register-form")) {
                 $("#register-form").submit();
             }
         } else if ($("#add-form").length) {
-            alert("checking add-form")
             if (validForm("add-form")) {
                 $("#add-form").submit();
             }
         } else if ($("#add-form--normal").length) {
-            alert("checking add-form")
-            if (validForm("add-form")) {
-                $("#add-form").submit();
+            var $form = $("#add-form--normal");
+            alert("normal user add formula form")
+            if (validForm("add-form--normal")) {
+                $form.append('<input type="hidden" name="completed" />');
+                $form.submit();
             }
         }
     })
@@ -101,8 +109,9 @@ $(document).ready(function () {
         $to_remove.fadeOut(300, function () { $to_remove.remove(); });
     });
 
+    // home buttons
 
-    $(".expand-bar").click(function () { // click on hamburger button
+    $("#ctrl-side-bar").click(function () { // click on hamburger button
         event.preventDefault();
         $home_bar.animate({ width: "toggle" }, 300);
         if (!$home_bar.hasAttr("state") || $home_bar.attr("state") == "hidden") {

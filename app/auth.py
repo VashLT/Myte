@@ -37,6 +37,8 @@ class DateForm(FlaskForm):
         format=TIME_FORMAT,
         validators=(validators.DataRequired(),)
     )
+# pylint: disable=bad-option-value
+# pylint: disable=no-member
 
 
 @auth.route("/login", methods=["POST", "GET"])
@@ -56,7 +58,6 @@ def login():
                 UPDATE MyteVar SET valor = %s WHERE nombre = "current_user"
             """, (meta.usuario.id))
             mysql.get_db().commit()
-            print(meta.usuario.id)
             return redirect(url_for('views.home'))
         else:
             flash("Nombre de usuario o contraseña incorrectos", category="error")
@@ -99,7 +100,14 @@ def register(stage):
                     'auth.register',
                     stage=1
                 ))
-            return render_template('myte/register.html', form=form, stage=2, prefill=False)
+            try:
+                careers = utils.dictionarize(mysql_cursor, 'carrera')
+                levels = utils.dictionarize(mysql_cursor, 'niveleducativo')
+                return render_template('myte/register.html', form=form, stage=2, prefill=False, careers=careers, levels=levels)
+
+            except Exception as ex:
+                return render_template('myte/404.html', title="Internal error", description="failed at loading careers and educational levels", trace=traceback.format_exc())
+
         else:
             # TODO: assign formulas based on given data about academical level and career
             if not "user" in Cache.register:
@@ -133,12 +141,14 @@ def register(stage):
                     db.session.commit()
                     login_user(new_user, remember=True)
                     mysql_cursor.execute("""
-                        UPDATE MyteVar SET valor = %s WHERE nombre = "current_user" """, (meta.usuario.id))
+                        UPDATE MyteVar SET valor= % s WHERE nombre="current_user" """, (meta.usuario.id))
+                    mysql.get_db().commit()
                     flash("Welcome %s" %
                           new_user.nombre_usuario, category='success')
                     return redirect(url_for('views.home'))
                 except Exception as e:
-                    print(f'User registration failed!, printing exception: {e}')
+                    print(
+                        f'User registration failed!, printing exception: {e}')
                     traceback.print_exc()
                     db.session.rollback()
 

@@ -35,7 +35,7 @@ INSERT INTO Carrera (nombre) VALUES
     ("Geología")
 ;
 
--- Default user
+-- test user premium
 INSERT INTO MetaUsuario VALUES (
     "pepe1", 
     "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
@@ -44,6 +44,18 @@ INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro,
 VALUES (
     1, 3, "pepe1", "Pepe Andres Bolivar",
     CURDATE(), "pepe1@gmail.com", STR_TO_DATE("7/5/1995", "%d/%m/%Y")
+);
+
+-- test user normal
+
+INSERT INTO MetaUsuario VALUES (
+    "ana1", 
+    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
+);
+INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
+VALUES (
+    2, 1, "ana1", "Ana de las nieves",
+    CURDATE(), "ana1@gmail.com", STR_TO_DATE("7/5/2002", "%d/%m/%Y")
 );
 
 -- Formula
@@ -72,9 +84,9 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
     1
 );
 
--- Indice
+-- Indice, manual unlike previous insertion
 INSERT INTO Indice (id_usuario, id_formula, numero_usos) VALUES (
-    1, 1, 1
+    2, 3, 1
 );
 
 -- Tag
@@ -84,6 +96,7 @@ INSERT INTO Tag (id_tag, id_usuario, nombre) VALUES (
 
 -- TagFormula
 INSERT INTO TagFormula (id_tag, id_formula) VALUES (1, 3);
+
 
 
 

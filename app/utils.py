@@ -37,3 +37,13 @@ def format_tags(tags):
         block = "-".join(tag.nombre.split(" "))
         fmt.append("".join(["#", block]))
     return fmt
+
+
+def dictionarize(cursor, table_name, id=None, value='nombre'):
+    if not id:
+        id = "".join(["id_", table_name.lower()])
+    cursor.execute(f"""
+        SELECT {id}, {value} FROM {table_name}
+    """)
+    raw_result = cursor.fetchall()
+    return dict(raw_result)

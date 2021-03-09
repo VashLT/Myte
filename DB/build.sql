@@ -106,8 +106,7 @@ CREATE TABLE Recomendacion(
     id_recomendacion INT PRIMARY KEY AUTO_INCREMENT,
     id_categoria INT,
     id_niveleducativo INT,
-    id_carrera INT,
-    nombre VARCHAR(100)
+    id_carrera INT
 );
 
 CREATE TABLE MyteVar(
