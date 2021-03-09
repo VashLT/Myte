@@ -26,7 +26,8 @@
     outline: none;
   }
 }
-input.invalid {
+input.invalid,
+textarea.invalid {
   background-color: #ffdddd;
 }
 
@@ -146,6 +147,15 @@ input.invalid {
   background-color: $myte-orange;
   &:hover {
     background-color: $myte-orange_b;
+    cursor: pointer;
+  }
+}
+
+.btn-submit--green {
+  @extend .btn-submit;
+  background-color: rgb(46, 136, 71);
+  &:hover {
+    background-color: rgb(32, 92, 49);
     cursor: pointer;
   }
 }

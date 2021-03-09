@@ -133,7 +133,7 @@ def register(stage):
                     login_user(new_user, remember=True)
                     mysql_cursor.execute(
                         """SELECT @current_user := id_usuario FROM Usuario WHERE nombre_usuario = %s""", new_user.nombre_usuario)
-                    flash("Welcome %s" % new_user.nombre_usuario)
+                    flash("Welcome %s" % new_user.nombre_usuario, category='success')
                     return redirect(url_for('views.home'))
                 except:
                     db.session.rollback()

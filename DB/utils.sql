@@ -7,6 +7,13 @@ BEGIN
         NEW.id_formula,
         CURDATE()
     );
+    IF NEW.creada == 1 THEN
+        INSERT INTO Indice(id_usuario, id_formula, numero_usos) VALUES (
+            (SELECT valor FROM MyteVar WHERE nombre="current_user"),
+            NEW.id_formula,
+            0
+        );
+    END IF;
 END; 
 $$
 delimiter ;
@@ -21,4 +28,12 @@ $$
 delimiter ;
 
 
+delimiter $$
+CREATE TRIGGER add_index AFTER INSERT ON Usuario
+FOR EACH ROW
+BEGIN
+    DELETE FROM MetaUsuario WHERE nombre_usuario = OLD.nombre_usuario;
+END; 
+$$
+delimiter ;
 

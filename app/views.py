@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash
+from flask import Blueprint, render_template, flash, request, redirect, url_for
 
 from flask_login import login_required, current_user
 
@@ -10,6 +10,11 @@ import random
 
 
 views = Blueprint("views", __name__)
+
+
+class Cache(object):
+    """ store inputted data at add formula """
+    add = {}
 
 
 @views.route('/')
@@ -29,10 +34,67 @@ def home():
     return render_template("myte/home.html", user=current_user, formulas=formulas)
 
 
-@views.route('/home/add')
+@views.route('/home/add', methods=["POST", "GET"], defaults={"stage": "1"})
+@views.route('/home/add/<stage>', methods=["POST", "GET"])
 @login_required
-def add_formula():
-    return render_template("myte/add.html")
+def add_formula(stage):
+    mysql_cursor = mysql.get_db().cursor()
+    if not current_user.is_premium():
+        if stage == "1":
+            post_data = request.form
+            if "formula" in Cache.add:
+                cache_formula = Cache.add["formula"]
+            else:
+                cache_formula = None
+
+            if request.method == "GET":
+                return render_template("myte/add_default.html", stage=1, formula=None)
+
+            data = {}
+            data.setdefault("codigo_latex", post_data["latex"])
+            Cache.add["formula"] = data
+            if "render" in post_data:
+                return render_template("myte/add_default.html", stage=1, formula=Cache.add["formula"])
+            return redirect(url_for("views.add", stage=2))
+        else:
+            post_data = request.form
+            if request.method == "GET":
+                return render_template("myte/add_default.html", stage=2)
+            if "completed" in post_data:
+                Cache.add["formula"].setdefault("nombre", post_data["title"])
+                formula = Formula(
+                    nombre=post_data["title"],
+                    codigo_latex=Cache.add["formula"]["codigo_latex"],
+                    creada=True,
+                    eliminada=False)
+                try:
+                    db.session.add(formula)
+                    db.session.commit()
+                    flash("Formula creada exitosamente!", category='success')
+                    return redirect(url_for('views.home'))
+                except:
+                    db.session.rollback()
+
+
+    else:
+        if stage == "1":
+            post_data = request.form
+            if "formula" in Cache.add:
+                cache_formula = Cache.add["formula"]
+            else:
+                cache_formula = None
+
+            if request.method == "GET":
+                return render_template("myte/add.html", stage=1, formula=None, user=current_user)
+            else:
+                data = {}
+                data.setdefault("codigo_latex", post_data["latex"])
+                Cache.add["formula"] = data
+                if "render" in post_data:
+                    return render_template("myte/add.html", stage=1, formula=Cache.add["formula"], user=current_user)
+
+        elif stage == "2":
+            h = 5
 
 
 @views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})

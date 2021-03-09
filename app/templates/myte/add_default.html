@@ -5,18 +5,6 @@
 {% block background %} id="body-add_formula" {% endblock %}
 
 {% block body %}
-<div class="container-stages center-h" style="margin-top: 60px;">
-    {% if user.is_premium() %}
-    {% else %}
-        {% if stage == 1 %}
-        <span class="step active"></span>
-        <span class="step"></span>
-        {% else %}
-        <span class="step finish"></span>
-        <span class="step active"></span>
-        {% endif %}
-    {% endif %}
-</div>
 <div class="render-box">
     <div class="render-box--header">
         <h3>Formula renderizada</h3>
@@ -31,7 +19,7 @@
 </div>
 
 <div class="container-add_formula">
-    <form method="POST" class="form" id="add-form" action="">
+    <form method="POST" class="form" id="add-form--normal" action="">
     {% if stage == 1 %}
         <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
             <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
@@ -49,31 +37,32 @@
                 style="margin-bottom: 20px;"
             ></textarea>
         </div>
-        <div class="container-input" style="width: 30%;">
-            <button 
-                class="btn-submit--green"
-                id="render-btn"
-                name="render"
-                style="width: 100%; margin-bottom: 20px;">Renderizar</button>
+    {% else %}
+        <div class="container-input" style="flex-direction: column;">
+            <p>Ingresa el nombre de la formula</p>
+            <input 
+                type="text" 
+                id="title-formula" 
+                name="title" 
+                placeholder="Titulo de la formula" 
+                autocomplete="off" 
+                class="input" />
         </div>
-    {% elif stage == 2 %}
+        <script>
+            var $container = $(".container-register");
+            $container.css("height", "300px");
+        </script>
     {% endif %}
     </form>
     <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
-        <div class="container-input" style="width: 30%;margin-left: 60px;">
-            <button class="btn-submit--orange" id="previous-btn" style="width: 100%; background-color: darkgray;" {% if
-                stage==1 %} disabled {% endif %}>Anterior</button>
+        <div class="container-input" style="width: 30%;">
+            <button class="btn-submit--green" id="render-btn" name="render"
+                style="width: 100%; margin-bottom: 20px;">Renderizar</button>
         </div>
         <div class="container-input" style="width: 30%; margin-right: 60px;">
-            {% if stage == 1 %}
-            <button class="btn-submit--orange" id="next-btn" style="width: 100%;">Siguiente</button>
-            {% else %}
-            <button class="btn-submit" id="next-btn" name="completed" style="width: 100%;">Enviar</button>
-            {% endif %}
+            <button class="btn-submit" id="next-btn" name="completed" style="width: 100%;">Continuar</button>
         </div>
     </div>
 </div>
 
 {% endblock %}
-
-<!-- <button class="btn-submit--orange" id="previous-btn" name="back" style="width: 100%;">Anterior</button>-->
