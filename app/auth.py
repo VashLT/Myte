@@ -49,8 +49,6 @@ def login():
         if meta:
             flash("Succesfully logged in", category="success")
             login_user(meta.usuario, remember=True)
-            # mysql_cursor.execute(
-            #     """SELECT @current_user := id_usuario FROM Usuario WHERE nombre_usuario = %s""", meta.nombre_usuario)
             mysql_cursor.execute("""
                 UPDATE MyteVar SET valor = %s WHERE nombre = "current_user"
             """, (meta.usuario.id))
@@ -131,9 +129,10 @@ def register(stage):
                     db.session.add(new_user)
                     db.session.commit()
                     login_user(new_user, remember=True)
-                    mysql_cursor.execute(
-                        """SELECT @current_user := id_usuario FROM Usuario WHERE nombre_usuario = %s""", new_user.nombre_usuario)
-                    flash("Welcome %s" % new_user.nombre_usuario, category='success')
+                    mysql_cursor.execute("""
+                        UPDATE MyteVar SET valor = %s WHERE nombre = "current_user" """, (meta.usuario.id))
+                    flash("Welcome %s" %
+                          new_user.nombre_usuario, category='success')
                     return redirect(url_for('views.home'))
                 except:
                     db.session.rollback()

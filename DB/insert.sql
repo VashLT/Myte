@@ -47,7 +47,6 @@ VALUES (
 );
 
 -- Formula
-SET @current_user = 1; -- assumes pepe1 is current user
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     1, 
     "Valor promedio", 
