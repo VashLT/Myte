@@ -2,7 +2,7 @@
 
 DROP TRIGGER IF EXISTS myte.new_formula;
 delimiter $$
-CREATE TRIGGER new_formula BEFORE INSERT ON Formula
+CREATE TRIGGER new_formula AFTER INSERT ON Formula
 FOR EACH ROW
 BEGIN
     INSERT INTO Historial (id_usuario, id_formula, fecha_registro) VALUES (
