@@ -16,6 +16,9 @@ from . import utils
 
 from sqlalchemy.orm.attributes import flag_modified
 
+# Debugging
+import traceback
+
 
 auth = Blueprint("auth", __name__)
 
@@ -134,7 +137,9 @@ def register(stage):
                     flash("Welcome %s" %
                           new_user.nombre_usuario, category='success')
                     return redirect(url_for('views.home'))
-                except:
+                except Exception as e:
+                    print(f'User registration failed!, printing exception: {e}')
+                    traceback.print_exc()
                     db.session.rollback()
 
             return redirect(url_for(
