@@ -1,8 +1,9 @@
-from app import build_myte
+from app import build_myte, mysql
 
 from config import Config
 
 myte = build_myte()
+
 
 if __name__ == "__main__":
     myte.run(

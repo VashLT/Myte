@@ -21,7 +21,20 @@ $.fn.hasAttr = function (name) {
 $(document).ready(function () {
     var $side_bar = $('.side-bar');
     var $home_bar = $('.side-bar--home');
-    var $messages = $(".container-flash");
+    var $messages = $('.container-flash');
+    var $formulas = $('.container-formula');
+
+    $formulas.click(function () {
+        $(this).addClass("active");
+        $(".overlay").addClass("active")
+    })
+
+    $(".overlay").click(function () {
+        if ($(".overlay").hasClass("activate")) {
+            $(".overlay").removeClass("active");
+            $(".modal.activate").removeClass("active");
+        }
+    })
 
     if ($messages.length) {
         if ($(".nav-bar").length) {

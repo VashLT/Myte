@@ -35,12 +35,15 @@ def build_myte():
     login_manager = LoginManager()
     # default view to redirect when user is not logged in
     login_manager.login_view = 'auth.login'
+    login_manager.login_message = 'You need to be logged in'
+    login_manager.login_message_category = 'warning'
 
     @login_manager.user_loader
     def load_user(id):
-        return Usuario.query.filter_by(id_usuario=int(id)).first()
+        return Usuario.query.get(int(id))
 
     db.init_app(app)
+    db.make_connector(app)
     login_manager.init_app(app)
     mysql.init_app(app)
 
