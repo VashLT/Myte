@@ -28,4 +28,5 @@ class Script:
 
         print(local_dict)
         result = eval(self.code, local_dict)
-        print(result)
+        
+        return result

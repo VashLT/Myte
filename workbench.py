@@ -7,9 +7,10 @@ from scripter import Script
 long_script = 'sum([a**n / math.factorial(n) for n in range(int(b))])'
 
 test = Script(['a', 'b'], long_script)
-test.run_script('2, 10')
+result = test.run_script('2, 10')
+print(result)
 
-import math
+# import math
 # a = 2
 # b = 10
 
