@@ -327,7 +327,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     25,
     "Flujo volumétrico", 
-    "Q_v = A \\cdot v \\\ \text{Donde "A" es el área de la tubería y "v" la velocidad del fluido}",
+    "Q_v = A \\cdot v \\\ \text{Donde 'A' es el área de la tubería y 'v' la velocidad del fluido}",
     CAST(NOW() AS DATE),
     0
 );
