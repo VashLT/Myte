@@ -5,8 +5,6 @@
 {% block background %} id="body-add_formula" {% endblock %}
 
 {% block body %}
-<!-- <div class="overlay"></div> -->
-
 <div class="container-view--images center-h">
     <h1>{{ formula.nombre }}</h1>
     <div class="render-box--small" style="margin:0; margin-bottom: 20px;">
@@ -34,5 +32,5 @@
         <button class="btn-submit--orange" id="return-home" name="return_home" style="width: 100%; height: 100%;">Pagina
             principal</button>
     </div>
-
+<form method="POST" id="redirect-form"></form>
 {% endblock %}

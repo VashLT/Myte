@@ -1,5 +1,9 @@
 @import "./constants";
 
+#redirect-form {
+  display: none;
+}
+
 .app-info {
   display: flex;
   flex-direction: row;

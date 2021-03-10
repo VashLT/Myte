@@ -51,6 +51,7 @@ class Usuario(db.Model, UserMixin):
                     valor = pay_amount
                 )
                 db.session.add(instance)
+                db.session.commit()
             
             else:
                 relation = result.first()
@@ -63,12 +64,13 @@ class Usuario(db.Model, UserMixin):
 
             if result.count == 0:
                 return
-            
+        
+        else:
+            return
+
         self.id_rol = 2
         db.session.commit()
                 
-
-
 
 class MetaUsuario(db.Model):
     __tablename__ = 'metausuario'

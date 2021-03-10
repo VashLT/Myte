@@ -135,6 +135,7 @@ def register(stage):
             ))
 
     elif stage == '3':  # digest level and career to recommend formulas
+        user_data = Cache.register["user"]
         meta = MetaUsuario(
             nombre_usuario=user_data["nombre_usuario"],
             clave_encriptada=utils.encrypt(
