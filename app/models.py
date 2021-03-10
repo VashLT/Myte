@@ -38,6 +38,10 @@ class Usuario(db.Model, UserMixin):
         if self.id_rol == 1:
             return False
         return True
+
+    def buy_premium(self, value, pay_method='card'):
+
+        Usua
       
 
 class MetaUsuario(db.Model):
@@ -163,3 +167,36 @@ class Rol(db.Model):
         lazy=True, 
         uselist=False
     )
+
+class UsuarioTarjeta(db.Model):
+    __tablename__ = 'usuariotarjeta'
+    id_tarjetacredito = db.Column(
+        db.Integer,
+        db.ForeignKey('tarjetacredito.id_tarjetacredito'),
+        primary_key=True
+    )
+    id_usuario = db.Column(
+        db.Integer,
+        db.ForeignKey('usuario.id_usuario'),
+        primary_key=True
+    )
+    valor = db.Column(
+        db.Float
+    )
+class TarjetaCredito(db.Model):
+    __tablename__ = 'tarjetacredito'
+    id = db.Column(
+        'id_tarjetacredito',
+        db.Integer,
+        primary_key=True
+    )
+    numero = db.Column(
+        db.String(20)
+    )
+    fecha_caducidad = db.Column(
+        db.DateTime(timezone=True), default=func.now(),
+    )
+    cvv = db.Column(
+        db.Integer
+    )
+

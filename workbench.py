@@ -6,6 +6,8 @@ from scripter import Script
 
 long_script = 'sum([a**n / math.factorial(n) for n in range(int(b))])'
 
+'math.sqrt(a^2 + b^2)'
+
 test = Script(['a', 'b'], long_script)
 result = test.run_script('2, 10')
 print(result)

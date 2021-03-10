@@ -48,7 +48,7 @@ CREATE TABLE Rol(
 );
 CREATE TABLE TarjetaCredito(
     id_tarjetacredito INT PRIMARY KEY AUTO_INCREMENT,
-    numero INT NOT NULL,
+    numero VARCHAR(20) NOT NULL,
     fecha_caducidad DATE,
     CVV INT
 );
