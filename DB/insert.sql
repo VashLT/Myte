@@ -155,6 +155,38 @@ VALUES (
     CURDATE(), "ana1@gmail.com", STR_TO_DATE("7/5/2002", "%d/%m/%Y")
 );
 
+-- more users added
+
+INSERT INTO MetaUsuario VALUES (
+    "carla1", 
+    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
+);
+INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
+VALUES (
+    3, 1, "carla1", "Carla Mendes",
+    CURDATE(), "carla1@gmail.com", STR_TO_DATE("17/11/2000", "%d/%m/%Y")
+);
+
+INSERT INTO MetaUsuario VALUES (
+    "mario1", 
+    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
+);
+INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
+VALUES (
+    4, 2, "mario1", "Mario de las montañas",
+    CURDATE(), "mario1@gmail.com", STR_TO_DATE("14/9/1998", "%d/%m/%Y")
+);
+
+INSERT INTO MetaUsuario VALUES (
+    "carmen", 
+    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
+);
+INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
+VALUES (
+    5, 2, "carmen", "Carmen Leticia",
+    CURDATE(), "carmen@gmail.com", STR_TO_DATE("8/5/1995", "%d/%m/%Y")
+);
+
 -- Formula
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     1, 
@@ -463,12 +495,48 @@ INSERT INTO Indice (id_usuario, id_formula, numero_usos) VALUES (
 );
 
 -- Tag
-INSERT INTO Tag (id_tag, id_usuario, nombre) VALUES (
-    1, 1, "parcial final"
-);
+INSERT INTO Tag (id_tag, id_usuario, nombre) VALUES 
+    (1, 1, "parcial final"),
+    (2, 1, "análisis 2 corte"),
+    (3, 1, "física I"),
+    (4, 1, "cálculo I"),
+    (5, 1, "lab análisis"),
+    (6, 2, "cuadratica general"),
+    (7, 2, "taller 1"),
+    (8, 2, "regla para despejar"),
+    (9, 2, "multiplicación cruzada"),
+    (10, 2, "parcial estadística"),
+    (11, 3, "formula del estudiante"),
+    (12, 3, "primer tema"),
+    (13, 3, "area circulo"),
+    (14, 4, "cálculo II"),
+    (15, 4, "flujo álgebra"),
+    (16, 4, "permutaciones"),
+    (17, 5, "propiedad trigonométricas"),
+    (18, 5, "física II corte 1")
+;
 
 -- TagFormula
-INSERT INTO TagFormula (id_tag, id_formula) VALUES (1, 3);
+INSERT INTO TagFormula (id_tag, id_formula) VALUES 
+    (1, 3),
+    (2, 30),
+    (3, 33),
+    (4, 26),
+    (5, 28),
+    (6, 8),
+    (7, 10),
+    (8, 14),
+    (9, 15),
+    (10, 16),
+    (11, 8),
+    (12, 17),
+    (13, 18),
+    (14, 27),
+    (15, 25),
+    (16, 19),
+    (17, 22),
+    (18, 23)
+;
 
 -- Scripts
 INSERT INTO Script VALUES
