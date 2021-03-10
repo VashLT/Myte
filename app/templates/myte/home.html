@@ -44,7 +44,7 @@
     </div>
     <div class="item-home">
         <img src="{{ url_for('static', filename='images/delete_gray.png') }}">
-        <a href="{{ url_for('views.delete_formula') }}" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
+        <a href="#" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
     </div>
     <div class="item-home">
         <img src="{{ url_for('static', filename='images/list_formulas.png') }}">
@@ -110,6 +110,7 @@
                     class = "option--green" 
                     target="_blank">Editar</a>
                 <a  href="{{ url_for('views.delete_formula', id_formula=formula['id']) }}" 
+                    id="delete"
                     class = "option--blue"
                     target="_blank">Eliminar</a>
         </div>  

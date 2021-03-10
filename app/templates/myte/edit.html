@@ -37,12 +37,12 @@
             <form method="POST" class="form" id="add-form" action="" style="width: 80%; margin-bottom: 30px;">
                 <div class="container-input" style="flex-direction: column; margin-top: 30px;">
                     <h2>Editar script<h2/>
-                    <textarea class="edit-script" id="ilatex" name="script" cols="50" rows="10"
+                    <textarea class="edit-script" id="iscript" name="script" cols="50" rows="10"
                         style="margin-bottom: 30px;">{{ formula.script.contenido }}</textarea>
                 </div>
                 <div class="container-input" style="flex-direction: column;">
                     <p style="font-size: 20px;">Ingresa las variables (deben estár separadas por ,)</p>
-                    <input type="text" id="title-formula" name="variables" value="{{ formula.script.variables_script }}" autocomplete="off"
+                    <input type="text" id="ivars" name="variables" value="{{ formula.script.variables_script }}" autocomplete="off"
                         class="input" />
                 </div>
             </form>
@@ -58,7 +58,7 @@
             </div>
         </div>
         {% else %}
-        <div class="container-images" style="height: 50%; background-color: rgb(59, 115, 189);">
+        <div class="container-images" style="height: 30%;">
             {% for image in images %}
             <div class="image-item" id="{{ loop.index }}">
                 <div class="image-header">
@@ -100,6 +100,14 @@
         $form.append('<input type="hidden" name="add_image" />');
         $form.submit();
     });
+    $("#save-script").click(function(){
+        var $script_content = $("#iscript");
+        var $script_vars = $("#ivars");
+        $form.append('<input type="hidden" name="save_script" />');
+        $form.append('<input type="hidden" name="script_contenido" value="' + $script_content + '"/>');
+        $form.append('<input type="hidden" name="script_variables" value="' + $script_vars + '"/>');
+        $form.submit();
+    })
 </script>
 
 {% endblock %}

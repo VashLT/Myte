@@ -56,7 +56,7 @@ def liveupdate():
     try:
         cur.execute("""
             SELECT * FROM Indice
-            WHERE id_usuario = %s AND id_formula = %s 
+            WHERE id_usuario = %s AND id_formula = %s
         """, (current_user.id, int(id)))
         if not cur.fetchall():
             cur.execute("""
@@ -66,7 +66,7 @@ def liveupdate():
             """, (current_user.id, int(id)))
         else:
             cur.execute("""
-                UPDATE Indice SET numero_usos = numero_usos + 1 
+                UPDATE Indice SET numero_usos = numero_usos + 1
                 WHERE id_usuario = %s AND id_formula = %s
             """, (current_user.id, int(id)))
         mysql.get_db().commit()
@@ -298,8 +298,7 @@ def add_script(id_formula):
     return redirect(url_for("views.home"))
 
 
-@views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
-@views.route('/home/delete/<id_formula>', methods=["POST", "GET"])
+@views.route('/home/script/<id_formula>', methods=["POST", "GET"])
 @login_required
 def formula_script(id_formula):
     formula = Formula.query.get(int(id_formula))
@@ -314,11 +313,22 @@ def formula_script(id_formula):
     return render_template("myte/run_script.html", formula=formula, variables=variables, result=result)
 
 
-@views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
-@views.route('/home/delete/<id_formula>', methods=["POST", "GET"])
+@views.route('/home/delete/formula/<id_formula>', methods=["POST", "GET"])
+@views.route('/home/delete/formula', methods=["POST", "GET"], defaults={"id_formula": 1})
 @login_required
 def delete_formula(id_formula):
-    return render_template("myte/delete.html")
+    try:
+        formula = Formula.query.get(int(id_formula))
+        db.session.delete(formula)
+        db.session.commit()
+        return redirect(url_for("views.home"))
+    except Exception as ex:
+        return render_template(
+            'myte/404.html',
+            title="Internal error",
+            description="failed at deleting formula",
+            trace=traceback.format_exc()
+        )
 
 
 @views.route('/home/edit/<id_formula>', methods=["POST", "GET"])
@@ -343,7 +353,17 @@ def edit_formula(id_formula):
     post_data = request.form
     Cache.edit["active"] = True
     print(post_data)
-    if "save_latex" in request.form:
+    if "save_script" in request.form:
+        try:
+            cont = post_data["script_contenido"]
+            var = post_data["script_variables"]
+            if not check_script(formula.script, cont, var):
+                flash("El script ingresado no es correcto", category="error")
+            flash("Script actualizado exitosamente!", category="success")
+        except:
+            flash("El script no es valido", category="error")
+
+    elif "save_latex" in request.form:
         formula.codigo_latex = request.form["save_latex"]
         db.session.add(formula)
         db.session.commit()
@@ -357,15 +377,15 @@ def edit_formula(id_formula):
     return render_template("myte/edit.html", formula=formula, images=images)
 
 
-@views.route('/home/formulas')
-@login_required
+@ views.route('/home/formulas')
+@ login_required
 def formulas():
     data = get_formulas_by_user(current_user.id)
     return render_template("myte/formulas.html", data=data)
 
 
-@views.route('/home/images/<id_formula>', methods=["POST", "GET"])
-@login_required
+@ views.route('/home/images/<id_formula>', methods=["POST", "GET"])
+@ login_required
 def formula_images(id_formula):
     if "return_home" in request.form:
         return redirect(url_for("views.home"))
@@ -428,6 +448,16 @@ def load_formulas(cant_max=20):
 def premium_account():
 
     return render_template("myte/premium.html")
+
+
+def check_script(script, target_content, target_vars):
+    sanitized_script = sanitize_script(target_content, target_vars)
+    if not sanitize_script:
+        return False
+    script.contenido, script.variables_script = sanitized_script
+    db.session.add(script)
+    db.session.commit()
+    return True
 
 
 def lookup_tags(id_formula):
@@ -558,22 +588,6 @@ def get_formulas_by_user(user_id):
             }
     print(cat_dict)
     return cat_dict
-
-# IDS = [4, 11, 17]
-#     formulas = []
-#     for id in IDS:
-#         cur.execute("""
-#             SELECT id_formula FROM CategoriaFormula
-#             WHERE id_categoria = %s
-#         """, id)
-#         raw_result = cur.fetchall()
-#         if not raw_result:
-#             continue
-#         for record in raw_result:
-#             id = int(record[0])
-#             formulas.append(
-#                 Formula.query.get(id)
-#             )
 
 
 def get_default_formulas():
