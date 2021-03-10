@@ -226,7 +226,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     9,
     "Binomio de Newton", 
-    "(a+b)^n = \\sum_{i=0}^{n} \\left( \\begin{matrix} n \\n i \\end{matrix} \\right) a^{n-i} \\cdot b^n",
+    "(a+b)^n = \\sum_{i=0}^{n} \\left( \\begin{matrix} n \\ i \\end{matrix} \\right) a^{n-i} \\cdot b^n",
     CAST(NOW() AS DATE),
     0
 );
@@ -234,7 +234,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     10,
     "Cálculo de un determinante de orden 2", 
-    "|A| = \\left| \\begin{matrix} a_{11} & a_{12} \\n a_{21} & a_{22} \\end{matrix} \\right| = a_{11} \\cdot a_{22} - a_{12} \\cdot a_{21}",
+    "|A| = a_{11} \\cdot a_{22} - a_{12} \\cdot a_{21}",
     CAST(NOW() AS DATE),
     0
 );
@@ -477,15 +477,15 @@ INSERT INTO Script VALUES
     (3, 8, "(-b + math.sqrt(b**2 - 4*a*c))/(2*a)", "a,b,c"),
     (4, 8, "(-b - math.sqrt(b**2 - 4*a*c))/(2*a)", "a,b,c"),
     (5, 10, "a11 * a22 - a21 * a12", "a11,a12,a21,a22"),
-    (6, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (7, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (8, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (9, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (10, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (11, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (12, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (13, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (14, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (15, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
-    (16, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n")
+    (6, 12, "ab * h", "ab,h"),
+    (7, 14, "c * b / a", "a,b,c"),
+    (8, 18, "math.pi * r**2", "r"),
+    (9, 19, "math.factorial(n) / math.factorial(n-r)", "n,r"),
+    (10, 23, "(q1 * q2)/(r**2 * math.pi * 8.854187817 * 10**(-12))", "q1,q2,r"),
+    (11, 24, "l / T", "l,T"),
+    (12, 25, "a * v", "a,v"),
+    (13, 28, "abs(p - pp)", "p,pp"),
+    (14, 29, "abs(p - pp) / abs(p)", "p,pp"),
+    (15, 31, "1/2 * m * v**2 + m * g * h", "m,g,h,v"),
+    (16, 33, "xi + vx * (tf-ti)", "xi,vx,tf,ti")
 ;
