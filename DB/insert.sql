@@ -557,3 +557,23 @@ INSERT INTO Script VALUES
     (15, 31, "1/2 * m * v**2 + m * g * h", "m,g,h,v"),
     (16, 33, "xi + vx * (tf-ti)", "xi,vx,tf,ti")
 ;
+
+-- Añadiendo tarjetas de crédito
+INSERT INTO TarjetaCredito VALUES
+    (1, "5360197024854264", STR_TO_DATE("07/2027", "%m/%Y"), 675),
+    (2, "5218957329108300", STR_TO_DATE("01/2025", "%m/%Y"), 353),
+    (3, "4451606084585520", STR_TO_DATE("01/2027", "%m/%Y"), 434)
+;
+
+-- UsuarioTarjeta relaciones manuales
+INSERT INTO UsuarioTarjeta VALUES
+    (1, 1, 0),
+    (2, 3, 1200)
+;
+
+-- Pinpago manual
+INSERT INTO PinPago VALUES
+    (1, 2, 1000, STR_TO_DATE("12/3/2021", "%d/%m/%Y"), 1440, "086727485698"),
+    (2, 5, 900, STR_TO_DATE("15/3/2021", "%d/%m/%Y"), 2842, "097524574855")
+;
+
