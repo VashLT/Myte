@@ -1,4 +1,4 @@
-from . import db
+from . import db, utils
 
 from flask_login import UserMixin
 from sqlalchemy.sql import func
@@ -42,35 +42,36 @@ class Usuario(db.Model, UserMixin):
     def buy_premium(self, card_id, pay_amount, pay_method='card'):
 
         if pay_method == 'card':
-            result = UsuarioTarjeta.query.filter_by(id_usuario=self.id).filter_by(id_tarjetacredito=card_id)
+            result = UsuarioTarjeta.query.filter_by(
+                id_usuario=self.id).filter_by(id_tarjetacredito=card_id)
 
             if result.count == 0:
                 instance = UsuarioTarjeta(
-                    id_tarjetacredito = card_id,
-                    id_usuario = self.id,
-                    valor = pay_amount
+                    id_tarjetacredito=card_id,
+                    id_usuario=self.id,
+                    valor=pay_amount
                 )
                 db.session.add(instance)
                 db.session.commit()
-            
+
             else:
                 relation = result.first()
                 relation.value += pay_amount
                 db.session.commit()
-            
-        
+
         elif pay_method == 'pin':
-            result = PinPago.query.filter(PinPago.ref_pago.isnot(None)).filter_by(id_usuario=self.id).filter_by(valor=pay_amount)
+            result = PinPago.query.filter(PinPago.ref_pago.isnot(None)).filter_by(
+                id_usuario=self.id).filter_by(valor=pay_amount)
 
             if result.count == 0:
                 return
-        
+
         else:
             return
 
         self.id_rol = 2
         db.session.commit()
-                
+
 
 class MetaUsuario(db.Model):
     __tablename__ = 'metausuario'
@@ -115,6 +116,11 @@ class Formula(db.Model):
 
     def is_created(self):
         return self.creada
+
+    def get_latex(self):
+        if r"\n" in self.codigo_latex:
+            return utils.format_newline(self.codigo_latex)
+        return self.codigo_latex
 
 
 class Tag(db.Model):
@@ -165,7 +171,7 @@ class Script(db.Model):
 
         try:
             value_list = [float(value) for value in processed_values]
-        
+
         except:
             print('Invalid value!, returning nothing . . .')
             return None
@@ -178,7 +184,7 @@ class Script(db.Model):
         for i, name in enumerate(vars):
             var_dict[name] = value_list[i]
 
-        var_dict.update({'math' : math})
+        var_dict.update({'math': math})
 
         try:
             result = eval(self.contenido, var_dict)
@@ -202,11 +208,12 @@ class Rol(db.Model):
     id = db.Column("id_rol", db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
     usuario = db.relationship(
-        'Usuario', 
+        'Usuario',
         backref='rol',
-        lazy=True, 
+        lazy=True,
         uselist=False
     )
+
 
 class UsuarioTarjeta(db.Model):
     __tablename__ = 'usuariotarjeta'
@@ -224,6 +231,7 @@ class UsuarioTarjeta(db.Model):
         db.Float
     )
 
+
 class TarjetaCredito(db.Model):
     __tablename__ = 'tarjetacredito'
     id = db.Column(
@@ -240,6 +248,7 @@ class TarjetaCredito(db.Model):
     cvv = db.Column(
         db.Integer
     )
+
 
 class PinPago(db.Model):
     __tablename__ = 'pinpago'

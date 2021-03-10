@@ -106,9 +106,11 @@ $(document).ready(function () {
 
     $("#render-btn").click(function () {
         var $form = $("#add-form--normal");
-        $form.append('<input type="hidden" name="render" />');
-        $("#add-form--normal").submit();
-    })
+        if ($form.length) {
+            $form.append('<input type="hidden" name="render" />');
+            $("#add-form--normal").submit();
+        }
+    });
 
     $("#next-btn").click(function () {
         if ($("#register-form").length) {

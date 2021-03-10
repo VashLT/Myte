@@ -63,6 +63,13 @@ $login-form-width: 700px;
   flex-direction: row;
   width: 100%;
   padding: 0;
+  & h2 {
+    text-align: center;
+    font-size: 25px;
+    margin: 0;
+    margin-bottom: 20px;
+    color: $myte-blue;
+  }
   & p {
     justify-self: flex-start;
     font-size: 20px;
@@ -140,12 +147,38 @@ $login-form-width: 700px;
 }
 .container-editar {
   &--left {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
     width: 50%;
     height: auto;
   }
   &--right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     width: 50%;
     height: auto;
+  }
+}
+
+.container-edit-formula {
+  background-color: $blue-dark_b;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: $btn-radius;
+  height: 700px;
+  width: 600px;
+  &:hover {
+    box-shadow: 0 4px 8px 0 #c2c1c1, 0 6px 20px 0 #c2c1c1;
   }
 }
 
@@ -159,6 +192,19 @@ $login-form-width: 700px;
   justify-content: space-evenly;
 }
 
+.container-edit-images {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+
+  align-items: center;
+  justify-content: space-evenly;
+  & h3 {
+    font-size: 40px;
+    color: rgb(96, 98, 102);
+  }
+}
 .container-add-view {
   display: flex;
   flex-direction: row-reverse;
@@ -291,7 +337,7 @@ $login-form-width: 700px;
 
   width: 600px;
   height: auto;
-  background-color: whitesmoke;
+  background-color: #fff;
 
   & h3 {
     font-size: 20px;

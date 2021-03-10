@@ -317,11 +317,22 @@ def delete_formula(id_formula):
     return render_template("myte/delete.html")
 
 
-@views.route('/home/edit', methods=["POST", "GET"], defaults={"id_formula": None})
 @views.route('/home/edit/<id_formula>', methods=["POST", "GET"])
 @login_required
 def edit_formula(id_formula):
-    return render_template("myte/edit.html")
+    if "return_home" in request.form:
+        return redirect(url_for("views.home"))
+    
+    formula = Formula.query.get(int(id_formula))
+    images = []
+    for image in formula.imagen:
+        name = os.path.basename(image.path)
+        images.append({
+            "nombre": name,
+            "path": utils.format_path(image.path)
+        })
+
+    return render_template("myte/edit.html", formula=formula, images=images)
 
 
 @views.route('/home/formulas')
@@ -535,6 +546,7 @@ def get_formulas_by_user(user_id):
 #             formulas.append(
 #                 Formula.query.get(id)
 #             )
+
 
 def get_default_formulas():
     cur = mysql.get_db().cursor()
