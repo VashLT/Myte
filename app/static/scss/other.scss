@@ -134,6 +134,27 @@
   max-width: 400px;
 }
 
+.float-return {
+  width: 200px;
+  height: 40px;
+  bottom: 60px;
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, 0);
+}
+
+.input-script {
+  width: 400px;
+  max-width: 420px;
+  min-width: 350px;
+
+  height: 100px;
+  max-height: 150px;
+  min-height: 50px;
+}
+
 .option {
   text-align: center;
   vertical-align: middle;

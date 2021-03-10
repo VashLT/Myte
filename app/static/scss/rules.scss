@@ -37,6 +37,31 @@ textarea.invalid {
   margin: 0;
 }
 
+.input-image {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+
+  & input[type="file"] {
+    border-radius: $btn-radius;
+    background-color: rgb(208, 208, 208);
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    width: 60%;
+  }
+  & label {
+    justify-content: flex-start;
+    margin-right: auto;
+    font-size: 20px;
+    color: rgb(29, 29, 29);
+    font-weight: 500;
+  }
+}
+
 .redirect {
   color: $blue-link;
   font-size: 15px;
@@ -503,6 +528,9 @@ textarea.invalid {
   display: none;
   width: 800px;
   height: 700px;
+
+  margin: 0px;
+  padding: 0;
 
   top: 50%;
   left: 50%;

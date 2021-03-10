@@ -1,18 +1,10 @@
 function validForm(id_form) {
     // This function deals with validation of the form fields
-    var tab, inputs, i, valid = true;
+    var tab, inputs, area_inputs,  i, valid = true;
     tab = document.getElementById(id_form);
     inputs = tab.querySelectorAll("div>input");
-    if (!inputs.length) {
-        inputs = tab.querySelectorAll("div>textarea");
-        for (i = 0; i < inputs.length; i++) {
-            console.log(inputs[i].value)
-            if (inputs[i].value.trim() == "") {
-                inputs[i].className += " invalid";
-                valid = false;
-            }
-        }
-    } else {
+    area_inputs = tab.querySelectorAll("div>textarea");
+    if (inputs.length) {
         for (i = 0; i < inputs.length; i++) {
             if (inputs[i].value == "") {
                 inputs[i].className += " invalid";
@@ -20,6 +12,15 @@ function validForm(id_form) {
             }
         }
     }
+    if (area_inputs.length) {
+        for (i = 0; i < area_inputs.length; i++) {
+            console.log(area_inputs[i].value)
+            if (area_inputs[i].value.trim() == "") {
+                area_inputs[i].className += " invalid";
+                valid = false;
+            }
+        }
+    } 
     return valid; // return the valid status
 }
 
@@ -43,6 +44,13 @@ $(document).ready(function () {
     var $messages = $('.container-flash');
     var $formulas = $('.container-formula');
     var $overlay = $(".overlay");
+
+    $("#return-home").click(function () {
+        var $form = $("#add-form");
+        $form.append('<input type="hidden" name="return_home" />');
+        $form.submit();
+    });
+
 
     $("#ilatex").on('input', function () {
         var input_latex = $(this).val();
@@ -89,12 +97,13 @@ $(document).ready(function () {
                 $("#register-form").submit();
             }
         } else if ($("#add-form").length) {
+            var $form = $("#add-form");
             if (validForm("add-form")) {
-                $("#add-form").submit();
+                $form.append('<input type="hidden" name="completed" />');
+                $form.submit();
             }
         } else if ($("#add-form--normal").length) {
             var $form = $("#add-form--normal");
-            alert("normal user add formula form")
             if (validForm("add-form--normal")) {
                 $form.append('<input type="hidden" name="completed" />');
                 $form.submit();

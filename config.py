@@ -5,6 +5,8 @@ import os
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
+MAX_FILES = 3
+
 # database use
 ADAPTER = "mysql"
 
@@ -19,6 +21,10 @@ class Config:
 
     FLASK_DEBUG = bool(os.getenv('FLASK_DEBUG'))
     SECRET_KEY = os.getenv('SECRET_KEY')
+
+    # files upload
+    UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
+    ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
     SQLALCHEMY_DATABASE_URI = f'{ADAPTER}://{DB_USER}:{DB_PASSWORD}@{SERVER}/{DB_NAME}'
 
