@@ -188,6 +188,15 @@ textarea.invalid {
   }
 }
 
+.btn-submit--blue {
+  @extend .btn-submit;
+  background-color: rgb(65, 120, 179);
+  &:hover {
+    background-color: rgb(52, 96, 143);
+    cursor: pointer;
+  }
+}
+
 // bars
 .side-bar {
   top: 0;

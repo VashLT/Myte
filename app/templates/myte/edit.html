@@ -27,7 +27,7 @@
                     <button class="btn-submit--green" id="edit-render" name="render" style="width: 100%;">Renderizar</button>
                 </div>
                 <div class="container-input" id="latex-parent" style="width: 30%; margin-right: 15%;">
-                    <button class="btn-submit" id="save-btn" name="save_latex" style="width: 100%;">Guardar</button>
+                    <button class="btn-submit" id="save-latex" name="save_latex" style="width: 100%;">Guardar</button>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
         <div class="container-edit-images">
             <h3>No hay imagenes</h3>
             <div class="container-input" id="submit-parent" style="width: 30%; margin-bottom: 30px;">
-                <button class="btn-submit--green" id="add-image" name="add-image" style="width: 100%;">Agregar</button>
+                <button class="btn-submit--green" id="add-image" name="add_image" style="width: 100%;">Agregar</button>
             </div>
         </div>
         {% else %}
@@ -82,10 +82,22 @@
     </div>
 </div>
 <script>
-    var $render = $("#edit-renger");
+    var $render = $("#edit-render");
+    var $saveLatex = $("#save-latex");
     var $form = $("#hidden-form");
     $render.click(function(){
+        var $latex = $("#ilatex").val();
         $form.append('<input type="hidden" name="render" />');
+        $form.append('<input type="hidden" name="latex" value="'+ $latex + '"/>');
+        $form.submit();
+    });
+    $saveLatex.click(function(){
+        var $latex = $("#ilatex").val();
+        $form.append('<input type="hidden" name="save_latex" value="' + $latex + '"/>');
+        $form.submit();
+    });
+    $("#add-image").click(function(){
+        $form.append('<input type="hidden" name="add_image" />');
         $form.submit();
     });
 </script>

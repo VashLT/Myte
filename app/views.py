@@ -25,6 +25,7 @@ views = Blueprint("views", __name__)
 class Cache(object):
     """ store inputted data at add formula """
     add = {}
+    edit = {}
     active = False
 
 # pylint: disable=bad-option-value
@@ -231,8 +232,9 @@ def add_image(id_formula):
 
             flash(f"Se agregaron {len(uploaded_files)} imagen(es) exitosamente!",
                   category="success")
-
-            if Cache.active:
+            if "active" in Cache.edit:
+                return redirect(url_for("views.edit_formula", id_formula=id_formula))
+            elif Cache.active:
                 return redirect(url_for("views.add_script", id_formula=id_formula))
 
         Cache.active = False
@@ -291,6 +293,8 @@ def add_script(id_formula):
     if Cache.active:  # is creating a formula from scratch
         flash("Formulada creada exitosamente!", category="success")
 
+    Cache.active = False
+
     return redirect(url_for("views.home"))
 
 
@@ -322,15 +326,33 @@ def delete_formula(id_formula):
 def edit_formula(id_formula):
     if "return_home" in request.form:
         return redirect(url_for("views.home"))
-    
+
     formula = Formula.query.get(int(id_formula))
     images = []
+
     for image in formula.imagen:
         name = os.path.basename(image.path)
         images.append({
             "nombre": name,
             "path": utils.format_path(image.path)
         })
+
+    if request.method == "GET":
+        return render_template("myte/edit.html", formula=formula, images=images)
+
+    post_data = request.form
+    Cache.edit["active"] = True
+    print(post_data)
+    if "save_latex" in request.form:
+        formula.codigo_latex = request.form["save_latex"]
+        db.session.add(formula)
+        db.session.commit()
+        flash("Codigo latex actualizado exitosamente!", category="success")
+    elif "add_image" in request.form:
+        return redirect(url_for("views.add_image", id_formula=formula.id))
+    elif "render" in request.form:
+        formula.codigo_latex = post_data["latex"]
+        Cache.edit["codigo_latex"] = post_data["latex"]
 
     return render_template("myte/edit.html", formula=formula, images=images)
 

@@ -323,6 +323,9 @@ $login-form-width: 700px;
   @extend .container-register;
   transition: 300ms ease-in-out;
   height: 700px;
+  &:hover {
+    box-shadow: 0 3px 3px 0 #6b6a74, 0 2px 2px 0 #6b6a74;
+  }
 }
 
 .container-script {
