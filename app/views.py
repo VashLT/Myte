@@ -197,6 +197,7 @@ def add_image(id_formula):
             if Cache.active:
                 return redirect(url_for("views.add_script", id_formula=id_formula))
 
+        Cache.active = False
         return redirect(url_for("views.home"))
 
     return render_template("myte/add_images.html", formula=formula)
@@ -217,9 +218,8 @@ def add_script(id_formula):
     post_data = request.form
 
     if "return_home" in post_data:
+        Cache.active = False
         return redirect(url_for("views.home"))
-    print(post_data)
-    print(request.files)
 
 
 @views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
@@ -263,6 +263,7 @@ def load_formulas(cant_max=20):
     """, (current_user.id, cant_max))
     formulas = []
     raw_result = mysql_cursor.fetchall()
+    print(raw_result)
     if raw_result:
         for record in raw_result:
             id = int(record[0])
@@ -322,22 +323,22 @@ def more_formulas(freq_formulas, ids, cant_max):
     mysql_cursor = mysql.get_db().cursor()
 
     remaining = cant_max - len(formulas)
-    # mysql_cursor.execute(""" 
-    #     SELECT id_formula FROM Historial WHERE id_usuario = %s 
-    #     ORDER BY RAND()
-    #     LIMIT %s
-    # """, (current_user.id, remaining))
+    mysql_cursor.execute("""
+        SELECT id_formula FROM Historial WHERE id_usuario = %s
+        ORDER BY RAND()
+        LIMIT %s
+    """, (current_user.id, remaining))
 
-    mysql_cursor.execute(""" 
-    SELECT id_formula FROM Formula WHERE eliminada = 0
-    ORDER BY RAND()
-    LIMIT %s
-    """, (remaining))
+    # mysql_cursor.execute(""" 
+    # SELECT id_formula FROM Formula WHERE eliminada = 0
+    # ORDER BY RAND()
+    # LIMIT %s
+    # """, (remaining))
 
     raw_result = mysql_cursor.fetchall()
 
-    print(f'Resultado obtenido [{remaining} formulas extra]:')
-    print(raw_result)
+    # print(f'Resultado obtenido [{remaining} formulas extra]:')
+    # print(raw_result)
 
     if not raw_result:
         return
