@@ -132,6 +132,29 @@ INSERT INTO Recomendacion (id_categoria, id_niveleducativo, id_carrera) VALUES
     (6, 2, 16)
 ;
 
+-- test user premium
+INSERT INTO MetaUsuario VALUES (
+    "pepe1", 
+    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
+);
+INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
+VALUES (
+    1, 3, "pepe1", "Pepe Andres Bolivar",
+    CURDATE(), "pepe1@gmail.com", STR_TO_DATE("7/5/1995", "%d/%m/%Y")
+);
+
+-- test user normal
+
+INSERT INTO MetaUsuario VALUES (
+    "ana1", 
+    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
+);
+INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
+VALUES (
+    2, 1, "ana1", "Ana de las nieves",
+    CURDATE(), "ana1@gmail.com", STR_TO_DATE("7/5/2002", "%d/%m/%Y")
+);
+
 -- Formulas por categoria
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     4,
@@ -163,29 +186,6 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
     "m = \\frac{moles_{soluto} (n)}{Kg_{disolvente}}",
     CAST(NOW() AS DATE),
     0
-);
-
--- test user premium
-INSERT INTO MetaUsuario VALUES (
-    "pepe1", 
-    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
-);
-INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
-VALUES (
-    1, 3, "pepe1", "Pepe Andres Bolivar",
-    CURDATE(), "pepe1@gmail.com", STR_TO_DATE("7/5/1995", "%d/%m/%Y")
-);
-
--- test user normal
-
-INSERT INTO MetaUsuario VALUES (
-    "ana1", 
-    "b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79"   -- pw: hola
-);
-INSERT INTO Usuario (id_usuario, id_rol, nombre_usuario, nombre, fecha_registro, email, fecha_nacimiento)
-VALUES (
-    2, 1, "ana1", "Ana de las nieves",
-    CURDATE(), "ana1@gmail.com", STR_TO_DATE("7/5/2002", "%d/%m/%Y")
 );
 
 -- Formula
