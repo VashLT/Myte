@@ -356,7 +356,6 @@ def load_formulas(cant_max=20):
     """, (current_user.id, cant_max))
     formulas = []
     raw_result = mysql_cursor.fetchall()
-    print(raw_result)
     if raw_result:
         for record in raw_result:
             id = int(record[0])
@@ -380,11 +379,16 @@ def load_formulas(cant_max=20):
                     "script": formula.script
                 }
             )
+
+    print(f"Se cargaron las sig. formulas de INDICE:")
+    if formulas:
+        [print(formula) for formula in formulas]
+
     if len(formulas) < cant_max:  # fill rest
         print('Agregando formulas . . .')
         formulas = more_formulas(formulas, memo_id, cant_max)
-    print(f"Se encontraron las sig. formulas:")
 
+    print(f"Se encontraron las sig. formulas:")
     if formulas:
         [print(formula) for formula in formulas]
     return formulas
@@ -420,12 +424,14 @@ def more_formulas(freq_formulas, ids, cant_max):
     remaining = cant_max - len(formulas)
     mysql_cursor.execute("""
         SELECT f.id_formula FROM Historial as h, Formula as f
-        WHERE h.id_usuario = %s AND f.eliminada = 0
+        WHERE h.id_usuario = %s AND f.eliminada = 0 AND f.id_formula = h.id_formula
         ORDER BY RAND()
         LIMIT %s
     """, (current_user.id, remaining))
+    print(current_user.id)
 
     raw_result = mysql_cursor.fetchall()
+    print(f"more_formulas:\n{raw_result}")
 
     if not raw_result:
         return
