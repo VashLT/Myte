@@ -8,29 +8,29 @@
 <div class="overlay"></div>
 
 <div class="container-view--formulas">
-{% for category, formulas in data.items() %}
-<div class="container-category">
-    <div class="container-category--header">
-        <h1>{{ category }}</h1>
-        <div></div>
-    </div>
-    <div class="container-category--formulas">
-        {% for formula in formulas %}
-        <div data-modal-target="#modal{{ loop.index }}" class="container-formula" id="f{{ loop.index }}">
-            <div class="formula-header">
-                <h2>{{ formula["nombre"] }}</h2>
-            </div>
-            <div class="formula-content">
-                <p>$$ {{ formula["codigo_latex"] }} $$</p>
-                {% if formula["tags"] %}
-                <div class="container-tags">
-                    {% for tag in formula["tags"] %}
-                    <div>
-                        <p>{{ tag }}</p>
-                    </div>
-                    {% endfor %}
+    {% for category, formulas in data.items() %}
+    <div class="container-category" id= "c{{ loop.index }}" style="margin-bottom: 30px;">
+        <div class="container-category--header" style="margin-bottom: 20px;">
+            <h1>{{ category }}</h1>
+            <div></div>
+        </div>
+        <div class="container-category--formulas" id= "formulas{{ loop.index }}">
+            {% for formula in formulas %}
+            <div data-modal-target="#modal{{ loop.index }}" class="container-formula" id="f{{ loop.index }}">
+                <div class="formula-header">
+                    <h2>{{ formula["nombre"] }}</h2>
                 </div>
-                {% endif %}
+                <div class="formula-content">
+                    <p>$$ {{ formula["codigo_latex"] }} $$</p>
+                    {% if formula["tags"] %}
+                        <div class="container-tags">
+                            {% for tag in formula["tags"] %}
+                            <div>
+                                <p>{{ tag }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="modal-formula" id="modal{{ loop.index }}">
@@ -41,13 +41,13 @@
                     <p>$$ {{ formula["codigo_latex"] }} $$</p>
                 </div>
                 {% if formula["tags"] %}
-                <div class="augmented-tags">
-                    {% for tag in formula["tags"] %}
-                    <div>
-                        <p>{{ tag }}</p>
+                    <div class="augmented-tags">
+                        {% for tag in formula["tags"] %}
+                        <div>
+                            <p>{{ tag }}</p>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
                 {% endif %}
                 <div class="augmented-options">
                     {% if formula["images"] %}
@@ -68,11 +68,10 @@
                         target="_blank">Eliminar</a>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
 </div>
 
 {% endblock %}

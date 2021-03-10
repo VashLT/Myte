@@ -91,30 +91,35 @@ $login-form-width: 700px;
     & h1 {
       font-size: 30px;
       font-weight: 600;
+      margin: 0px;
+      color: $myte-blue;
     }
     & div {
+      margin-top: 2px;
       width: 98%;
       height: 2px;
-      color: $myte-orange;
+      background-color: $myte-orange;
     }
   }
   &--formulas {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
 
-    align-items: center;
-    justify-content: flex-start;
+    // align-items: center;
+    // justify-content: flex-start;
 
     width: 100%;
     height: auto;
   }
 }
 
-.container--formulas {
+.container-view--formulas {
   @extend .container-view;
   align-items: flex-start;
-  justify-content: center;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-bottom: 40px;
 }
 
 .container-view--images {
@@ -291,7 +296,6 @@ $login-form-width: 700px;
 .container-formulas {
   padding: 20px 10px;
   margin-top: $nav-bar--height;
-  overflow-x: hidden;
 
   left: 0;
   right: 0;

@@ -425,16 +425,7 @@ def more_formulas(freq_formulas, ids, cant_max):
         LIMIT %s
     """, (current_user.id, remaining))
 
-    # mysql_cursor.execute("""
-    # SELECT id_formula FROM Formula WHERE eliminada = 0
-    # ORDER BY RAND()
-    # LIMIT %s
-    # """, (remaining))
-
     raw_result = mysql_cursor.fetchall()
-
-    # print(f'Resultado obtenido [{remaining} formulas extra]:')
-    # print(raw_result)
 
     if not raw_result:
         return
@@ -528,49 +519,3 @@ def get_formulas_by_user(user_id):
             }
     print(cat_dict)
     return cat_dict
-
-    mysql_cursor.execute("""
-        SELECT 
-        c.nombre,
-        f.id_formula,
-        f.nombre,
-        f.codigo_latex,
-        f.fecha_creacion,
-        f.creada,
-        f.eliminada
-        FROM
-        CategoriaFormula as cf,
-        categoria AS c,
-        formula AS f,
-        indice as i
-        WHERE 
-        cf.id_formula = f.id_formula
-        AND cf.id_categoria = c.id_categoria
-        AND i.id_formula = f.id_formula
-        AND f.eliminada = 0
-        AND id_categoriapadre IS NULL
-        AND i.id_usuario = %s
-    """, (user_id))
-
-    query_results = mysql_cursor.fetchall()
-    organized_results = {}
-
-    for result in query_results:
-
-        category = result[0]
-
-        if category not in organized_results:
-            organized_results[category] = []
-
-        formula_instance = Formula(
-            id=result[1],
-            nombre=result[2],
-            codigo_latex=result[3],
-            fecha_creacion=result[4],
-            creada=result[5],
-            eliminada=result[6]
-        )
-
-        organized_results[category].append(formula_instance)
-
-    return organized_results
