@@ -380,10 +380,6 @@ def load_formulas(cant_max=20):
                 }
             )
 
-    print(f"Se cargaron las sig. formulas de INDICE:")
-    if formulas:
-        [print(formula) for formula in formulas]
-
     if len(formulas) < cant_max:  # fill rest
         print('Agregando formulas . . .')
         formulas = more_formulas(formulas, memo_id, cant_max)
@@ -428,10 +424,8 @@ def more_formulas(freq_formulas, ids, cant_max):
         ORDER BY RAND()
         LIMIT %s
     """, (current_user.id, remaining))
-    print(current_user.id)
 
     raw_result = mysql_cursor.fetchall()
-    print(f"more_formulas:\n{raw_result}")
 
     if not raw_result:
         return

@@ -134,6 +134,21 @@ $login-form-width: 700px;
   }
 }
 
+.container-view--editar {
+  @extend .container-view;
+  flex-direction: row;
+}
+.container-editar {
+  &--left {
+    width: 50%;
+    height: auto;
+  }
+  &--right {
+    width: 50%;
+    height: auto;
+  }
+}
+
 .container-images {
   display: flex;
   flex-direction: row;
