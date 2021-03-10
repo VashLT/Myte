@@ -136,7 +136,7 @@ INSERT INTO Recomendacion (id_categoria, id_niveleducativo, id_carrera) VALUES
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     4,
     "Porcentaje de Masa", 
-    "\\frac{masa de soluto (g)}{masa de disolución (g)} \\cdot 100",
+    "\\frac{\\text{masa de soluto (g)}}{\\text{masa de disolución (g)}} \\cdot 100",
     CAST(NOW() AS DATE),
     0
 );
@@ -144,7 +144,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     5,
     "Porcentaje de Volumen", 
-    "\\frac{volumen de soluto (ml)}{volumen de disolución (ml)} \\cdot 100",
+    "\\frac{\\text{volumen de soluto (ml)}}{\\text{volumen de disolución (ml)}} \\cdot 100",
     CAST(NOW() AS DATE),
     0
 );
@@ -152,7 +152,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     6,
     "Molaridad", 
-    "M = \\frac{moles_{soluto} (n)}{Volumen_{solucion} (L)}",
+    "M = \\frac{\\text{moles}_{\\text{(soluto)}} \\ (n)}{\\text{Volumen}_{\\text{(solucion)}} \\ (L)}",
     CAST(NOW() AS DATE),
     0
 );
@@ -160,10 +160,20 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     7,
     "Molalidad", 
-    "m = \\frac{moles_{soluto} (n)}{Kg_{disolvente}}",
+    "m = \\frac{\\text{moles}_{\\text{(soluto)}} \\ (n)}{\\text{Kg}_{\\text{(disolvente)}}}",
     CAST(NOW() AS DATE),
     0
 );
+
+
+
+-- Relacionando Categoria-Formula
+INSERT INTO CategoriaFormula VALUES 
+    (3, 4),
+    (3, 5),
+    (3, 6),
+    (3, 7)
+;
 
 -- test user premium
 INSERT INTO MetaUsuario VALUES (
