@@ -6,6 +6,8 @@ from sqlalchemy.sql import func
 # pylint: disable=bad-option-value
 # pylint: disable=no-member
 
+import math
+
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuario'
@@ -36,6 +38,36 @@ class Usuario(db.Model, UserMixin):
         if self.id_rol == 1:
             return False
         return True
+
+    def buy_premium(self, card_id, pay_amount, pay_method='card'):
+
+        if pay_method == 'card':
+            result = UsuarioTarjeta.query.filter_by(id_usuario=self.id).filter_by(id_tarjetacredito=card_id)
+
+            if result.count == 0:
+                instance = UsuarioTarjeta(
+                    id_tarjetacredito = card_id,
+                    id_usuario = self.id,
+                    valor = pay_amount
+                )
+                db.session.add(instance)
+            
+            else:
+                relation = result.first()
+                relation.value += pay_amount
+                db.session.commit()
+            
+        
+        elif pay_method == 'pin':
+            result = PinPago.query.filter(PinPago.ref_pago.isnot(None)).filter_by(id_usuario=self.id).filter_by(valor=pay_amount)
+
+            if result.count == 0:
+                return
+            
+        self.id_rol = 2
+        db.session.commit()
+                
+
 
 
 class MetaUsuario(db.Model):
@@ -122,10 +154,107 @@ class Script(db.Model):
     contenido = db.Column(db.String(1000), nullable=False)
     variables_script = db.Column(db.String(100))
 
+    def get_var_list(self):
+        return self.variables_script.replace(' ', '').split(',')
+
+    def run_script(self, values):
+
+        processed_values = values.replace(' ', '').split(',')
+
+        try:
+            value_list = [float(value) for value in processed_values]
+        
+        except:
+            print('Invalid value!, returning nothing . . .')
+            return None
+
+        vars = self.get_var_list()
+
+        var_dict = {}
+
+        # Generates var_dict for eval function (AKA locals)
+        for i, name in enumerate(vars):
+            var_dict[name] = value_list[i]
+
+        var_dict.update({'math' : math})
+
+        result = eval(self.contenido, var_dict)
+
+        return result
+
+
+class Categoria(db.Model):
+    __tablename__ = "categoria"
+    id = db.Column('id_categoria', db.Integer, primary_key=True)
+    id_categoriapadre = db.Column(db.Integer, db.ForeignKey(
+        'categoria.id_categoria'), nullable=True)
+    nombre = db.Column()
+
 
 class Rol(db.Model):
     __tablename__ = 'rol'
     id = db.Column("id_rol", db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
-    usuario = db.relationship('Usuario', backref='rol',
-                              lazy=True, uselist=False)
+    usuario = db.relationship(
+        'Usuario', 
+        backref='rol',
+        lazy=True, 
+        uselist=False
+    )
+
+class UsuarioTarjeta(db.Model):
+    __tablename__ = 'usuariotarjeta'
+    id_tarjetacredito = db.Column(
+        db.Integer,
+        db.ForeignKey('tarjetacredito.id_tarjetacredito'),
+        primary_key=True
+    )
+    id_usuario = db.Column(
+        db.Integer,
+        db.ForeignKey('usuario.id_usuario'),
+        primary_key=True
+    )
+    valor = db.Column(
+        db.Float
+    )
+
+class TarjetaCredito(db.Model):
+    __tablename__ = 'tarjetacredito'
+    id = db.Column(
+        'id_tarjetacredito',
+        db.Integer,
+        primary_key=True
+    )
+    numero = db.Column(
+        db.String(20)
+    )
+    fecha_caducidad = db.Column(
+        db.DateTime(timezone=True), default=func.now(),
+    )
+    cvv = db.Column(
+        db.Integer
+    )
+
+class PinPago(db.Model):
+    __tablename__ = 'pinpago'
+    id = db.Column(
+        'íd_pinpago',
+        db.Integer,
+        primary_key=True
+    )
+    id_usuario = db.Column(
+        db.Integer,
+        db.ForeignKey('usuario.id_usuario'),
+    )
+    valor = db.Column(
+        db.Float
+    )
+    fecha_vencimiento = db.Column(
+        db.DateTime(timezone=True), default=func.now(),
+    )
+    ref_pago = db.Column(
+        db.Integer
+    )
+    pin = db.Column(
+        db.String(30)
+    )

@@ -10,7 +10,7 @@ from wtforms import validators, SubmitField
 
 from flask_login import login_user, login_required, logout_user, current_user
 
-from .models import Usuario, MetaUsuario, Rol
+from .models import Usuario, MetaUsuario, Rol, Categoria, Formula
 from . import db, mysql
 from . import utils
 
@@ -123,42 +123,56 @@ def register(stage):
                 ))
             # registration is valid and store in db
             elif 'completed' in request.form and check_extra_data(post_data):
-                meta = MetaUsuario(
-                    nombre_usuario=user_data["nombre_usuario"],
-                    clave_encriptada=utils.encrypt(
-                        Cache.register["meta"])
-                )
-                new_user = Usuario(
-                    id_rol=Rol.query.get(ID_ROL).id,
-                    **user_data
-                )
-                new_user.nombre = utils.format_name(
-                    user_data["nombre"])
-                try:
-                    db.session.add(meta)
-                    db.session.add(new_user)
-                    db.session.commit()
-                    login_user(new_user, remember=True)
-                    mysql_cursor.execute("""
-                        UPDATE MyteVar SET valor = %s WHERE nombre="current_user" """, (meta.usuario.id))
-                    mysql.get_db().commit()
-                    return redirect(url_for('auth.register', stage='3'))
-                except Exception as e:
-                    print(
-                        f'User registration failed!, printing exception: {e}')
-                    traceback.print_exc()
-                    db.session.rollback()
+                print(post_data)
+                Cache.register["carrera"] = post_data["carrera"]
+                Cache.register["niveleducativo"] = post_data["nivel"]
+
+                return redirect(url_for('auth.register', stage='3'))
 
             return redirect(url_for(
                 'auth.register',
                 stage='2',
             ))
 
-    elif stage == '3':
-        flash("Welcome %s" %
-              new_user.nombre_usuario, category='success')
-        Cache.register = {}  # register end and cache is claned
+    elif stage == '3':  # digest level and career to recommend formulas
+        meta = MetaUsuario(
+            nombre_usuario=user_data["nombre_usuario"],
+            clave_encriptada=utils.encrypt(
+                Cache.register["meta"])
+        )
+        new_user = Usuario(
+            id_rol=Rol.query.get(ID_ROL).id,
+            **user_data
+        )
+        new_user.nombre = utils.format_name(
+            user_data["nombre"])
 
+        try:
+            db.session.add(meta)
+            db.session.add(new_user)
+            db.session.commit()
+
+            login_user(new_user, remember=True)
+            mysql_cursor.execute("""
+                UPDATE MyteVar SET valor = %s WHERE nombre="current_user" """, (meta.usuario.id))
+            mysql.get_db().commit()
+
+            formulas = load_formulas_from_recommendations()
+            if not formulas:
+                formulas = load_default_formulas()
+            add_history(formulas)
+            flash("Welcome %s" %
+                  new_user.nombre_usuario, category='success')
+            Cache.register = {}  # register end and cache is claned
+            return redirect(url_for('views.home'))
+
+        except Exception as ex:
+            return render_template(
+                'myte/404.html',
+                title="Internal error",
+                description="failed at database level",
+                trace=traceback.format_exc()
+            )
         return redirect(url_for('views.home'))
 
     else:
@@ -198,6 +212,69 @@ def check_extra_data(extra_data):
         flash("Selecciona una carrera", category="error")
         state = False
     return state
+
+
+def load_formulas_from_recommendations():
+    assert "user" in Cache.register and "carrera" in Cache.register
+    data = Cache.register
+    cur = mysql.get_db().cursor()
+    cur.execute(""" 
+        SELECT cf.id_formula FROM (
+            SELECT id_categoria FROM Recomendacion 
+            WHERE id_carrera = %s AND id_niveleducativo = %s
+        ) AS rec_cat
+        INNER JOIN CategoriaFormula AS cf ON cf.id_categoria = rec_cat.id_categoria
+    """, (data["carrera"], data["niveleducativo"]))
+    raw_result = cur.fetchall()
+    if not raw_result:
+        return None
+    formulas = []
+    for record in raw_result:
+        id = record[0]
+        formulas.append(
+            Formula.query.get(int(id))
+        )
+    return formulas
+
+
+def load_default_formulas(cant_max=20):
+    """
+        load formulas associated to categories:
+        - Álgebra <id: 4>
+        - Probabilidades <id: 11>
+        - Cálculo diferencial <id: 17>
+    """
+    cur = mysql.get_db().cursor()
+    IDS = [4, 11, 17]
+    formulas = []
+    for id in IDS:
+        cur.execute("""
+            SELECT id_formula FROM CategoriaFormula
+            WHERE id_categoria = %s
+        """, id)
+        raw_result = cur.fetchall()
+        if not raw_result:
+            continue
+        for record in raw_result:
+            id = int(record[0])
+            formulas.append(
+                Formula.query.get(id)
+            )
+    return formulas
+
+
+def add_history(formulas):
+    """
+        Insert into historial
+    """
+    cur = mysql.get_db().cursor()
+    for formula in formulas:
+        cur.execute("""
+            INSERT INTO Historial (id_usuario, id_formula, fecha_registro) VALUES (
+                %s, %s, CURDATE()
+            )
+        """, (current_user.id, formula.id))
+    mysql.get_db().commit()
 
 
 # def check_changes(meta, data):

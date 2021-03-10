@@ -44,7 +44,15 @@ $(document).ready(function () {
     var $messages = $('.container-flash');
     var $formulas = $('.container-formula');
     var $overlay = $(".overlay");
+    var $images = $(".image-item");
 
+    $images.on("click", function () {
+            var $clicked_image_id = $(this).attr('id');
+        var $modal = $("#im" + $clicked_image_id);
+            $modal.addClass("active");
+            $overlay.addClass("active");
+    });
+    
     $("#return-home").click(function () {
         var $form = $("#add-form");
         $form.append('<input type="hidden" name="return_home" />');
@@ -137,7 +145,12 @@ $(document).ready(function () {
         if ($overlay.hasClass("active")) {
             event.preventDefault();
             $(".overlay").removeClass("active");
-            $(".modal-formula.active").removeClass("active");
+            if ($(".modal-image.active").length) {
+                $(".modal-image.active").removeClass("active");
+            }
+            if ($(".modal-formula.active").length) {
+                $(".modal-formula.active").removeClass("active");
+            }
             event.stopPropagation();
         }
     })
