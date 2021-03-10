@@ -226,7 +226,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     9,
     "Binomio de Newton", 
-    "(a+b)^n = \\sum_{i=0}^{n} \\left( \\begin{matrix} n \\\ i \\end{matrix} \\right) a^{n-i} \\cdot b^n",
+    "(a+b)^n = \\sum_{i=0}^{n} \\left( \\begin{matrix} n \\n i \\end{matrix} \\right) a^{n-i} \\cdot b^n",
     CAST(NOW() AS DATE),
     0
 );
@@ -234,7 +234,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     10,
     "Cálculo de un determinante de orden 2", 
-    "|A| = \\left| \\begin{matrix} a_{11} & a_{12} \\\ a_{21} & a_{22} \\end{matrix} \\right| = a_{11} \\cdot a_{22} - a_{12} \\cdot a_{21}",
+    "|A| = \\left| \\begin{matrix} a_{11} & a_{12} \\n a_{21} & a_{22} \\end{matrix} \\right| = a_{11} \\cdot a_{22} - a_{12} \\cdot a_{21}",
     CAST(NOW() AS DATE),
     0
 );
@@ -258,7 +258,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     13,
     "Área del paralelogramo", 
-    "A = |\\vec{u} \\times \\vec{v}| \\\ \\text{Siendo estos vectores sus lados}",
+    CONCAT("A = |\\vec{u} \\times \\vec{v}|", @new_line, "\\text{Siendo estos vectores sus lados}"),
     CAST(NOW() AS DATE),
     0
 );
@@ -266,7 +266,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     14,
     "Regla de 3 simple y directa", 
-    "\\frac{A_1}{A_2} =  \\frac{C}{x} \\\ x = \\frac{A_2 \\cdot C}{A_1}",
+    CONCAT("\\frac{A_1}{A_2} =  \\frac{C}{x}", @new_line, "x = \\frac{A_2 \\cdot C}{A_1}"),
     CAST(NOW() AS DATE),
     0
 );
@@ -274,7 +274,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     15,
     "Division fracciones", 
-    "\\frac{a}{b} \\div \frac{c}{d} = \\frac{a \\cdot d}{b \\cdot c}",
+    "\\frac{a}{b} \\div \\frac{c}{d} = \\frac{a \\cdot d}{b \\cdot c}",
     CAST(NOW() AS DATE),
     0
 );
@@ -354,7 +354,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     25,
     "Flujo volumétrico", 
-    "Q_v = A \\cdot v \\\ \text{Donde 'A' es el área de la tubería y 'v' la velocidad del fluido}",
+    CONCAT("Q_v = A \\cdot v", @new_line, "\\text{Donde 'A' es el área de la tubería y 'v' la velocidad del fluido}"),
     CAST(NOW() AS DATE),
     0
 );
@@ -362,7 +362,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     26,
     "Derivada de un producto", 
-    "f(x) = u \\cdot v \\\ f'(x) = u' \\cdot v + u \\cdot v'",
+    CONCAT("f(x) = u \\cdot v", @new_line, "f'(x) = u' \\cdot v + u \\cdot v'"),
     CAST(NOW() AS DATE),
     0
 );
@@ -370,7 +370,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     27,
     "Integral por partes", 
-    "\\int_{a}^{b} U \,dV = U \\cdot V - \\int_{a}^{b} V \,dU",
+    "\\int_{a}^{b} U \ dV = U \\cdot V - \\int_{a}^{b} V \ dU",
     CAST(NOW() AS DATE),
     0
 );
@@ -393,14 +393,22 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     30,
-    "Energía mecánica", 
-    "E_m = E_c + E_p \\\ E_c = \\frac{1}{2} mv^2 \\\ E_p = m \\cdot g \\cdot h",
+    "Serie de Taylor para la función exponencial", 
+    "e^{x} = 1 + x + \\frac{x^2}{2} + ... + \\frac{x^n}{n!}",
     CAST(NOW() AS DATE),
     0
 );
 
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
     31,
+    "Energía mecánica", 
+    CONCAT("E_m = E_c + E_p", @new_line, "E_c = \\frac{1}{2} mv^2", @new_line, "E_p = m \\cdot g \\cdot h"),
+    CAST(NOW() AS DATE),
+    0
+);
+
+INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
+    32,
     "Fuerzas", 
     "\\sum \\vec{F} = m \\cdot \\vec{a}",
     CAST(NOW() AS DATE),
@@ -408,7 +416,7 @@ INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) V
 );
 
 INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
-    32,
+    33,
     "Posición horizontal - MRU", 
     "x_f = x_i + v_x (t_f - t_i)",
     CAST(NOW() AS DATE),
@@ -443,9 +451,10 @@ INSERT INTO CategoriaFormula VALUES
     (18, 27),
     (19, 28),
     (19, 29),
-    (20, 30),
-    (21, 31),
-    (22, 32)
+    (19, 30),
+    (20, 31),
+    (21, 32),
+    (22, 33)
 ;
 
 -- Indice, manual unlike previous insertion
@@ -461,6 +470,22 @@ INSERT INTO Tag (id_tag, id_usuario, nombre) VALUES (
 -- TagFormula
 INSERT INTO TagFormula (id_tag, id_formula) VALUES (1, 3);
 
-
-
-
+-- Scripts
+INSERT INTO Script VALUES
+    (1, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (2, 6, "ms/vs", "ms,vs"),
+    (3, 8, "(-b + math.sqrt(b**2 - 4*a*c))/(2*a)", "a,b,c"),
+    (4, 8, "(-b - math.sqrt(b**2 - 4*a*c))/(2*a)", "a,b,c"),
+    (5, 10, "a11 * a22 - a21 * a12", "a11,a12,a21,a22"),
+    (6, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (7, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (8, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (9, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (10, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (11, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (12, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (13, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (14, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (15, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
+    (16, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n")
+;

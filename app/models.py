@@ -39,12 +39,38 @@ class Usuario(db.Model, UserMixin):
             return False
         return True
 
-    def buy_premium(self, value, pay_method='card'):
+    def buy_premium(self, card_id, pay_amount, pay_method='card'):
 
-        pass
-        # if pay_method == 'card':
-        #     TarjetaCredito.query
-      
+        if pay_method == 'card':
+            result = UsuarioTarjeta.query.filter_by(id_usuario=self.id).filter_by(id_tarjetacredito=card_id)
+
+            if result.count == 0:
+                instance = UsuarioTarjeta(
+                    id_tarjetacredito = card_id,
+                    id_usuario = self.id,
+                    valor = pay_amount
+                )
+                db.session.add(instance)
+                db.session.commit()
+            
+            else:
+                relation = result.first()
+                relation.value += pay_amount
+                db.session.commit()
+            
+        
+        elif pay_method == 'pin':
+            result = PinPago.query.filter(PinPago.ref_pago.isnot(None)).filter_by(id_usuario=self.id).filter_by(valor=pay_amount)
+
+            if result.count == 0:
+                return
+        
+        else:
+            return
+
+        self.id_rol = 2
+        db.session.commit()
+                
 
 class MetaUsuario(db.Model):
     __tablename__ = 'metausuario'
