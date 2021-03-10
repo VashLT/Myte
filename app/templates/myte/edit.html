@@ -101,8 +101,8 @@
         $form.submit();
     });
     $("#save-script").click(function(){
-        var $script_content = $("#iscript");
-        var $script_vars = $("#ivars");
+        var $script_content = $("#iscript").val();
+        var $script_vars = $("#ivars").val();
         $form.append('<input type="hidden" name="save_script" />');
         $form.append('<input type="hidden" name="script_contenido" value="' + $script_content + '"/>');
         $form.append('<input type="hidden" name="script_variables" value="' + $script_vars + '"/>');
