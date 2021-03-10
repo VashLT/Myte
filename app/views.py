@@ -393,28 +393,6 @@ def more_formulas(freq_formulas, ids, cant_max):
         memo_id.add(id)
     return formulas
 
-def run_script(script_body, script_vars, script_values):
-
-    # All parameters are strings, variables and values are separates by commas
-
-    # Converts string of inputs into integers, also prevents bad code execution
-    processed_values = script_values.replace(' ', '').split(',')
-    processed_values = [float(value) for value in processed_values]
-
-    processed_vars = script_vars.replace(' ', '').split(',')
-
-    var_dict = {}
-
-    # Generates var_dict for eval function (AKA locals)
-    for i, name in enumerate(processed_vars):
-        var_dict[name] = processed_values[i]
-
-    var_dict.update({'math' : math})
-
-    result = eval(script_body, var_dict)
-    
-    return result
-
 
 def sanitize_script(script_body, script_vars):
 
