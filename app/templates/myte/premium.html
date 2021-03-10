@@ -1,5 +1,40 @@
-<!-- Tokemplate, TBD -->
+<!-- Template, TBD -->
 
 {% extends 'myte/base.html' %}
 
-{% block title %}Mis formulas{% endblock %}
+{% block title %}Obtener premium{% endblock %}
+
+<!-- {% block nav %}  {% endblock %} -->
+
+{% block body %}
+
+<div class="container-register center-full">
+    <form method="POST" class="form" id="register-form" action="">
+            <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" style="height:100px;width:100px;" title="Myte">
+                <h2 style="color:#212121;">Obtener Myte premium®™</h2>
+            </div>
+            <div class="container-select" style="margin-top: 40px;">
+                <p>Metodo de pago: </p>
+                <select class="drop-menu" name="nivel" style="width:200px;">
+                    <option value="tarjetacredito">Tarjeta de credito</option>
+                    <option value="pinpago">Pin de pago</option>
+                </select>
+            </div>
+            <script>
+                var $container = $(".container-register");
+                $container.css("height", "600px");
+                $container.removeClass("center-full");
+                $container.addClass("center-h");
+                $container.css("margin-top", "100px");
+            </script>
+        <div style="margin-top: 40px" class="container-input" style="width: 30%; align-items: center;">
+            <button 
+                class="btn-submit--orange" 
+                id="next-btn"
+                style="width: 100%;">Continuar</button>
+        </div>
+        <a href="{{ url_for('auth.login')}}" class="redirect" style="margin-top: 30px; align-self: center;">Ya tienes una cuenta?</a>
+    </form>
+</div>
+{% endblock %}
