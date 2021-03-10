@@ -439,7 +439,13 @@ def more_formulas(freq_formulas, ids, cant_max):
     raw_result = mysql_cursor.fetchall()
 
     if not raw_result:
-        return
+        mysql_cursor.execute("""
+            SELECT id_formula from formula
+            ORDER BY RAND()
+            LIMIT %s
+        """, (remaining))
+
+        raw_result = mysql_cursor.fetchall()
 
     for record in raw_result:
         id = int(record[0])
