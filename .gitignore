@@ -1,6 +1,7 @@
 # Myte
 static/gen
 .webasssets-cache/
+files/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

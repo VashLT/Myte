@@ -1,4 +1,5 @@
 from hashlib import sha256
+from config import Config
 import re
 
 
@@ -47,3 +48,20 @@ def dictionarize(cursor, table_name, id=None, value='nombre'):
     """)
     raw_result = cursor.fetchall()
     return dict(raw_result)
+
+
+def get_id(cursor, table_name, id=None):
+    if not id:
+        id = "".join(["id_", table_name.lower()])
+    cursor.execute(f"""
+        SELECT {id} FROM {table_name} ORDER BY {id} DESC LIMIT 1
+    """)
+    raw_result = cursor.fetchone()
+    if not raw_result:
+        return 1
+    return int(raw_result[0]) + 1
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
