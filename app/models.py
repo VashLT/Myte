@@ -180,7 +180,11 @@ class Script(db.Model):
 
         var_dict.update({'math' : math})
 
-        result = eval(self.contenido, var_dict)
+        try:
+            result = eval(self.contenido, var_dict)
+        except Exception as e:
+            print(f'Eval failed!: {e}')
+            return None
 
         return result
 
