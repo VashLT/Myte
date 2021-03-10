@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flaskext.mysql import MySQL
 from flask_datepicker import datepicker
 from flask_login import LoginManager
+from webassets.env import url_prefix_join
 
 db = SQLAlchemy()
 mysql = MySQL()
