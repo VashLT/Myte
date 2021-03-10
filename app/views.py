@@ -1,6 +1,7 @@
 from operator import imod
 import os
 import traceback
+import math
 
 # from scripter import Script
 
@@ -394,7 +395,25 @@ def more_formulas(freq_formulas, ids, cant_max):
 
 def run_script(script_body, script_vars, script_values):
 
-    return Script(script_body, script_vars).run_script(script_values)
+    # All parameters are strings, variables and values are separates by commas
+
+    # Converts string of inputs into integers, also prevents bad code execution
+    processed_values = script_values.replace(' ', '').split(',')
+    processed_values = [float(value) for value in processed_values]
+
+    processed_vars = script_vars.replace(' ', '').split(',')
+
+    var_dict = {}
+
+    # Generates var_dict for eval function (AKA locals)
+    for i, name in enumerate(processed_vars):
+        var_dict[name] = processed_values[i]
+
+    var_dict.update({'math' : math})
+
+    result = eval(script_body, var_dict)
+    
+    return result
 
 
 def sanitize_script(script_body, script_vars):
@@ -426,4 +445,52 @@ def sanitize_script(script_body, script_vars):
     return (script_body, script_vars)
         
     
-    
+def get_formulas_by_user(user_id):
+
+    mysql_cursor = mysql.get_db().cursor()
+
+    mysql_cursor.execute("""
+        SELECT 
+        c.nombre,
+        f.id_formula,
+        f.nombre,
+        f.codigo_latex,
+        f.fecha_creacion,
+        f.creada,
+        f.eliminada
+        FROM
+        CategoriaFormula as cf,
+        categoria AS c,
+        formula AS f,
+        indice as i
+        WHERE 
+        cf.id_formula = f.id_formula
+        AND cf.id_categoria = c.id_categoria
+        AND i.id_formula = f.id_formula
+        AND f.eliminada = 0
+        AND id_categoriapadre IS NULL
+        AND i.ud_usuario = %s
+    """, (user_id))
+
+    query_results = mysql_cursor.fetchall()
+    organized_results = {}
+
+    for result in query_results:
+
+        category = result[0]
+
+        if category not in organized_results:
+            organized_results[category] = []
+        
+        formula_instance = Formula(
+            id = result[1],
+            nombre = result[2],
+            codigo_latex = result[3],
+            fecha_creacion = result[4],
+            creada = result[5],
+            eliminada = result[6]
+        )
+
+        organized_results[category].append(formula_instance)
+
+    return organized_results
