@@ -1,6 +1,8 @@
+from operator import imod
 import os
 import traceback
 
+# from scripter import Script
 
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 
@@ -8,7 +10,7 @@ from flask_login import login_required, current_user
 
 from config import MAX_FILES, Config
 
-from .models import Usuario, MetaUsuario, Rol, Tag, TagFormula, Imagen, Formula, Historial
+from .models import Usuario, MetaUsuario, Rol, Tag, TagFormula, Imagen, Formula, Historial, Script
 from . import db, mysql
 from . import utils
 
@@ -221,6 +223,35 @@ def add_script(id_formula):
         Cache.active = False
         return redirect(url_for("views.home"))
 
+    # Ajuste de script
+    script_body = post_data['script']
+    script_vars = post_data['variables']
+
+    sanitized_script = sanitize_script(script_body, script_vars)
+
+    if sanitized_script is None:
+        flash("Invalid Script!, remember to only use math related code", category="warning")
+        return render_template("myte/add_script.html", formula=formula)
+    
+    script_body, script_vars = sanitized_script
+
+    # Agregar script a base de datos
+
+    id_script = utils.get_id(mysql_cursor, "script")
+    content = script_body
+    variables = script_vars
+
+    script = Script(
+        id = id_script,
+        id_formula = id_formula,
+        contenido = content,
+        variables_script = variables
+    )
+
+    db.session.add(script)
+    db.session.commit()
+    
+
 
 @views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
 @views.route('/home/delete/<id_formula>', methods=["POST", "GET"])
@@ -246,12 +277,6 @@ def formulas():
 @login_required
 def formula_images(id_formula):
     return render_template("myte/images.html")
-
-
-@views.route('/home/images/<id_formula>')
-@login_required
-def formula_script(id_formula):
-    return render_template("myte/script.html")
 
 
 def load_formulas(cant_max=20):
@@ -291,13 +316,15 @@ def load_formulas(cant_max=20):
         print('Agregando formulas . . .')
         formulas = more_formulas(formulas, memo_id, cant_max)
     print(f"Se encontraron las sig. formulas:")
-    [print(formula) for formula in formulas]
+
+    if formulas:
+        [print(formula) for formula in formulas]
     return formulas
 
 
 @views.route('/home/premium')
 @login_required
-def premium_first():
+def premium_account():
 
         return render_template("myte/premium.html")
 
@@ -364,3 +391,39 @@ def more_formulas(freq_formulas, ids, cant_max):
         })
         memo_id.add(id)
     return formulas
+
+def run_script(script_body, script_vars, script_values):
+
+    return Script(script_body, script_vars).run_script(script_values)
+
+
+def sanitize_script(script_body, script_vars):
+
+    script_vars = script_vars.replace(' ', '')
+
+    processed_vars = script_vars.split(',')
+
+    for var in processed_vars:
+        if var[0].isnumeric():
+            print('variable no permitida en script!')
+            return None
+
+    # script_dict = {var.split('=')[0] : var.split('=')[1] for var in script_vars}
+    # var_dict = {}
+
+    # for element in script_vars:
+
+    #     elements = element.split('=')
+    #     var_dict[elements[0]] = elements[1]
+
+    blacklisted_code = ['os.', 'system.', '__', '\\']
+    for element in blacklisted_code:
+
+        if element in script_body:
+            print('Elemento no permitido en script!')
+            return None
+    
+    return (script_body, script_vars)
+        
+    
+    

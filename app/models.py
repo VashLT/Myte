@@ -120,6 +120,7 @@ class Script(db.Model):
         primary_key=True
     )
     contenido = db.Column(db.String(1000), nullable=False)
+    variables_script = db.Column(db.String(100))
 
 
 class Categoria(db.Model):
