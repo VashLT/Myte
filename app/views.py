@@ -173,6 +173,13 @@ def load_formulas(cant_max=20):
     return formulas
 
 
+@views.route('/home/premium')
+@login_required
+def premium_first():
+
+        return render_template("myte/premium.html")
+
+
 def lookup_tags(id_formula):
     if not current_user.is_premium():
         return []
