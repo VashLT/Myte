@@ -5,6 +5,16 @@
 {% block background %} id="body-add_formula" {% endblock %}
 
 {% block body %}
+<div class="container-stages center-h" style="margin-top: 60px;">
+    {% if stage == 1 %}
+    <span class="step active"></span>
+    <span class="step"></span>
+    {% else %}
+    <span class="step finish"></span>
+    <span class="step active"></span>
+    {% endif %}
+</div>
+
 <div class="container-add-view">
     <div class="render-box">
         <div class="render-box--header">

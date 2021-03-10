@@ -1,13 +1,20 @@
+import os
+import traceback
+
+
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 
 from flask_login import login_required, current_user
+
+from config import MAX_FILES, Config
 
 from .models import Usuario, MetaUsuario, Rol, Tag, TagFormula, Imagen, Formula, Historial
 from . import db, mysql
 from . import utils
 
-import random
+from werkzeug.utils import secure_filename
 
+#
 
 views = Blueprint("views", __name__)
 
@@ -15,6 +22,7 @@ views = Blueprint("views", __name__)
 class Cache(object):
     """ store inputted data at add formula """
     add = {}
+    active = False
 
 # pylint: disable=bad-option-value
 # pylint: disable=no-member
@@ -59,6 +67,7 @@ def add_formula(stage):
             Cache.add["formula"] = data
             if "render" in post_data:
                 return render_template("myte/add_default.html", stage=1, formula=Cache.add["formula"])
+
             return redirect(url_for("views.add_formula", stage=2))
         else:
             if request.method == "GET":
@@ -80,25 +89,137 @@ def add_formula(stage):
                 except:
                     db.session.rollback()
 
-    else:
-        if stage == "1":
-            post_data = request.form
-            if "formula" in Cache.add:
-                cache_formula = Cache.add["formula"]
-            else:
-                cache_formula = None
+    if stage == "1":
+        post_data = request.form
+        if "formula" in Cache.add:
+            cache_formula = Cache.add["formula"]
+        else:
+            cache_formula = None
 
+        if request.method == "GET":
+            if "back" in Cache.add:
+                Cache.add.pop("back", None)
+                return render_template("myte/add.html", stage=1, formula=Cache.add["formula"])
+
+            return render_template("myte/add.html", stage=1, formula=None, user=current_user)
+
+        data = {}
+        data.setdefault("codigo_latex", post_data["latex"])
+        Cache.add["formula"] = data
+        if "render" in post_data:
+            return render_template("myte/add.html", stage=1, formula=Cache.add["formula"])
+
+        return redirect(url_for("views.add_formula", stage=2))
+
+    elif stage == "2":
+        try:
+            if not Cache.add:
+                return redirect(url_for("views.add_formula", stage="1"))
             if request.method == "GET":
-                return render_template("myte/add.html", stage=1, formula=None, user=current_user)
-            else:
-                data = {}
-                data.setdefault("codigo_latex", post_data["latex"])
-                Cache.add["formula"] = data
-                if "render" in post_data:
-                    return render_template("myte/add.html", stage=1, formula=Cache.add["formula"], user=current_user)
+                return render_template("myte/add.html", stage=2, formula=Cache.add["formula"])
+            post_data = request.form
+            print(post_data)
+            if "back" in post_data:
+                Cache.add["back"] = True
+                return redirect(url_for("views.add_formula", stage=1))
 
-        elif stage == "2":
-            h = 5
+            if "completed" in post_data:
+                Cache.add["formula"].setdefault(
+                    "nombre", post_data["title"])
+                data_formula = Cache.add["formula"]
+                formula = Formula(
+                    id=utils.get_id(mysql_cursor, "Formula"),
+                    nombre=data_formula["nombre"],
+                    codigo_latex=data_formula["codigo_latex"],
+                    creada=1,
+                    eliminada=0
+                )
+                db.session.add(formula)
+                db.session.commit()
+                Cache.active = True
+                return redirect(url_for("views.add_image", id_formula=formula.id))
+            else:
+                raise Exception("can't POST data without title")
+        except Exception as ex:
+            return render_template(
+                'myte/404.html',
+                title="Internal error",
+                description="failed at stage 2",
+                trace=traceback.format_exc()
+            )
+
+
+@views.route('/home/images/add/<id_formula>', methods=["POST", "GET"])
+@login_required
+def add_image(id_formula):
+    mysql_cursor = mysql.get_db().cursor()
+    if not current_user.is_premium():
+        flash("Update to premium role to use images", category="warning")
+        return redirect(url_for("views.home"))
+
+    formula = Formula.query.get(int(id_formula))
+    if request.method == "GET":
+        return render_template("myte/add_images.html", formula=formula)
+    post_data = request.form
+
+    if "return_home" in post_data:
+        return redirect(url_for("views.home"))
+
+    if "completed" in post_data:
+        uploaded_files = request.files.getlist("img")
+        if len(uploaded_files) > MAX_FILES:
+            flash("Se permiten máximo %d archivos" %
+                  MAX_FILES, category="error")
+            return render_template("myte/add_images.html", formula=formula)
+
+        if uploaded_files:
+            id = utils.get_id(mysql_cursor, "imagen")
+            for file in uploaded_files:
+                filename = secure_filename(file.filename)
+                path = os.path.join(
+                    Config.UPLOAD_FOLDER, "formulas", id_formula)
+                if not os.path.exists(path):
+                    os.makedirs(path)
+                path = os.path.join(path, filename)
+                file.save(path)
+                img = Imagen(
+                    id=id,
+                    id_formula=id_formula,
+                    path=path
+                )
+                id += 1
+                db.session.add(img)
+                db.session.commit()
+
+            flash(f"added {len(uploaded_files)} image(s) successfully",
+                  category="success")
+
+            if Cache.active:
+                return redirect(url_for("views.add_script", id_formula=id_formula))
+
+        return redirect(url_for("views.home"))
+
+    return render_template("myte/add_images.html", formula=formula)
+
+
+@views.route('/home/script/add/<id_formula>', methods=["POST", "GET"])
+@login_required
+def add_script(id_formula):
+    mysql_cursor = mysql.get_db().cursor()
+    if not current_user.is_premium():
+        flash("Update to premium role to use scripts", category="warning")
+        return redirect(url_for("views.home"))
+
+    formula = Formula.query.get(int(id_formula))
+    if request.method == "GET":
+        return render_template("myte/add_script.html", formula=formula)
+
+    post_data = request.form
+
+    if "return_home" in post_data:
+        return redirect(url_for("views.home"))
+    print(post_data)
+    print(request.files)
 
 
 @views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
@@ -166,8 +287,10 @@ def load_formulas(cant_max=20):
                 }
             )
     if len(formulas) < cant_max:  # fill rest
+        print('Agregando formulas . . .')
         formulas = more_formulas(formulas, memo_id, cant_max)
-    print(f"Se encontraron las sig. formulas:\n{formulas}")
+    print(f"Se encontraron las sig. formulas:")
+    [print(formula) for formula in formulas]
     return formulas
 
 
@@ -192,13 +315,22 @@ def more_formulas(freq_formulas, ids, cant_max):
     mysql_cursor = mysql.get_db().cursor()
 
     remaining = cant_max - len(formulas)
+    # mysql_cursor.execute(""" 
+    #     SELECT id_formula FROM Historial WHERE id_usuario = %s 
+    #     ORDER BY RAND()
+    #     LIMIT %s
+    # """, (current_user.id, remaining))
+
     mysql_cursor.execute(""" 
-        SELECT id_formula FROM Historial WHERE id_usuario = %s 
-        ORDER BY RAND()
-        LIMIT %s
-    """, (current_user.id, remaining))
+    SELECT id_formula FROM Formula WHERE eliminada = 0
+    ORDER BY RAND()
+    LIMIT %s
+    """, (remaining))
 
     raw_result = mysql_cursor.fetchall()
+
+    print(f'Resultado obtenido [{remaining} formulas extra]:')
+    print(raw_result)
 
     if not raw_result:
         return

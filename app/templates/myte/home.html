@@ -101,19 +101,16 @@
                     <a class="option" aria-disabled="true">Imagenes</a>
                 {% endif %}
                 {% if formula["script"] %}
-                    <a 
-                        href="{{ url_for('views.formula_script', id_formula = formula['id']) }}" 
+                    <a  href="{{ url_for('views.formula_script', id_formula = formula['id']) }}" 
                         class = "option--skin" 
                         target="_blank">Ejecutar script</a>
                 {% else %}
                     <a class="option" aria-disabled="true">Ejecutar script</a>
                 {% endif %}
-                    <a 
-                        href="{{ url_for('views.edit_formula', id_formula=formula['id']) }}" 
+                    <a  href="{{ url_for('views.edit_formula', id_formula=formula['id']) }}" 
                         class = "option--green" 
                         target="_blank">Editar</a>
-                    <a 
-                        href="{{ url_for('views.delete_formula', id_formula=formula['id']) }}" 
+                    <a  href="{{ url_for('views.delete_formula', id_formula=formula['id']) }}" 
                         class = "option--blue"
                         target="_blank">Eliminar</a>
             </div>  
