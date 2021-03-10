@@ -41,7 +41,9 @@ class Usuario(db.Model, UserMixin):
 
     def buy_premium(self, value, pay_method='card'):
 
-        Usua
+        pass
+        # if pay_method == 'card':
+        #     TarjetaCredito.query
       
 
 class MetaUsuario(db.Model):
@@ -191,6 +193,7 @@ class UsuarioTarjeta(db.Model):
     valor = db.Column(
         db.Float
     )
+
 class TarjetaCredito(db.Model):
     __tablename__ = 'tarjetacredito'
     id = db.Column(
@@ -208,3 +211,26 @@ class TarjetaCredito(db.Model):
         db.Integer
     )
 
+class PinPago(db.Model):
+    __tablename__ = 'pinpago'
+    id = db.Column(
+        'íd_pinpago',
+        db.Integer,
+        primary_key=True
+    )
+    id_usuario = db.Column(
+        db.Integer,
+        db.ForeignKey('usuario.id_usuario'),
+    )
+    valor = db.Column(
+        db.Float
+    )
+    fecha_vencimiento = db.Column(
+        db.DateTime(timezone=True), default=func.now(),
+    )
+    ref_pago = db.Column(
+        db.Integer
+    )
+    pin = db.Column(
+        db.String(30)
+    )
