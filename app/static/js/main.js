@@ -54,6 +54,10 @@ $(document).ready(function () {
     });
     
     $("#return-home").click(function () {
+        if ($("#redirect-form").length) {
+            $("#redirect-form").append('<input type="hidden" name="return_home" />');
+            $("#redirect-form").submit();
+        }
         var $form = $("#add-form");
         $form.append('<input type="hidden" name="return_home" />');
         $form.submit();

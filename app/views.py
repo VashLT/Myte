@@ -327,12 +327,15 @@ def edit_formula(id_formula):
 @views.route('/home/formulas')
 @login_required
 def formulas():
-    return render_template("myte/formulas.html")
+    data = get_formulas_by_user(current_user.id)
+    return render_template("myte/formulas.html", data=data)
 
 
-@views.route('/home/images/<id_formula>')
+@views.route('/home/images/<id_formula>', methods=["POST", "GET"])
 @login_required
 def formula_images(id_formula):
+    if "return_home" in request.form:
+        return redirect(url_for("views.home"))
     formula = Formula.query.get(int(id_formula))
     images = []
     for image in formula.imagen:
@@ -489,8 +492,42 @@ def sanitize_script(script_body, script_vars):
 
 
 def get_formulas_by_user(user_id):
+    cur = mysql.get_db().cursor()
+    cur.execute("""
+        SELECT cat.nombre, user_formulas.id_formula FROM 
+        (SELECT fo.id_formula FROM Historial AS hi, Formula AS fo
+        WHERE hi.id_usuario = %s AND fo.id_formula = hi.id_formula
+        AND fo.eliminada = 0) AS user_formulas 
+        INNER JOIN CategoriaFormula AS cf ON cf.id_formula = user_formulas.id_formula
+        INNER JOIN Categoria AS cat ON cat.id_categoria = cf.id_categoria
+    """, (user_id))
+    raw_result = cur.fetchall()
+    print(raw_result)
+    it = 0
+    cat_dict = {}
+    for category, id_formula in raw_result:
+        cat_dict.setdefault(category, [])
+        cat_dict[category].append(id_formula)
 
-    mysql_cursor = mysql.get_db().cursor()
+    for category, id_formulas in cat_dict.items():
+        for index, id in enumerate(id_formulas):
+            formula = Formula.query.get(int(id))
+            latex = formula.codigo_latex
+            if r"\n" in latex:
+                latex = utils.format_newline(latex)
+            tags = lookup_tags(int(id))
+            if tags:
+                tags = utils.format_tags(tags)
+            cat_dict[category][index] = {
+                "id": int(id),
+                "nombre": formula.nombre,
+                "codigo_latex": latex,
+                "tags": tags,
+                "images": formula.imagen,
+                "script": formula.script
+            }
+    print(cat_dict)
+    return cat_dict
 
     mysql_cursor.execute("""
         SELECT 
