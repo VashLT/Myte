@@ -12,7 +12,7 @@ INSERT INTO Rol VALUES (3, "Administrador");
 INSERT INTO NivelEducativo VALUES
     (1, "Bachillerato"),
     (2, "Pregrado"),
-    (3, "Posgrado")
+    (3, "Otro")
 ;
 
 -- Carrera
@@ -34,6 +34,136 @@ INSERT INTO Carrera (nombre) VALUES
     ("Ingeniería Química"),
     ("Geología")
 ;
+
+-- Categoria
+INSERT INTO Categoria VALUES
+    (1, NULL, "Matemáticas"),
+    (2, NULL, "Física"),
+    (3, NULL, "Química"),
+    (4, 1, "Álgebra"),
+    (5, 1, "Álgebra lineal"),
+    (6, 1, "Geometría Analítica"),
+    (7, 1, "Aritmética"),
+    (8, 1, "Cálculo"),
+    (9, 1, "Estadística"),
+    (10, 1, "Geometría"),
+    (11, 1, "Probabilidades"),
+    (12, 1, "Trigonometría"),
+    (13, 2, "Mecánica Clásica"),
+    (14, 2, "Electromagnetismo"),
+    (15, 2, "Ondas"),
+    (16, 2, "Termodinámica"),
+    (17, 8, "Cálculo diferencial"),
+    (18, 8, "Cálculo Integral"),
+    (19, 8, "Cálculo Numérico"),
+    (20, 13, "Estática"),
+    (21, 13, "Dinámica"),
+    (22, 13, "Cinemática")
+;
+
+-- Interes (prueba)
+INSERT INTO Interes VALUES 
+    (1, 12),
+    (2, 3)
+;
+
+-- Recomendacion
+INSERT INTO Recomendacion (id_categoria, id_niveleducativo, id_carrera) VALUES
+    (1, 1, 3),
+    (1, 1, 4),
+    (4, 1, 3),
+    (4, 1, 4),
+    (7, 1, 3),
+    (7, 1, 4),
+    (9, 1, 3),
+    (9, 1, 4),
+    (10, 1, 3),
+    (10, 1, 4),
+    (11, 1, 3),
+    (11, 1, 4),
+    (12, 1, 3),
+    (12, 1, 4),
+    (2, 1, 2),
+    (13, 1, 2),
+    (20, 1, 2),
+    (21, 1, 2),
+    (22, 1, 2),
+    (3, 1, 5),
+    (9, 2, 1),
+    (11, 2, 1),
+    (1, 2, 2),
+    (2, 2, 2),
+    (1, 2, 3),
+    (2, 2, 3),
+    (1, 2, 4),
+    (2, 2, 4),
+    (1, 2, 5),
+    (2, 2, 5),
+    (3, 2, 5),
+    (1, 2, 6),
+    (2, 2, 6),
+    (6, 2, 6),
+    (1, 2, 7),
+    (2, 2, 7),
+    (6, 2, 7),
+    (1, 2, 8),
+    (2, 2, 8),
+    (1, 2, 9),
+    (2, 2, 9),
+    (1, 2, 10),
+    (2, 2, 10),
+    (1, 2, 11),
+    (2, 2, 11),
+    (16, 2, 11),
+    (1, 2, 12),
+    (2, 2, 12),
+    (19, 2, 12),
+    (1, 2, 13),
+    (2, 2, 13),
+    (16, 2, 13),
+    (1, 2, 14),
+    (2, 2, 14),
+    (16, 2, 14),
+    (1, 2, 15),
+    (2, 2, 15),
+    (16, 2, 15),
+    (1, 2, 16),
+    (3, 2, 16),
+    (6, 2, 16)
+;
+
+-- Formulas por categoria
+INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
+    4,
+    "Porcentaje de Masa", 
+    "\\frac{masa de soluto (g)}{masa de disolución (g)} \\cdot 100",
+    CAST(NOW() AS DATE),
+    0
+);
+
+INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
+    5,
+    "Porcentaje de Volumen", 
+    "\\frac{volumen de soluto (ml)}{volumen de disolución (ml)} \\cdot 100",
+    CAST(NOW() AS DATE),
+    0
+);
+
+INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
+    6,
+    "Molaridad", 
+    "M = \\frac{moles_{soluto} (n)}{Volumen_{solucion} (L)}",
+    CAST(NOW() AS DATE),
+    0
+);
+
+INSERT INTO Formula (id_formula, nombre, codigo_latex, fecha_creacion, creada) VALUES (
+    7,
+    "Molalidad", 
+    "m = \\frac{moles_{soluto} (n)}{Kg_{disolvente}}",
+    CAST(NOW() AS DATE),
+    0
+);
 
 -- test user premium
 INSERT INTO MetaUsuario VALUES (

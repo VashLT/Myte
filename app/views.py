@@ -287,8 +287,10 @@ def load_formulas(cant_max=20):
                 }
             )
     if len(formulas) < cant_max:  # fill rest
+        print('Agregando formulas . . .')
         formulas = more_formulas(formulas, memo_id, cant_max)
-    print(f"Se encontraron las sig. formulas:\n{formulas}")
+    print(f"Se encontraron las sig. formulas:")
+    [print(formula) for formula in formulas]
     return formulas
 
 
@@ -313,13 +315,22 @@ def more_formulas(freq_formulas, ids, cant_max):
     mysql_cursor = mysql.get_db().cursor()
 
     remaining = cant_max - len(formulas)
+    # mysql_cursor.execute(""" 
+    #     SELECT id_formula FROM Historial WHERE id_usuario = %s 
+    #     ORDER BY RAND()
+    #     LIMIT %s
+    # """, (current_user.id, remaining))
+
     mysql_cursor.execute(""" 
-        SELECT id_formula FROM Historial WHERE id_usuario = %s 
-        ORDER BY RAND()
-        LIMIT %s
-    """, (current_user.id, remaining))
+    SELECT id_formula FROM Formula WHERE eliminada = 0
+    ORDER BY RAND()
+    LIMIT %s
+    """, (remaining))
 
     raw_result = mysql_cursor.fetchall()
+
+    print(f'Resultado obtenido [{remaining} formulas extra]:')
+    print(raw_result)
 
     if not raw_result:
         return
