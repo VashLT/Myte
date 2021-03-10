@@ -63,43 +63,64 @@
     font-weight: 500; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\0000378}}
-.container-add-view {
+.container-view--images {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+  margin: 0;
+  align-items: center; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\0000384}}
+  .container-view--images h1 {
+    font-size: 30px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\0000390}}
+.container-images {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
   align-items: center;
   justify-content: space-evenly; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\0000391}}
-  .container-input--many {
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003100}}
+  .container-add-view {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: row-reverse;
     width: 100%;
-    max-width: 100%;
-    max-height: 40px; }
+    height: 100%;
+    align-items: center;
+    justify-content: space-evenly; }
 
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003101}}
-    .container-datepicker {
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003113}}
+    .container-input--many {
       display: flex;
       flex-direction: row;
-      width: 45%; }
-      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003104}}
-      .container-datepicker label {
-        align-self: center;
-        color: #707070;
-        font-size: 12px;
-        width: 30%;
-        margin-right: 10px; }
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      max-height: 40px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003114}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003123}}
+      .container-datepicker {
+        display: flex;
+        flex-direction: row;
+        width: 45%; }
+        @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003126}}
+        .container-datepicker label {
+          align-self: center;
+          color: #707070;
+          font-size: 12px;
+          width: 30%;
+          margin-right: 10px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003136}}
 .container-hamburger {
   width: 16%;
   margin-left: 15px; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003119}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003141}}
   .container-flash {
     display: flex;
     position: absolute;
@@ -114,21 +135,21 @@
     overflow: auto;
     z-index: 4; }
 
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003134}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003156}}
     .container-search {
       display: flex;
       max-height: 100%;
       justify-content: center;
       align-content: center;
       align-items: center; }
-      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003139}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003161}}
       .container-search p {
         margin: 0;
         top: 50%;
         font-size: 25px;
         color: goldenrod; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003148}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003170}}
 .container-tags {
   position: absolute;
   z-index: 3;
@@ -145,7 +166,7 @@
   right: 0;
   justify-content: space-evenly;
   align-items: flex-end; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003170}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003192}}
   .container-tags div {
     display: flex;
     flex-direction: row;
@@ -157,55 +178,74 @@
     height: 20px;
     justify-content: center;
     align-items: center; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003182}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003204}}
     .container-tags div p {
       color: #643939;
       text-align: center;
       font-size: 10px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003192}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003214}}
 .container-add_formula, .container-add_script {
   transition: 300ms ease-in-out;
   height: 700px; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003198}}
-  .container-add_script {
-    transition: 300ms ease-in-out; }
-
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003203}}
-    .container-formulas {
-      padding: 20px 10px;
-      margin-top: 100px;
-      overflow-x: hidden;
-      left: 0;
-      right: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      align-items: flex-start; }
-
-      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003223}}
-      .container-formula, .augmented-formula {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-bottom: 0px;
-        margin-right: 20px;
-        background-color: whitesmoke;
-        width: 250px;
-        max-width: 250px;
-        height: 230px;
-        border-radius: 5px; }
-        @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003237}}
-        .container-formula:hover, :hover.augmented-formula {
-          cursor: pointer;
-          box-shadow: 0 2px 4px 0 #c0c0c0, 0 3px 8px 0 #c0bfbf; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003220}}
+  .container-script {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    align-items: center;
+    border-radius: 5px;
+    width: 600px;
+    height: auto;
+    background-color: whitesmoke; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003233}}
+    .container-script h3 {
+      font-size: 20px;
+      color: #1c1d2e;
+      margin-bottom: 20px; }
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003238}}
+      .container-script:hover {
+        box-shadow: 0 1px 3px 0 #e0dede, 0 1px 3px 0 #dbdada; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003244}}
+.container-add_script {
+  transition: 300ms ease-in-out; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003249}}
+  .container-formulas {
+    padding: 20px 10px;
+    margin-top: 100px;
+    overflow-x: hidden;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003272}}
+    .container-formula, .augmented-formula {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: 0px;
+      margin-right: 20px;
+      background-color: whitesmoke;
+      width: 250px;
+      max-width: 250px;
+      height: 230px;
+      border-radius: 5px; }
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003286}}
+      .container-formula:hover, :hover.augmented-formula {
+        cursor: pointer;
+        box-shadow: 0 2px 4px 0 #c0c0c0, 0 3px 8px 0 #c0bfbf; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003293}}
 .container-select {
   width: 100%;
   height: 40px;
@@ -213,13 +253,13 @@
   flex-direction: row;
   justify-content: space-between;
   vertical-align: middle; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003250}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003299}}
   .container-select p {
     color: #1d1d1d;
     font-size: 15px;
     top: 50%; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003258}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003307}}
 .container-stages {
   margin-bottom: 30px;
   display: flex;
@@ -227,7 +267,7 @@
   width: 100px;
   justify-content: space-evenly; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003266}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003315}}
   .form-register {
     border: none;
     overflow: auto;
@@ -237,18 +277,18 @@
     justify-content: center;
     align-items: center;
     width: 100%; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003276}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003325}}
     .form-register a {
       color: #67a5a7;
       font-size: 15px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003283}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003332}}
 .form-register--extra {
   width: 100%;
   height: 40%;
   background-color: #ffffff; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003289}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003338}}
   .augmented-formula {
     width: 100%;
     max-width: 100%;
@@ -256,11 +296,11 @@
     background-color: whitesmoke;
     margin-bottom: 10px;
     border-radius: 5px; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003298}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003347}}
     .augmented-formula p {
       font-size: 2vw; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003303}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003352}}
 .augmented-header {
   position: absolute;
   background-color: #476d79;
@@ -268,13 +308,13 @@
   top: 0;
   left: 0;
   width: 100%; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003309}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003358}}
   .augmented-header h1 {
     text-align: center;
     font-size: 30px;
     color: #d8d7d7; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003317}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003366}}
 .augmented-options {
   display: flex;
   flex-direction: row;
@@ -282,7 +322,7 @@
   justify-content: space-evenly;
   align-items: center; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003325}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003374}}
   .augmented-tags {
     display: flex;
     flex-direction: row;
@@ -292,7 +332,7 @@
     height: 10%;
     padding-left: 10px;
     padding-right: 10px; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003335}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003384}}
     .augmented-tags div {
       display: flex;
       flex-direction: row;
@@ -304,7 +344,7 @@
       height: 32px;
       justify-content: center;
       align-items: center; }
-      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003347}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\containers\.scss}line{font-family:\00003396}}
       .augmented-tags div p {
         color: #643939;
         text-align: center;
@@ -870,7 +910,7 @@ input.invalid, textarea.invalid {
     cursor: pointer; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003536}}
-.modal-formula {
+.modal-formula, .modal-image {
   z-index: 10;
   display: none;
   width: 800px;
@@ -882,12 +922,21 @@ input.invalid, textarea.invalid {
   position: fixed;
   justify-content: center; }
   @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003551}}
-  .modal-formula.active {
+  .modal-formula.active, .active.modal-image {
     display: flex;
     flex-direction: column;
     transform: translate(-50%, -50%) scale(1); }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003559}}
+.modal-image {
+  z-index: 10;
+  border: 5px; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003563}}
+  .modal-image img {
+    z-index: 10;
+    border: 5px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003570}}
 .overlay {
   z-index: 9;
   opacity: 0;
@@ -901,13 +950,13 @@ input.invalid, textarea.invalid {
   bottom: 0;
   position: fixed;
   pointer-events: none; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003574}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003585}}
   .overlay.active {
     opacity: 0.7;
     pointer-events: all;
     transition: 200ms ease-out; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003582}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003593}}
 .horizontal-bar {
   align-self: center;
   margin-left: -10px;
@@ -916,12 +965,12 @@ input.invalid, textarea.invalid {
   height: 1px;
   background-color: #ffffff; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003591}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003602}}
   .header {
     font-size: 30px;
     text-align: center;
     margin-top: 10px; }
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003594}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003605}}
     .header--underlined {
       padding-bottom: 3px;
       display: flex;
@@ -929,20 +978,20 @@ input.invalid, textarea.invalid {
       align-items: center;
       border: none;
       width: 100%; }
-      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003600}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003611}}
       .header--underlined h1 {
         font-size: 35px;
         color: #c57e63;
         margin-top: 20px;
         margin-bottom: 2px; }
-        @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003606}}
+        @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003617}}
         .header--underlined div {
           margin-top: 0;
           width: 80%;
           height: 1px horizontal bar width;
           background-color: #48506e; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003617}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003628}}
 .center-h {
   margin: 0;
   position: absolute;
@@ -950,7 +999,7 @@ input.invalid, textarea.invalid {
   margin-right: -50%;
   transform: translate(-50%, 0); }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003625}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003636}}
   .center-v {
     margin: 0;
     position: absolute;
@@ -958,7 +1007,7 @@ input.invalid, textarea.invalid {
     margin-right: -50%;
     transform: translate(0, -50%); }
 
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003633}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\rules\.scss}line{font-family:\00003644}}
     .center-full {
       margin: 0;
       position: absolute;
@@ -1036,7 +1085,7 @@ input.invalid, textarea.invalid {
     align-self: center; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\0000387}}
-.render-box {
+.render-box, .render-box--small {
   display: flex;
   flex-direction: column;
   margin-right: 100px;
@@ -1046,18 +1095,18 @@ input.invalid, textarea.invalid {
   justify-content: center;
   align-items: center; }
   @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\0000399}}
-  .render-box--header {
+  .render-box--header, --header.render-box--small {
     height: 10%;
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center; }
     @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003105}}
-    .render-box--header h3 {
+    .render-box--header h3, --header.render-box--small h3 {
       color: #d8d7d7;
       font-size: 20px; }
   @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003111}}
-  .render-box--content {
+  .render-box--content, --content.render-box--small {
     border-radius: 5px;
     width: 100%;
     height: 90%;
@@ -1067,23 +1116,113 @@ input.invalid, textarea.invalid {
     align-items: center;
     overflow-x: scroll; }
     @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003119}}
-    .render-box--content p {
+    .render-box--content p, --content.render-box--small p {
       font-size: 1.5vw; }
       @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003122}}
-      .render-box--content:hover {
+      .render-box--content:hover, --content:hover.render-box--small {
         box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003130}}
+.render-box--small {
+  width: 400px;
+  height: 300px; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003133}}
+  .render-box--small--content {
+    border-radius: 5px;
+    width: 100%;
+    height: 90%;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003141}}
+    .render-box--small--content p {
+      font-size: 1.2vw; }
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003144}}
+      .render-box--small--content:hover {
+        box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003152}}
 .input-formula {
   display: flex;
   flex-direction: column; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003132}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003154}}
   .input-formula p {
     color: #17172c;
     font-size: 20px;
     margin-bottom: 10px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003140}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003162}}
+.image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003169}}
+  .image-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    widht: 100%; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003174}}
+    .image-header h3 {
+      font-size: 20px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003180}}
+.image-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 80%; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003188}}
+  .image-content img {
+    background: no-repeat;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003194}}
+    .image-content:hover {
+      cursor: pointer; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003200}}
+.script-box {
+  display: flex;
+  flex-direction: row;
+  padding-left: 5%;
+  padding-right: 5%;
+  width: 430px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  background-color: #d8d7d7; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003213}}
+  .script-box p {
+    font-family: Helvetica, sans-serif;
+    font-weight: 600;
+    color: #4e4e61;
+    font-size: 18px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003222}}
+.input-vars {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+  margin-right: auto;
+  width: 100%;
+  min-width: 100%;
+  align-items: center;
+  align-content: center; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003234}}
+  .input-vars p {
+    font-size: 15px; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003240}}
 .input-latex {
   width: 300px;
   height: 200px;
@@ -1092,18 +1231,18 @@ input.invalid, textarea.invalid {
   max-height: 250px;
   max-width: 400px; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003149}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003249}}
   .float-return {
-    width: 200px;
-    height: 40px;
-    bottom: 60px;
+    width: 250px;
+    height: 45px;
+    bottom: 50px;
     margin: 0;
     position: absolute;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, 0); }
 
-    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003160}}
+    @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003260}}
     .input-script {
       width: 400px;
       max-width: 420px;
@@ -1112,7 +1251,7 @@ input.invalid, textarea.invalid {
       max-height: 150px;
       min-height: 50px; }
 
-      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003170}}
+      @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003270}}
       .option, .option--gray, .option--yellow, .option--skin, .option--green,
       .option--blue {
         text-align: center;
@@ -1125,51 +1264,51 @@ input.invalid, textarea.invalid {
         height: 30px;
         font-size: 25px;
         border-radius: 5px; }
-        @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003180}}
+        @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003280}}
         .option:hover, :hover.option--gray, :hover.option--yellow, :hover.option--skin,
         :hover.option--green, :hover.option--blue {
           cursor: pointer; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003186}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003286}}
 .option--gray {
   background-color: #464646; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003188}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003288}}
   .option--gray:hover {
     background-color: #383838; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003194}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003294}}
 .option--yellow {
-  background-color: #e4ee28; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003196}}
+  background-color: #dab833; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003296}}
   .option--yellow:hover {
-    background-color: #b8c021; }
+    background-color: #9e7c26; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003202}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003302}}
 .option--skin {
-  background-color: #eedad1; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003204}}
+  background-color: #784eb3; }
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003304}}
   .option--skin:hover {
-    background-color: #d1bfb7; }
+    background-color: #603f8f; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003210}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003310}}
 .option--green {
   background-color: #539643; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003212}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003312}}
   .option--green:hover {
     background-color: #3b692f; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003218}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003318}}
 .option--blue {
   background-color: #383e56; }
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003220}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003320}}
   .option--blue:hover {
     background-color: #2b2f42; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003226}}
+@media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003326}}
 .left {
   margin-right: auto; }
 
-  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003229}}
+  @media -sass-debug-info{filename{font-family:file\:\/\/C\:\\Users\\jose2\\Programming\\Python\\FLASK\\myte\\app\\static\\scss\\other\.scss}line{font-family:\00003329}}
   .right {
     margin-left: auto; }
 

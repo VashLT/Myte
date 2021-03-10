@@ -65,3 +65,8 @@ def get_id(cursor, table_name, id=None):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
+
+
+def format_path(path):
+    subpath = path.split("static")[-1][1:]
+    return subpath.replace("\\", "/")

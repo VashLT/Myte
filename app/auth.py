@@ -267,6 +267,7 @@ def add_history(formulas):
     """
         Insert into historial
     """
+    cur = mysql.get_db().cursor()
     for formula in formulas:
         cur.execute("""
             INSERT INTO Historial (id_usuario, id_formula, fecha_registro) VALUES (
