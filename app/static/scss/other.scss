@@ -115,6 +115,28 @@
   }
 }
 
+.render-box--small {
+  @extend .render-box;
+  width: 400px;
+  height: 300px;
+  &--content {
+    border-radius: $btn-radius;
+    width: 100%;
+    height: 90%;
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    & p {
+      font-size: 1.2vw;
+    }
+    &:hover {
+      box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf;
+    }
+  }
+}
+
 .input-formula {
   display: flex;
   flex-direction: column;
@@ -122,6 +144,84 @@
     color: rgb(23, 23, 44);
     font-size: 20px;
     margin-bottom: 10px;
+  }
+}
+
+.image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  widht: 100%;
+  & h3 {
+    font-size: 20px;
+  }
+}
+
+.image-content {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 40%;
+  height: 80%;
+  & img {
+    background: no-repeat;
+    border-radius: $btn-radius;
+    width: 100%;
+    height: 100%;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.script-box {
+  display: flex;
+  flex-direction: row;
+
+  padding-left: 5%;
+  padding-right: 5%;
+
+  width: 430px;
+  max-width: 100%;
+  height: auto;
+
+  border-radius: $btn-radius;
+  background-color: $bg-color;
+
+  & p {
+    font-family: Helvetica, sans-serif;
+    font-weight: 600;
+    color: rgb(78, 78, 97);
+    font-size: 18px;
+  }
+}
+
+.input-vars {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+  margin-right: auto;
+
+  width: 100%;
+  min-width: 100%;
+
+  align-items: center;
+  align-content: center;
+
+  & p {
+    font-size: 15px;
   }
 }
 
@@ -135,9 +235,9 @@
 }
 
 .float-return {
-  width: 200px;
-  height: 40px;
-  bottom: 60px;
+  width: 250px;
+  height: 45px;
+  bottom: 50px;
   margin: 0;
   position: absolute;
   left: 50%;
@@ -181,17 +281,17 @@
 
 .option--yellow {
   @extend .option;
-  background-color: rgb(228, 238, 40);
+  background-color: rgb(218, 184, 51);
   &:hover {
-    background-color: rgb(184, 192, 33);
+    background-color: rgb(158, 124, 38);
   }
 }
 
 .option--skin {
   @extend .option;
-  background-color: $myte-skin;
+  background-color: rgb(120, 78, 179);
   &:hover {
-    background-color: #d1bfb7;
+    background-color: rgb(96, 63, 143);
   }
 }
 

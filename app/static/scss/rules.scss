@@ -546,6 +546,17 @@ textarea.invalid {
   }
 }
 
+.modal-image {
+  @extend .modal-formula;
+  z-index: 10;
+  border: $btn-radius;
+
+  & img {
+    z-index: 10;
+    border: $btn-radius;
+  }
+}
+
 .overlay {
   z-index: 9;
 

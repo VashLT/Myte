@@ -157,6 +157,14 @@ class Script(db.Model):
         return result
 
 
+class Categoria(db.Model):
+    __tablename__ = "categoria"
+    id = db.Column('id_categoria', db.Integer, primary_key=True)
+    id_categoriapadre = db.Column(db.Integer, db.ForeignKey(
+        'categoria.id_categoria'), nullable=True)
+    nombre = db.Column()
+
+
 class Rol(db.Model):
     __tablename__ = 'rol'
     id = db.Column("id_rol", db.Integer, primary_key=True)

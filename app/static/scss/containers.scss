@@ -71,6 +71,28 @@ $login-form-width: 700px;
   }
 }
 
+.container-view--images {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  align-items: center;
+  & h1 {
+    font-size: 30px;
+  }
+}
+
+.container-images {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 .container-add-view {
   display: flex;
   flex-direction: row-reverse;
@@ -191,6 +213,30 @@ $login-form-width: 700px;
   height: 700px;
 }
 
+.container-script {
+  display: flex;
+  flex-direction: column;
+
+  // justify-content: center;
+  margin: 0;
+  align-items: center;
+
+  border-radius: $btn-radius;
+
+  width: 600px;
+  height: auto;
+  background-color: whitesmoke;
+
+  & h3 {
+    font-size: 20px;
+    color: rgb(28, 29, 46);
+    margin-bottom: 20px;
+  }
+  &:hover {
+    box-shadow: 0 1px 3px 0 #e0dede, 0 1px 3px 0 #dbdada;
+  }
+}
+
 .container-add_script {
   @extend .container-add_formula;
   transition: 300ms ease-in-out;
@@ -214,6 +260,9 @@ $login-form-width: 700px;
 
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+.container-run {
 }
 
 .container-formula {

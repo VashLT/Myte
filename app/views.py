@@ -166,6 +166,8 @@ def add_image(id_formula):
     post_data = request.form
 
     if "return_home" in post_data:
+        if Cache.active:  # is creating a formula from scratch
+            flash("Formulada creada exitosamente!", category="success")
         return redirect(url_for("views.home"))
 
     if "completed" in post_data:
@@ -179,6 +181,7 @@ def add_image(id_formula):
             id = utils.get_id(mysql_cursor, "imagen")
             for file in uploaded_files:
                 filename = secure_filename(file.filename)
+                # Path to images
                 path = os.path.join(
                     Config.UPLOAD_FOLDER, "formulas", id_formula)
                 if not os.path.exists(path):
@@ -194,7 +197,7 @@ def add_image(id_formula):
                 db.session.add(img)
                 db.session.commit()
 
-            flash(f"added {len(uploaded_files)} image(s) successfully",
+            flash(f"Se agregaron {len(uploaded_files)} imagen(es) exitosamente!",
                   category="success")
 
             if Cache.active:
@@ -231,9 +234,10 @@ def add_script(id_formula):
     sanitized_script = sanitize_script(script_body, script_vars)
 
     if sanitized_script is None:
-        flash("Invalid Script!, remember to only use math related code", category="warning")
+        flash("Invalid Script!, remember to only use math related code",
+              category="warning")
         return render_template("myte/add_script.html", formula=formula)
-    
+
     script_body, script_vars = sanitized_script
 
     # Agregar script a base de datos
@@ -243,15 +247,35 @@ def add_script(id_formula):
     variables = script_vars
 
     script = Script(
-        id = id_script,
-        id_formula = id_formula,
-        contenido = content,
-        variables_script = variables
+        id=id_script,
+        id_formula=id_formula,
+        contenido=content,
+        variables_script=variables
     )
 
     db.session.add(script)
     db.session.commit()
-    
+
+    if Cache.active:  # is creating a formula from scratch
+        flash("Formulada creada exitosamente!", category="success")
+
+    return redirect(url_for("views.home"))
+
+
+@views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
+@views.route('/home/delete/<id_formula>', methods=["POST", "GET"])
+@login_required
+def formula_script(id_formula):
+    formula = Formula.query.get(int(id_formula))
+    variables = formula.script.variables_script
+    if request.method == "GET":
+        return render_template("myte/run_script.html", formula=formula, variables=variables)
+    if "return_home" in request.form:
+        return redirect(url_for("views.home"))
+    post_data = request.form
+    input_vars = post_data["input_vars"]
+    result = formula.script.run_script(input_vars)
+    return render_template("myte/run_script.html", formula=formula, variables=variables, result=result)
 
 
 @views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
@@ -277,7 +301,15 @@ def formulas():
 @views.route('/home/images/<id_formula>')
 @login_required
 def formula_images(id_formula):
-    return render_template("myte/images.html")
+    formula = Formula.query.get(int(id_formula))
+    images = []
+    for image in formula.imagen:
+        name = os.path.basename(image.path)
+        images.append({
+            "nombre": name,
+            "path": utils.format_path(image.path)
+        })
+    return render_template("myte/images.html", formula=formula, images=images)
 
 
 def load_formulas(cant_max=20):
@@ -327,7 +359,7 @@ def load_formulas(cant_max=20):
 @login_required
 def premium_account():
 
-        return render_template("myte/premium.html")
+    return render_template("myte/premium.html")
 
 
 def lookup_tags(id_formula):
@@ -352,12 +384,13 @@ def more_formulas(freq_formulas, ids, cant_max):
 
     remaining = cant_max - len(formulas)
     mysql_cursor.execute("""
-        SELECT id_formula FROM Historial WHERE id_usuario = %s
+        SELECT f.id_formula FROM Historial as h, Formula as f
+        WHERE h.id_usuario = %s AND f.eliminada = 0
         ORDER BY RAND()
         LIMIT %s
     """, (current_user.id, remaining))
 
-    # mysql_cursor.execute(""" 
+    # mysql_cursor.execute("""
     # SELECT id_formula FROM Formula WHERE eliminada = 0
     # ORDER BY RAND()
     # LIMIT %s
@@ -419,10 +452,10 @@ def sanitize_script(script_body, script_vars):
         if element in script_body:
             print('Elemento no permitido en script!')
             return None
-    
+
     return (script_body, script_vars)
-        
-    
+
+
 def get_formulas_by_user(user_id):
 
     mysql_cursor = mysql.get_db().cursor()
@@ -459,14 +492,14 @@ def get_formulas_by_user(user_id):
 
         if category not in organized_results:
             organized_results[category] = []
-        
+
         formula_instance = Formula(
-            id = result[1],
-            nombre = result[2],
-            codigo_latex = result[3],
-            fecha_creacion = result[4],
-            creada = result[5],
-            eliminada = result[6]
+            id=result[1],
+            nombre=result[2],
+            codigo_latex=result[3],
+            fecha_creacion=result[4],
+            creada=result[5],
+            eliminada=result[6]
         )
 
         organized_results[category].append(formula_instance)
