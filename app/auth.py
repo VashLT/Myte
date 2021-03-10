@@ -98,7 +98,7 @@ def register(stage):
             if not Cache.register:
                 return redirect(url_for(
                     'auth.register',
-                    stage=1
+                    stage='1'
                 ))
             try:
                 careers = utils.dictionarize(mysql_cursor, 'carrera')
@@ -114,15 +114,15 @@ def register(stage):
                 raise Exception(
                     "Expected user data from previous stage")
             user_data = Cache.register["user"]
+            post_data = request.form
 
             if 'back' in request.form:
                 return redirect(url_for(
                     'auth.register',
-                    stage=1
+                    stage='1'
                 ))
-
             # registration is valid and store in db
-            elif 'completed' in request.form and check_extra_data(request.form):
+            elif 'completed' in request.form and check_extra_data(post_data):
                 meta = MetaUsuario(
                     nombre_usuario=user_data["nombre_usuario"],
                     clave_encriptada=utils.encrypt(
@@ -134,18 +134,15 @@ def register(stage):
                 )
                 new_user.nombre = utils.format_name(
                     user_data["nombre"])
-                Cache.register = {}  # register end and cache is claned
                 try:
                     db.session.add(meta)
                     db.session.add(new_user)
                     db.session.commit()
                     login_user(new_user, remember=True)
                     mysql_cursor.execute("""
-                        UPDATE MyteVar SET valor= % s WHERE nombre="current_user" """, (meta.usuario.id))
+                        UPDATE MyteVar SET valor = %s WHERE nombre="current_user" """, (meta.usuario.id))
                     mysql.get_db().commit()
-                    flash("Welcome %s" %
-                          new_user.nombre_usuario, category='success')
-                    return redirect(url_for('views.home'))
+                    return redirect(url_for('auth.register', stage='3'))
                 except Exception as e:
                     print(
                         f'User registration failed!, printing exception: {e}')
@@ -154,8 +151,16 @@ def register(stage):
 
             return redirect(url_for(
                 'auth.register',
-                stage=2,
+                stage='2',
             ))
+
+    elif stage == '3':
+        flash("Welcome %s" %
+              new_user.nombre_usuario, category='success')
+        Cache.register = {}  # register end and cache is claned
+
+        return redirect(url_for('views.home'))
+
     else:
         return render_template('myte/404.html', title="Page not found", description="Stage argument failed.")
 

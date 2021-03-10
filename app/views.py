@@ -1,6 +1,8 @@
+from operator import imod
 import os
 import traceback
 
+# from scripter import Script
 
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 
@@ -8,7 +10,7 @@ from flask_login import login_required, current_user
 
 from config import MAX_FILES, Config
 
-from .models import Usuario, MetaUsuario, Rol, Tag, TagFormula, Imagen, Formula, Historial
+from .models import Usuario, MetaUsuario, Rol, Tag, TagFormula, Imagen, Formula, Historial, Script
 from . import db, mysql
 from . import utils
 
@@ -197,6 +199,7 @@ def add_image(id_formula):
             if Cache.active:
                 return redirect(url_for("views.add_script", id_formula=id_formula))
 
+        Cache.active = False
         return redirect(url_for("views.home"))
 
     return render_template("myte/add_images.html", formula=formula)
@@ -217,9 +220,37 @@ def add_script(id_formula):
     post_data = request.form
 
     if "return_home" in post_data:
+        Cache.active = False
         return redirect(url_for("views.home"))
-    print(post_data)
-    print(request.files)
+
+    # Ajuste de script
+    script_body = post_data['script']
+    script_vars = post_data['variables']
+
+    sanitized_script = sanitize_script(script_body, script_vars)
+
+    if sanitized_script is None:
+        flash("Invalid Script!, remember to only use math related code", category="warning")
+        return render_template("myte/add_script.html", formula=formula)
+    
+    script_body, script_vars = sanitized_script
+
+    # Agregar script a base de datos
+
+    id_script = utils.get_id(mysql_cursor, "script")
+    content = script_body
+    variables = script_vars
+
+    script = Script(
+        id = id_script,
+        id_formula = id_formula,
+        contenido = content,
+        variables_script = variables
+    )
+
+    db.session.add(script)
+    db.session.commit()
+    
 
 
 @views.route('/home/delete', methods=["POST", "GET"], defaults={"id_formula": None})
@@ -248,12 +279,6 @@ def formula_images(id_formula):
     return render_template("myte/images.html")
 
 
-@views.route('/home/images/<id_formula>')
-@login_required
-def formula_script(id_formula):
-    return render_template("myte/script.html")
-
-
 def load_formulas(cant_max=20):
     mysql_cursor = mysql.get_db().cursor()
     memo_id = set()
@@ -263,6 +288,7 @@ def load_formulas(cant_max=20):
     """, (current_user.id, cant_max))
     formulas = []
     raw_result = mysql_cursor.fetchall()
+    print(raw_result)
     if raw_result:
         for record in raw_result:
             id = int(record[0])
@@ -290,8 +316,17 @@ def load_formulas(cant_max=20):
         print('Agregando formulas . . .')
         formulas = more_formulas(formulas, memo_id, cant_max)
     print(f"Se encontraron las sig. formulas:")
-    [print(formula) for formula in formulas]
+
+    if formulas:
+        [print(formula) for formula in formulas]
     return formulas
+
+
+@views.route('/home/premium')
+@login_required
+def premium_account():
+
+        return render_template("myte/premium.html")
 
 
 def lookup_tags(id_formula):
@@ -315,22 +350,22 @@ def more_formulas(freq_formulas, ids, cant_max):
     mysql_cursor = mysql.get_db().cursor()
 
     remaining = cant_max - len(formulas)
-    # mysql_cursor.execute(""" 
-    #     SELECT id_formula FROM Historial WHERE id_usuario = %s 
-    #     ORDER BY RAND()
-    #     LIMIT %s
-    # """, (current_user.id, remaining))
+    mysql_cursor.execute("""
+        SELECT id_formula FROM Historial WHERE id_usuario = %s
+        ORDER BY RAND()
+        LIMIT %s
+    """, (current_user.id, remaining))
 
-    mysql_cursor.execute(""" 
-    SELECT id_formula FROM Formula WHERE eliminada = 0
-    ORDER BY RAND()
-    LIMIT %s
-    """, (remaining))
+    # mysql_cursor.execute(""" 
+    # SELECT id_formula FROM Formula WHERE eliminada = 0
+    # ORDER BY RAND()
+    # LIMIT %s
+    # """, (remaining))
 
     raw_result = mysql_cursor.fetchall()
 
-    print(f'Resultado obtenido [{remaining} formulas extra]:')
-    print(raw_result)
+    # print(f'Resultado obtenido [{remaining} formulas extra]:')
+    # print(raw_result)
 
     if not raw_result:
         return
@@ -356,3 +391,39 @@ def more_formulas(freq_formulas, ids, cant_max):
         })
         memo_id.add(id)
     return formulas
+
+def run_script(script_body, script_vars, script_values):
+
+    return Script(script_body, script_vars).run_script(script_values)
+
+
+def sanitize_script(script_body, script_vars):
+
+    script_vars = script_vars.replace(' ', '')
+
+    processed_vars = script_vars.split(',')
+
+    for var in processed_vars:
+        if var[0].isnumeric():
+            print('variable no permitida en script!')
+            return None
+
+    # script_dict = {var.split('=')[0] : var.split('=')[1] for var in script_vars}
+    # var_dict = {}
+
+    # for element in script_vars:
+
+    #     elements = element.split('=')
+    #     var_dict[elements[0]] = elements[1]
+
+    blacklisted_code = ['os.', 'system.', '__', '\\']
+    for element in blacklisted_code:
+
+        if element in script_body:
+            print('Elemento no permitido en script!')
+            return None
+    
+    return (script_body, script_vars)
+        
+    
+    
