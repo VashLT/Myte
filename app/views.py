@@ -363,3 +363,20 @@ def more_formulas(freq_formulas, ids, cant_max):
         })
         memo_id.add(id)
     return formulas
+
+def add_script(script_string, script_vars):
+
+    # Las variables se colocaran como a=1, n=2, b=3 y asi
+    script_vars = script_vars.replace(' ', '')
+
+    blacklisted_code = ['os.', 'system.', '__', r'\n']
+
+    
+    for element in blacklisted_code:
+
+        if element in script_string:
+            print('Elemento no permitido en string!')
+            return None
+        
+    
+    
