@@ -38,7 +38,7 @@ class Usuario(db.Model, UserMixin):
         if self.id_rol == 1:
             return False
         return True
-
+      
 
 class MetaUsuario(db.Model):
     __tablename__ = 'metausuario'
@@ -162,4 +162,4 @@ class Rol(db.Model):
         backref='rol',
         lazy=True, 
         uselist=False
-        )
+    )

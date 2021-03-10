@@ -447,7 +447,7 @@ def get_formulas_by_user(user_id):
         AND i.id_formula = f.id_formula
         AND f.eliminada = 0
         AND id_categoriapadre IS NULL
-        AND i.ud_usuario = %s
+        AND i.id_usuario = %s
     """, (user_id))
 
     query_results = mysql_cursor.fetchall()
