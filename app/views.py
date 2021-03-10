@@ -316,13 +316,15 @@ def load_formulas(cant_max=20):
         print('Agregando formulas . . .')
         formulas = more_formulas(formulas, memo_id, cant_max)
     print(f"Se encontraron las sig. formulas:")
-    [print(formula) for formula in formulas]
+
+    if formulas:
+        [print(formula) for formula in formulas]
     return formulas
 
 
 @views.route('/home/premium')
 @login_required
-def premium_first():
+def premium_account():
 
         return render_template("myte/premium.html")
 
