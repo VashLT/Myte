@@ -525,3 +525,63 @@ def get_formulas_by_user(user_id):
             }
     print(cat_dict)
     return cat_dict
+
+# IDS = [4, 11, 17]
+#     formulas = []
+#     for id in IDS:
+#         cur.execute("""
+#             SELECT id_formula FROM CategoriaFormula
+#             WHERE id_categoria = %s
+#         """, id)
+#         raw_result = cur.fetchall()
+#         if not raw_result:
+#             continue
+#         for record in raw_result:
+#             id = int(record[0])
+#             formulas.append(
+#                 Formula.query.get(id)
+#             )
+
+def get_default_formulas():
+    cur = mysql.get_db().cursor()
+    cur.execute("""
+        SELECT
+        c.nombre
+        f.id_formula
+        FROM 
+        categoria as c,
+        formula as f,
+        categoriaformula as cf
+        WHERE
+        cf.id_formula = f.id_formula
+        AND cf.id_categoria = c.id_categoria
+        AND f.creada = 0
+        AND f.eliminada = 0
+    """)
+    raw_result = cur.fetchall()
+    print(raw_result)
+    it = 0
+    cat_dict = {}
+    for category, id_formula in raw_result:
+        cat_dict.setdefault(category, [])
+        cat_dict[category].append(id_formula)
+
+    for category, id_formulas in cat_dict.items():
+        for index, id in enumerate(id_formulas):
+            formula = Formula.query.get(int(id))
+            latex = formula.codigo_latex
+            if r"\n" in latex:
+                latex = utils.format_newline(latex)
+            tags = lookup_tags(int(id))
+            if tags:
+                tags = utils.format_tags(tags)
+            cat_dict[category][index] = {
+                "id": int(id),
+                "nombre": formula.nombre,
+                "codigo_latex": latex,
+                "tags": tags,
+                "images": formula.imagen,
+                "script": formula.script
+            }
+    print(cat_dict)
+    return cat_dict
