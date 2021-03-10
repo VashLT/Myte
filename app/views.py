@@ -1,6 +1,8 @@
+from operator import imod
 import os
 import traceback
 
+from scripter import Script
 
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 
@@ -365,19 +367,32 @@ def more_formulas(freq_formulas, ids, cant_max):
         memo_id.add(id)
     return formulas
 
-def add_script(script_string, script_vars):
+def run_script(script_body, script_vars, script_values):
+
+    return Script(script_body, script_vars).run_script(script_values)
+
+
+def sanitize_script(script_body, script_vars):
 
     # Las variables se colocaran como a=1, n=2, b=3 y asi
     script_vars = script_vars.replace(' ', '')
+    script_vars = script_vars.split(',')
+    # script_dict = {var.split('=')[0] : var.split('=')[1] for var in script_vars}
+    # var_dict = {}
 
-    blacklisted_code = ['os.', 'system.', '__', r'\n']
+    # for element in script_vars:
 
-    
+    #     elements = element.split('=')
+    #     var_dict[elements[0]] = elements[1]
+
+    blacklisted_code = ['os.', 'system.', '__', '\\']
     for element in blacklisted_code:
 
-        if element in script_string:
-            print('Elemento no permitido en string!')
+        if element in script_body:
+            print('Elemento no permitido en script!')
             return None
+    
+    return (script_body, script_vars)
         
     
     

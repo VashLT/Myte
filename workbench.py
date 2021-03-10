@@ -15,3 +15,5 @@ print(result)
 # b = 10
 
 # print(sum([a**n / math.factorial(n) for n in range(b)]))
+
+print(eval(str(eval('1 + 1'))))

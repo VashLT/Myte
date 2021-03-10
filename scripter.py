@@ -2,31 +2,25 @@ import math
 
 class Script:
 
-    def __init__(self, var_names, code):
-
-        self.var_dict = {}
-
-        for i, name in enumerate(var_names):
-            self.var_dict[name] = i
-        
+    def __init__(self, code, var_names):
+        self.var_list = var_names
         self.code = code
 
-    def run_script(self, raw_input):
 
-        # Limit input length to ensure 
-        dict_length = len(self.var_dict)
-        
+    def run_script(self, raw_input):
+       
         # Converts string of inputs into integers, also prevents bad code execution
         raw_vars = raw_input.split(',')
         raw_values = [float(var) for var in raw_vars]
+        var_dict = {}
 
-        for i, name in enumerate(self.var_dict):
-            self.var_dict[name] = raw_values[i]
+        # Generates var_dict for eval function (AKA locals)
+        for i, name in enumerate(self.var_list):
+            var_dict[name] = raw_values[i]
 
-        local_dict = dict(self.var_dict)
-        local_dict.update({'math' : math})
+        var_dict.update({'math' : math})
 
-        print(local_dict)
-        result = eval(self.code, local_dict)
+        print(var_dict)
+        result = eval(self.code, var_dict)
         
         return result
