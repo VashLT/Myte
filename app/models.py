@@ -46,7 +46,9 @@ class Usuario(db.Model, UserMixin):
 
             if result.count == 0:
                 instance = UsuarioTarjeta(
-                    # parametros
+                    id_tarjetacredito = card_id,
+                    id_usuario = self.id,
+                    valor = pay_amount
                 )
                 db.session.add(instance)
             
@@ -55,8 +57,7 @@ class Usuario(db.Model, UserMixin):
                 relation.value += pay_amount
                 db.session.commit()
             
-            
-
+        
         elif pay_method == 'pin':
             result = PinPago.query.filter(PinPago.ref_pago.isnot(None)).filter_by(id_usuario=self.id).filter_by(valor=pay_amount)
 
