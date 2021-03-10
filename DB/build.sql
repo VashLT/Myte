@@ -34,7 +34,7 @@ CREATE TABLE PinPago(
     valor DOUBLE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     ref_pago INT NOT NULL,
-    pin INT NOT NULL
+    pin VARCHAR(30) NOT NULL
 );
 CREATE TABLE UsuarioTarjeta(
     id_tarjetacredito INT,
