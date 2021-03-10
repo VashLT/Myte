@@ -6,6 +6,8 @@ from sqlalchemy.sql import func
 # pylint: disable=bad-option-value
 # pylint: disable=no-member
 
+import math
+
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuario'
@@ -122,10 +124,42 @@ class Script(db.Model):
     contenido = db.Column(db.String(1000), nullable=False)
     variables_script = db.Column(db.String(100))
 
+    def get_var_list(self):
+        return self.variables_script.replace(' ', '').split(',')
+
+    def run_script(self, values):
+
+        processed_values = values.replace(' ', '').split(',')
+
+        try:
+            value_list = [float(value) for value in processed_values]
+        
+        except:
+            print('Invalid value!, returning nothing . . .')
+            return None
+
+        vars = self.get_var_list()
+
+        var_dict = {}
+
+        # Generates var_dict for eval function (AKA locals)
+        for i, name in enumerate(vars):
+            var_dict[name] = value_list[i]
+
+        var_dict.update({'math' : math})
+
+        result = eval(self.contenido, var_dict)
+
+        return result
+
 
 class Rol(db.Model):
     __tablename__ = 'rol'
     id = db.Column("id_rol", db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
-    usuario = db.relationship('Usuario', backref='rol',
-                              lazy=True, uselist=False)
+    usuario = db.relationship(
+        'Usuario', 
+        backref='rol',
+        lazy=True, 
+        uselist=False
+        )
