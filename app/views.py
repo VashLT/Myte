@@ -48,6 +48,38 @@ def home():
     return render_template("myte/home.html", user=current_user, formulas=formulas)
 
 
+@views.route('/liveupdate', methods=["POST", "GET"])
+def liveupdate():
+    id = request.form.get("id_formula")
+    cur = mysql.get_db().cursor()
+    try:
+        cur.execute("""
+            SELECT * FROM Indice
+            WHERE id_usuario = %s AND id_formula = %s 
+        """, (current_user.id, int(id)))
+        if not cur.fetchall():
+            cur.execute("""
+                INSERT INTO Indice (id_usuario, id_formula, numero_usos) VALUES (
+                    %s, %s, 1
+                )
+            """, (current_user.id, int(id)))
+        else:
+            cur.execute("""
+                UPDATE Indice SET numero_usos = numero_usos + 1 
+                WHERE id_usuario = %s AND id_formula = %s
+            """, (current_user.id, int(id)))
+        mysql.get_db().commit()
+        return "increased!!"
+    except Exception as ex:
+        mysql.get_db().rollback()
+        return render_template(
+            'myte/404.html',
+            title="Internal error",
+            description="failed at stage 2",
+            trace=traceback.format_exc()
+        )
+
+
 @views.route('/home/add', methods=["POST", "GET"], defaults={"stage": "1"})
 @views.route('/home/add/<stage>', methods=["POST", "GET"])
 @login_required

@@ -70,14 +70,21 @@ $(document).ready(function () {
             latex
         });
     });
-        
-
 
     $formulas.on("click", function () {
         var $clicked_formula_id = $(this).attr('id');
         var $modal = $("#modal" + $clicked_formula_id.substring(1));
         $modal.addClass("active");
         $overlay.addClass("active");
+        // live update of indice when click on formula
+        $.ajax({
+            method: "post",
+            url: "/liveupdate",
+            data: { id_formula: $clicked_formula_id.substring(1) },
+            success: function (response) {
+                console.log(response);
+            }
+        });
     })
     
     if ($messages.length) {
@@ -118,8 +125,6 @@ $(document).ready(function () {
             }
         }
     })
-
-
 
     $(".dismissible").click(function () {
         var $to_remove = $(this).parent('div');
@@ -167,8 +172,6 @@ $(document).ready(function () {
     $side_bar.click(function () {
         event.stopPropagation();
     })
-
-
 
     $("body").click(function () {
         if ($side_bar.hasAttr("state") && $side_bar.attr("state") === "active") {
