@@ -1,5 +1,12 @@
 DROP DATABASE IF EXISTS Myte;
 CREATE DATABASE Myte;
+
+DROP DATABASE IF EXISTS dj_db;
+CREATE USER 'dj_user'@'%' IDENTIFIED BY 'django';
+GRANT ALL ON myte.* TO 'dj_user'@'%';
+GRANT ALL ON dj_db.* TO 'dj_user'@'%';
+FLUSH PRIVILEGES;
+
 USE Myte;
 -- creates
 CREATE TABLE Usuario(
