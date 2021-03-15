@@ -1,0 +1,7 @@
+[client]
+database = myte
+host = localhost
+user = dj_user
+password = django
+port = 3306
+default-character-set = utf8
