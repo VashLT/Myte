@@ -1,13 +1,16 @@
-DROP DATABASE IF EXISTS Myte;
-CREATE DATABASE Myte;
+DROP DATABASE IF EXISTS myte;
+CREATE DATABASE myte CHARACTER SET utf8;
 
 DROP DATABASE IF EXISTS dj_db;
+CREATE DATABASE dj_db CHARACTER SET utf8;
+
+DROP USER IF EXISTS 'dj_user'@'%';
 CREATE USER 'dj_user'@'%' IDENTIFIED BY 'django';
 GRANT ALL ON myte.* TO 'dj_user'@'%';
 GRANT ALL ON dj_db.* TO 'dj_user'@'%';
 FLUSH PRIVILEGES;
 
-USE Myte;
+USE myte;
 -- creates
 CREATE TABLE Usuario(
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
