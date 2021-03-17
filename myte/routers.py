@@ -13,7 +13,7 @@ class DefaultRouter:
         Attempts to read auth and contenttypes models go to auth_db.
         """
         if model._meta.app_label in self.route_app_labels:
-            return 'auth_db'
+            return 'default'
         return None
 
     def db_for_write(self, model, **hints):
