@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 
-from django.contrib import messages #flashing
+from django.contrib import messages  # flashing
 
 from .models import User, MetaUser, Rol
+from .forms import DateForm
 
 # Create your views here.
 
 
 def login(request):
     if request.method == "POST":
-        details = request.form
+        print(request.POST)
+        details = request.POST
         name = details["username"]
         pw = details["password"]
 
@@ -29,4 +31,10 @@ def login(request):
 
 
 def register(request):
-    return render(request, 'mauth/register.html')
+    df = DateForm()
+    if request.method == "POST":
+        print(request.POST)
+    context = {
+        "date_form": df
+    }
+    return render(request, 'mauth/register.html', context)
