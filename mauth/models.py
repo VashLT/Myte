@@ -29,8 +29,8 @@ class Carrera(models.Model):
 
 
 class Interes(models.Model):
-    id_usuario = models.IntegerField(primary_key=True)
-    id_carrera = models.IntegerField()
+    id_usuario = models.IntegerField(primary_key=True, db_column="id_usuario")
+    id_carrera = models.IntegerField(db_column="id_carrera")
 
     class Meta:
         managed = False
@@ -55,10 +55,10 @@ class MetaUser(models.Model):
 
 class User(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_usuario')
-    id_rol = models.OneToOneField(
-        Rol, on_delete=models.PROTECT, verbose_name="Rol del usuario")
+    rol = models.OneToOneField(
+        Rol, on_delete=models.PROTECT, verbose_name="Rol del usuario", db_column="id_rol")
     nombre_usuario = models.OneToOneField(
-        MetaUser, on_delete=models.CASCADE, verbose_name="Meta información del usuario")
+        MetaUser, on_delete=models.CASCADE, verbose_name="Meta información del usuario", db_column="nombre_usuario")
     nombre = models.CharField(max_length=100, null=False)
     fecha_registro = models.DateField(auto_now=True)
     email = models.CharField(max_length=120)
