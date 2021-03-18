@@ -3,3 +3,4 @@ django_compressor==2.4
 django-libsass==0.8
 pymysql==1.0.2
 mysqlclient==2.0.3
+django-widget-tweaks==1.4.8

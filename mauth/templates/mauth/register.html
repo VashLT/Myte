@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}
 Register
 {% endblock %}
 
-{% block background %}id="body-register"{% endblock %}
+{% block media %}
+<!-- Date picker media -->
+{{ form.media }}
+{% endblock %}
+
+
+{% block background %}id="register"{% endblock %}
 
 {% block body %}
 <div class="container-stages center-h" style="margin-top: 60px;">
@@ -24,46 +31,50 @@ Register
             <img src="{% static 'images/logo.png' %}" style="height:100px;width:100px;" title="Myte">
             <h2 style="color:#212121;">Tu gestor de formulas</h2>
         </div>
+        {{ form.non_field_errors }}
         <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/user_white.png' %}">
             </div>
-            <input type="text" id="username" name="username" placeholder="Nombre de usuario" autocomplete="off" class="input" />
+            {{ form.username|add_class:"input"|attr:"placeholder:Nombre de usuario" }}
         </div>
         <div class="container-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/name_white.png' %}" style="height:14px;">
             </div>
-            <input type="text" id="name" name="name" placeholder="Nombre completo" autocomplete="off" class="input" />
+            {{ form.fullname|add_class:"input"|attr:"placeholder:Nombre completo" }}
         </div>
         <div class="container-input--many" style="margin-bottom:5%; justify-content: space-between;">
             <div class="container-input" style="width:50%;">
                 <div class="icon-holder">
                     <img src="{% static 'images/email_white.png' %}" style="height:14px;">
                 </div>
-                <input type="text" id="email" name="email" placeholder="Enter email" autocomplete="off"
-                    class="input--small" style="width:100%;" />
+                {{ form.email|add_class:"input--small"|attr:"placeholder:Ingresar email"|attr:"style:width:100%;" }}
             </div>
             <div class="container-datepicker">
-                {{ date_form.date.label }} {{ date_form.date(class='datepicker', class_="datepicker" )}} {{date_form.hidden_tag()}}
+                {{ form.birthdate.label_tag }}
+                {{ form.birthdate|add_class:"datepicker" }}
             </div>
         </div>
         <div class="container-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/pw_white.png' %}">
             </div>
-            <input type="password" id="password1" name="password1" placeholder="Contraseña" autocomplete="new-password"
-                class="input" />
+            {{ form.pw1|add_class:"input"|attr:"placeholder:Contraseña" }}
         </div>
         <div class="container-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/pw_white.png' %}">
             </div>
-            <input type="password" id="password2" name="password2" placeholder="Re ingresar contraseña"
-                autocomplete="new-password" class="input" />
+            {{ form.pw2|add_class:"input"|attr:"placeholder:Re ingresar contraseña" }}
         </div>
-        <a href="%{ url 'mauth:login' %}" class="redirect" style="margin-top: 30px; align-self: center;">Ya tienes
-            una cuenta?</a>
+        <div class="container-input" style="width: 30%">
+            <button class="btn-submit--orange" id="next-btn" style="width: 100%;">Siguiente</button>
+        </div>
     </form>
+    <a href="%{ url 'mauth:login' %}" class="redirect" style="margin-top: 30px; align-self: center;">¿Ya tienes una cuenta?</a>
 </div>
 {% endblock %}
+
+
+
