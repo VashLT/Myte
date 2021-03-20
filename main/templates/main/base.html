@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/styles.scss' %}" media="screen" />
     {% endcompress %}
 
-    <title>{% block title %} Myte {% endblock %}</title>
+    <title>{% block title %}Myte{% endblock %}</title>
     <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -97,6 +97,8 @@
     {% endblock %}
 
     <script type=text/javascript src="{% static 'js/main.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
 </body>

@@ -366,10 +366,11 @@ textarea.invalid {
   }
 }
 
-.step {
+.stage {
   height: 15px;
   width: 15px;
-  margin: 0 2px;
+  margin-left: 15px;
+  margin-right: 15px;
   background-color: #aaa9a9;
   border: none;
   border-radius: 50%;
@@ -377,11 +378,11 @@ textarea.invalid {
   opacity: 0.5;
 }
 
-.step.active {
+.stage.active {
   opacity: 1;
 }
 
-.step.finish {
+.stage.finish {
   background-color: #a4f39d;
 }
 
@@ -398,14 +399,6 @@ textarea.invalid {
   &:hover {
     background-color: $myte-orange_b;
   }
-}
-
-.step.active {
-  opacity: 1;
-}
-
-.step.finish {
-  background-color: #4caf50;
 }
 
 .text-holder {

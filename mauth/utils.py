@@ -10,6 +10,11 @@ def validate_username(UserClass, username):
         return True
 
 
+def display(ModelClass):
+    print(f"Listing below data from {ModelClass.__name__}")
+    [print(obj) for obj in ModelClass.objects.all()]
+
+
 def format_name(name):
     return " ".join([
         name_part.capitalize()
@@ -26,7 +31,6 @@ def encrypt(password):
 
 
 def is_email(email):
-    print(type(email))
     return re.match(
         r"[A-Za-z0-9.]+@[A-Za-z.]+[A-Za-z]$",
         email
@@ -47,3 +51,37 @@ def format_tags(tags):
         block = "-".join(tag.nombre.split(" "))
         fmt.append("".join(["#", block]))
     return fmt
+
+
+def populate_cache(POST, cache, data_map):
+    """
+        translates keys in POST to Model fields based on data_map dict
+        args:
+            POST: QueryDict
+            cache: dict
+            data_map: dict-like {
+                'key': 
+                {
+                'sub_key': [value, func], 
+                'sub_key2': value ...}
+                }
+    """
+    for key, value in data_map.items():
+        cache.setdefault(key, {})
+        temp_dict = {}
+        for key_map, value_map in value.items():
+            if isinstance(value_map, list):
+                new_key = value_map[0]
+                func = value_map[1]
+                val = func(POST[key_map])
+            else:
+                new_key = value_map
+                val = POST[key_map]
+            temp_dict.setdefault(new_key, val)
+        cache[key].update(temp_dict)
+
+
+def get_choices(Model):
+    return tuple([
+        (obj.id, obj.nombre) for obj in Model.objects.all()
+    ])

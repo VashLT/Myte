@@ -1,5 +1,5 @@
-$.getScript("./forms.js", function () { });
-$.getScript("./formulas.js", function() {});
+$.getScript("/static/js/forms.js", function () { });
+$.getScript("/static/js/formulas.js", function() {});
 
 
 $.fn.hasAttr = function (name) {

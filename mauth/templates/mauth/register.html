@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load filters %}
 
-{% block title %}
-Register
-{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block media %}
 <!-- Date picker media -->
@@ -12,26 +11,27 @@ Register
 {% endblock %}
 
 
-{% block background %}id="register"{% endblock %}
+{% block background %}class="reg"{% endblock %}
 
 {% block body %}
-<div class="container-stages center-h" style="margin-top: 60px;">
+<div class="container-stages" style="margin-top: 60px;">
     {% if stage == 1 %}
-    <span class="step active"></span>
-    <span class="step"></span>
+        <span class="stage active" value="1"></span>
+        <span class="stage" value="2"></span>
     {% else %}
-    <span class="step finish"></span>
-    <span class="step active"></span>
+        <span class="stage finish" value="1"></span>
+        <span class="stage active" value="2"></span>
     {% endif %}
 </div>
-<div class="container-register center-full">
-    <form method="POST" class="form" id="register-form" action="">
+<div class="container-register" id="reg-cont">
+    <form method="POST" class="form" id="reg-form" action="">
         {% csrf_token %}
         <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
             <img src="{% static 'images/logo.png' %}" style="height:100px;width:100px;" title="Myte">
             <h2 style="color:#212121;">Tu gestor de formulas</h2>
         </div>
         {{ form.non_field_errors }}
+        {% if stage == 1 %}
         <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/user_white.png' %}">
@@ -68,12 +68,31 @@ Register
             </div>
             {{ form.pw2|add_class:"input"|attr:"placeholder:Re ingresar contraseña" }}
         </div>
-        <div class="container-input" style="width: 30%">
-            <button class="btn-submit--orange" id="next-btn" style="width: 100%;">Siguiente</button>
+        {% else %}
+        <div class="container-select" style="margin-top: 40px;">
+            <p>¿Cuál es tu nivel educativo?</p>
+            {{ form.level|add_class:"drop-menu"|attr:"style:width:200px;"|default_option:"level"}}
+        </div>
+        <div class="container-select" style="margin-top: 30px; margin-bottom: 60px;">
+            <p>¿Qué carrera estudias o estás interesado?</p>
+            {{ form.career|add_class:"drop-menu"|attr:"style:width:200px;"|default_option:"career"}}
+        </div>
+        {% endif %}
+        <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
+            <div class="container-input" style="width: 30%; margin-left: 60px;">
+                <button class="btn-submit--orange" id="previous-btn" style="width: 100%;">Anterior</button>
+            </div>
+            <div class="container-input" style="width: 30%; margin-right: 60px;">
+                <button class="btn-submit--blue" id="next-btn" style="width: 100%;">Siguiente</button>
+            </div>
         </div>
     </form>
-    <a href="%{ url 'mauth:login' %}" class="redirect" style="margin-top: 30px; align-self: center;">¿Ya tienes una cuenta?</a>
+    <a href="{% url 'mauth:login' %}" class="redirect" style="margin-top: 30px; align-self: center;">¿Ya tienes una cuenta?</a>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type=text/javascript src="{% static 'js/register.js' %}"></script>
 {% endblock %}
 
 

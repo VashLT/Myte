@@ -1,5 +1,9 @@
 from django import template
 
+from django.utils.translation import gettext as _
+
+from django.utils.html import mark_safe
+
 register = template.Library()
 
 
@@ -27,3 +31,17 @@ def level2class(level):
     else:
         cat = "error"
     return body + cat
+
+
+@register.filter
+def default_option(body, name):
+    if name == 'career':
+        text = "Seleccionar carrera"
+    elif name == 'level':
+        text = "Nivel educativo"
+    else:
+        text = "Seleccionar"
+    tag = _('<option value="select">%(text)s</option>' % {'text': text})
+    split_body = str(body).split("\n")
+    split_body.insert(1, tag)
+    return mark_safe('\n'.join(split_body))

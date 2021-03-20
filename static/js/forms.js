@@ -43,24 +43,24 @@ $(document).ready(function () {
         }
     });
 
-    $("#next-btn").click(function () {
-        if ($("#register-form").length) {
-            if (validForm("register-form")) {
-                $("#register-form").submit();
-            }
-        } else if ($("#add-form").length) {
-            var $form = $("#add-form");
-            if (validForm("add-form")) {
-                $form.append('<input type="hidden" name="completed" />');
-                $form.submit();
-            }
-        } else if ($("#add-form--normal").length) {
-            var $form = $("#add-form--normal");
-            if (validForm("add-form--normal")) {
-                $form.append('<input type="hidden" name="completed" />');
-                $form.submit();
-            }
-        }
-    });
+    // $("#next-btn").click(function () {
+    //     if ($("#register-form").length) {
+    //         if (validForm("register-form")) {
+    //             $("#register-form").submit();
+    //         }
+    //     } else if ($("#add-form").length) {
+    //         var $form = $("#add-form");
+    //         if (validForm("add-form")) {
+    //             $form.append('<input type="hidden" name="completed" />');
+    //             $form.submit();
+    //         }
+    //     } else if ($("#add-form--normal").length) {
+    //         var $form = $("#add-form--normal");
+    //         if (validForm("add-form--normal")) {
+    //             $form.append('<input type="hidden" name="completed" />');
+    //             $form.submit();
+    //         }
+    //     }
+    // });
 
 });

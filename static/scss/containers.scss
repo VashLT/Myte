@@ -53,6 +53,8 @@ $login-form-width: 700px;
   background-color: #fff;
   border-radius: $btn-radius;
 
+  transition: all 0.5s linear;
+
   &:hover {
     box-shadow: 0 4px 8px 0 #e0dede, 0 6px 20px 0 #dbdada;
   }
@@ -415,10 +417,12 @@ $login-form-width: 700px;
 }
 
 .container-stages {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
-  width: 100px;
+  height: 30px;
+  width: auto;
+  align-items: center;
   justify-content: space-evenly;
 }
 
