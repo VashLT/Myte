@@ -8,7 +8,7 @@ def index(request):
     return render(request, "main/index.html")
 
 
-@login_required(login_url='mauth:login', redirect_field_name=settings.REDIRECT_FIELD_NAME)
+@login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
 def home(request):
     user = request.user
     formulas = None

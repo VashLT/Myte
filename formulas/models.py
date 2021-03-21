@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from django.db import models
 
 from mauth.models import User, Niveleducativo, Carrera
@@ -6,7 +8,7 @@ from mauth.models import User, Niveleducativo, Carrera
 class Categoria(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_categoria')
     id_categoriapadre = models.ForeignKey(
-        'self', models.DO_NOTHING, db_column='id_categoriapadre', blank=True, null=True)
+        'self', models.PROTECT, db_column='id_categoriapadre', blank=True, null=True)
     nombre = models.CharField(max_length=100)
 
     class Meta:
@@ -17,11 +19,11 @@ class Categoria(models.Model):
 class Recomendacion(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_recomendacion')
     id_categoria = models.ForeignKey(
-        Categoria, models.DO_NOTHING, db_column='id_categoria', blank=True, null=True)
+        Categoria, models.PROTECT, db_column='id_categoria', blank=True, null=True)
     id_niveleducativo = models.ForeignKey(
-        Niveleducativo, models.DO_NOTHING, db_column='id_niveleducativo', blank=True, null=True)
+        Niveleducativo, models.PROTECT, db_column='id_niveleducativo', blank=True, null=True)
     id_carrera = models.ForeignKey(
-        Carrera, models.DO_NOTHING, db_column='id_carrera', blank=True, null=True)
+        Carrera, models.PROTECT, db_column='id_carrera', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -54,9 +56,9 @@ class Formula(models.Model):
 class Historial(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_historial')
     id_usuario = models.ForeignKey(
-        User, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+        settings.AUTH_USER_MODEL, models.CASCADE, db_column='id_usuario', blank=True, null=True)
     id_formula = models.ForeignKey(
-        Formula, models.DO_NOTHING, db_column='id_formula', blank=True, null=True)
+        Formula, models.PROTECT, db_column='id_formula', blank=True, null=True)
     fecha_registro = models.DateField(blank=True, null=True)
 
     class Meta:
@@ -67,7 +69,7 @@ class Historial(models.Model):
 class Imagen(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_imagen')
     id_formula = models.ForeignKey(
-        Formula, models.DO_NOTHING, db_column='id_formula', blank=True, null=True)
+        Formula, models.CASCADE, db_column='id_formula', blank=True, null=True)
     path = models.CharField(max_length=200)
 
     class Meta:
@@ -78,9 +80,9 @@ class Imagen(models.Model):
 class Indice(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_index')
     id_usuario = models.ForeignKey(
-        User, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+        settings.AUTH_USER_MODEL, models.CASCADE, db_column='id_usuario', blank=True, null=True)
     id_formula = models.ForeignKey(
-        Formula, models.DO_NOTHING, db_column='id_formula', blank=True, null=True)
+        Formula, models.CASCADE, db_column='id_formula', blank=True, null=True)
     numero_usos = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -91,7 +93,7 @@ class Indice(models.Model):
 class Script(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_script')
     id_formula = models.ForeignKey(
-        Formula, models.DO_NOTHING, db_column='id_formula', blank=True, null=True)
+        Formula, models.CASCADE, db_column='id_formula', blank=True, null=True)
     contenido = models.CharField(max_length=1000)
     variables_script = models.CharField(max_length=100, blank=True, null=True)
 
@@ -103,7 +105,7 @@ class Script(models.Model):
 class Tag(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_tag')
     id_usuario = models.ForeignKey(
-        User, models.DO_NOTHING, db_column='id_usuario', blank=True, null=True)
+        settings.AUTH_USER_MODEL, models.CASCADE, db_column='id_usuario', blank=True, null=True)
     nombre = models.CharField(max_length=100)
 
     class Meta:
