@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from django.db import models
 
 from mauth.models import User
@@ -15,7 +17,7 @@ class Mytevar(models.Model):
 class Pinpago(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_pinpago')
     id_usuario = models.ForeignKey(
-        User, models.DO_NOTHING, db_column='id_usuario')
+        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='id_usuario')
     valor = models.FloatField()
     fecha_vencimiento = models.DateField()
     ref_pago = models.IntegerField()
@@ -42,7 +44,7 @@ class Usuariotarjeta(models.Model):
     id_tarjetacredito = models.OneToOneField(
         Tarjetacredito, models.DO_NOTHING, db_column='id_tarjetacredito', primary_key=True)
     id_usuario = models.ForeignKey(
-        User, models.DO_NOTHING, db_column='id_usuario')
+        settings.AUTH_USER_MODEL, models.DO_NOTHING, db_column='id_usuario')
     valor = models.FloatField(blank=True, null=True)
 
     class Meta:

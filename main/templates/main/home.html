@@ -1,22 +1,124 @@
-{% extends 'main/base.html' %}
-{% load static %}
-{% block title %} Myte home {% endblock %}
+{% extends 'myte/base.html' %}
 
-{% block content %}
-<div class="container-home">
-    <div class="home-content--definition">
-        <div class="text-holder">
-            <h1>
-                <strong>El lugar en donde puedes manejar tus formulas</strong>
-            </h1>
-            <p>
-                Myte es un proyecto que tiene como propósito ofrecer un gestionador de fórmulas matemáticas de todo tipo
-                y pertenecientes a distintas áreas como Matemática, Física, Química, entre otros.
-            </p>
+{% block title %}Home{% endblock %}
+
+{% block background %}id="body-home"{% endblock %}
+
+{% block body %}
+<div class="overlay"></div>
+
+{% block nav %}
+<nav class="nav-bar--home">
+    <div class="nav-bar--item left" style="width: 5%; margin-left: 10px; ">
+        <img src="{% static 'images/logo.png' %}" title="Myte" style="width: 70px; height: 70px;">
+    </div>
+    <div class="nav-bar--item" style="width: 50%; margin-left: 10px; justify-content: flex-start;">
+
+    </div>
+    <div class="nav-bar--item right" style="width: 40%;">
+        <a href="#" class="btn-link">Detalles</a>
+        <a href="{% url 'main:index' %}" class="btn-link">Mejorar</a>
+        <a href="{% url 'mauth:logout' %}" id="logout" class="btn-link">Salir</a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block side_bar %}
+<div class="side-bar--home">
+    <div class="app-info">
+        <div style="width: 40%;">
+            <h2>Myte</h2>
+            <h3>vBeta</h3>
         </div>
-        <div class="img-holder">
-            <img src="{% static 'images/myte_intro.png' %}" title="Myte">
+        <div class="show-user" style="width: 60%;">
+            <p style="margin-top: 10px;">$$\text{ {{ user.get_username }} }$$</p>
         </div>
     </div>
+    <div class="horizontal-bar" style="background-color: #6b4637;"></div>
+    <div class="item-home">
+        <img src="{% static 'images/add_2.png' %}">
+        <a href="{% url 'formulas:index' %}" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
+    </div>
+    <div class="item-home">
+        <img src="{% static 'images/delete_gray.png' %}">
+        <a href="#" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
+    </div>
+    <div class="item-home">
+        <img src="{% static 'images/list_formulas.png' %}">
+        <a href="{% url 'formulas.index' %}" title="Myte source code" style="margin-left: 20px;"
+            target="_blank"><strong>Mis formulas</strong></a>
+    </div>
 </div>
+{% endblock %}
+
+{#
+{% block content %}
+<div class="container-formulas">
+    {% for formula in formulas %}
+    <div data-modal-target="#modal{{ loop.index }}" class="container-formula" id="f{{ loop.index }}">
+        <div class="formula-header">
+            <h2>{{ formula["nombre"] }}</h2>
+        </div>
+        <div class="formula-content">
+            <p>$$ {{ formula["codigo_latex"] }} $$</p>
+            {% if formula["tags"] %}
+            <div class="container-tags">
+                {% for tag in formula["tags"] %}
+                <div>
+                    <p>{{ tag }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="modal-formula" id="modal{{ loop.index }}">
+        <div class="augmented-header">
+            <h1>{{ formula["nombre"] }}</h1>
+        </div>
+        <div class="augmented-formula">
+            <p>$$ {{ formula["codigo_latex"] }} $$</p>
+        </div>
+        {% if formula["tags"] %}
+        <div class="augmented-tags">
+            {% for tag in formula["tags"] %}
+            <div>
+                <p>{{ tag }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="augmented-options">
+            {% if formula["images"] %}
+            <a href="{% url 'formulas.index' %} " class="option--yellow"
+                target="_blank">Imagenes</a>
+            {% else %}
+            <a class="option" aria-disabled="true">Imagenes</a>
+            {% endif %}
+            {% if formula["script"] %}
+            <a href="{% url 'formulas:index' %}" class="option--skin"
+                target="_blank">Ejecutar script</a>
+            {% else %}
+            <a class="option" aria-disabled="true">Ejecutar script</a>
+            {% endif %}
+            <a href="{% url 'formulas:index %}" class="option--green"
+                target="_blank">Editar</a>
+            <a href="{% url 'formulas:index %}" id="delete" class="option--blue"
+                target="_blank">Eliminar</a>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+<div class="expand-bar" id="ctrl-side-bar">
+    <img src="{% static 'images/arrow.png' %}" style="width: 17px; height: 29px;">
+</div>
+<div class="expand-bar" id="add-formula" style="left: auto; right: 6%;">
+    <a href="{% url 'formulas:index' %}" target="_blank">
+        <img src="{% static images/add.png' %}">
+    </a>
+</div>
+#}
+{% endblock %}
 {% endblock %}
