@@ -1,12 +1,171 @@
 @import "./constants";
+@import "./containers";
+@import "./position";
 
 #redirect-form {
   display: none;
 }
 
-#hidden-form {
+#home-img {
+  width: 45%;
+  height: 600px;
+}
+.hid {
   display: none;
 }
+
+.myte {
+  &-header {
+    @extend .c;
+    margin-top: 20px;
+
+    & img {
+      width: 100px;
+      height: auto;
+    }
+
+    & h2 {
+      margin-top:40px;
+      margin-bottom:20px; 
+      color:#c57e63;
+    }
+  }
+}
+
+.redirect {
+  color: $blue-link;
+  font-size: 15px;
+}
+
+.drop-menu {
+  width: 250px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #444;
+  line-height: 1.3;
+  padding: 0.6em 1.4em 0.5em 0.8em;
+  box-sizing: border-box;
+  margin: 0;
+
+  border: 1px solid #aaa;
+  border-radius: $btn-radius;
+
+  box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+  background-color: #fff;
+
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"),
+    linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+  background-repeat: no-repeat, repeat;
+
+  background-position: right 10px top 50%, 0 0;
+  /* icon size, then gradient */
+  background-size: 10px auto, 100%;
+  appearance: none;
+
+  &:hover {
+    border-color: #888;
+  }
+
+  &:focus {
+    border-color: #aaa;
+    /* It'd be nice to use -webkit-focus-ring-color here but it doesn't work on box-shadow */
+    box-shadow: 0 0 1px 1px rgba(59, 153, 252, 0.7);
+    box-shadow: 0 0 0 1px -moz-mac-focusring;
+    color: #222;
+    outline: none;
+  }
+}
+
+.stage {
+  height: 15px;
+  width: 15px;
+  margin: auto 15px;
+  background-color: #aaa9a9;
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.stage.active {
+  opacity: 1;
+}
+
+.stage.finish {
+  background-color: #a4f39d;
+}
+
+.hamburger {
+  @extend .c;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-left: 20px;
+  & div {
+    background-color: $white;
+    width: $hamburger-btn-width;
+    height: 4px;
+    margin-bottom: 3px;
+  }
+  &:hover {
+    background-color: $gray-dark--hover;
+    cursor: pointer;
+  }
+}
+
+.icon-holder {
+  @extend .c;
+  flex-direction: row;
+  background-color: $myte-blue;
+  border-radius: $btn-radius 0 0 $btn-radius;
+  margin: 0;
+  width: 52px;
+  height: 42px;
+  max-height: 100%;
+  align-items: flex-start;
+  justify-self: flex-start;
+  & img {
+    align-self: center;
+    justify-self: center;
+    z-index: 2;
+    width: 17px;
+    height: 20px;
+  }
+}
+
+.logo {
+  @extend .c;
+  align-items: flex-start;
+  width: 24%;
+  height: 100%;
+
+  & img {
+    width: 70px;
+    height: 70px;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.datepicker {
+  background-color: #ffffff;
+  border-radius: $btn-radius;
+  border: 1px solid #a2a2a2;
+  height: 30px;
+  align-items: center;
+  width: 70%;
+}
+
+.home-def {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .app-info {
   display: flex;
   flex-direction: row;
@@ -28,11 +187,9 @@
 }
 
 .show-user {
-  display: flex;
+  @extend .c;
   max-height: 100%;
-  justify-content: center;
   align-content: center;
-  align-items: center;
   & p {
     margin: 0;
     top: 50%;
@@ -41,77 +198,107 @@
   }
 }
 
-.formula-header {
-  display: flex;
-  flex-direction: row;
-  position: relative;
+.overlay {
+  z-index: 9;
+
+  opacity: 0;
+  background-color: rgb(97, 97, 97);
+  width: 100%;
+  height: 100%;
+  transition: 200ms ease-in;
+
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  pointer-events: none;
 
-  border-radius: $btn-radius $btn-radius 0px 0px;
-
-  width: 100%;
-  height: 20%;
-  background-color: $gray-dark;
-  align-items: center;
-  justify-content: center;
-
-  & h2 {
-    font-size: 20px;
-    text-align: center;
-    color: $bg-color;
+  &.active {
+    opacity: 0.7;
+    pointer-events: all;
+    transition: 200ms ease-out;
   }
 }
 
-.formula-content {
+.formula {
+  @extend .c;
   position: relative;
   z-index: 4;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
   width: 100%;
-  height: 80%;
-  justify-content: center;
-  align-content: center;
-  & p {
-    text-align: center;
-    align-self: center;
+
+  &-header {
+    @extend .formula;
+    flex-direction: row;
+
+    top: 0;
+    left: 0;
+
+    border-radius: $btn-radius $btn-radius 0px 0px;
+
+    height: 20%;
+    background-color: $gray-dark;
+
+    & h2 {
+      font-size: 20px;
+      text-align: center;
+      color: $bg-color;
+    }
+  }
+
+  &-content {
+    @extend .formula;
+    overflow: hidden;
+    height: 80%;
+    & p {
+      text-align: center;
+      align-self: center;
+    }
   }
 }
 
 .render-box {
-  display: flex;
-  flex-direction: column;
-
+  @extend .c;
   margin-right: 100px;
 
   width: 500px;
   height: 400px;
   min-width: 400px;
 
-  justify-content: center;
-  align-items: center;
-
   &--header {
+    @extend .c;
     height: 10%;
-    display: flex;
     width: 100%;
 
-    justify-content: center;
-    align-items: center;
     & h3 {
       color: $bg-color;
       font-size: 20px;
     }
   }
+
+  &--small {
+    @extend .render-box;
+    width: 400px;
+    height: 300px;
+    &--content {
+      @extend .c;
+      width: 100%;
+      height: 90%;
+      background-color: whitesmoke;
+      & p {
+        font-size: 1.2vw;
+      }
+      &:hover {
+        box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf;
+      }
+    }
+  }
+
   &--content {
-    border-radius: $btn-radius;
+    @extend .c;
     width: 100%;
     height: 90%;
     background-color: whitesmoke;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow-x: scroll;
     & p {
       font-size: 1.5vw;
@@ -122,59 +309,30 @@
   }
 }
 
-.render-box--small {
-  @extend .render-box;
-  width: 400px;
-  height: 300px;
-  &--content {
-    border-radius: $btn-radius;
-    width: 100%;
-    height: 90%;
-    background-color: whitesmoke;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-    & p {
-      font-size: 1.2vw;
-    }
-    &:hover {
-      box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf;
-    }
-  }
-}
-
 .preview-box {
-  display: flex;
-  flex-direction: column;
+  @extend .c;
 
   width: 80%;
   height: 80%;
   min-width: 200px;
 
-  align-items: center;
   justify-content: flex-start;
 
   &--header {
+    @extend .c;
     height: 10%;
-    display: flex;
     width: 100%;
     margin-top: 30px;
-    justify-content: center;
-    align-items: center;
     & h3 {
       color: $myte-orange;
       font-size: 20px;
     }
   }
   &--content {
-    border-radius: $btn-radius;
+    @extend .c;
     width: 100%;
     height: 50%;
     background-color: $gray;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow-x: auto;
     & p {
       font-size: 1vw;
@@ -185,82 +343,19 @@
   }
 }
 
-.input-formula {
-  display: flex;
-  flex-direction: column;
-  p {
-    color: rgb(23, 23, 44);
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-}
-
-.edit-formula {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  width: 80%;
-  & textarea {
-    border-radius: $btn-radius;
-  }
-  & p {
-    color: rgb(23, 23, 44);
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-}
-
-.image-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  widht: 100%;
-  & h3 {
-    font-size: 20px;
-  }
-}
-
-.image-content {
-  display: flex;
-  flex-direction: row;
-
-  align-items: center;
-  justify-content: center;
-
-  width: 40%;
-  height: 80%;
-  & img {
-    background: no-repeat;
-    border-radius: $btn-radius;
-    width: 100%;
-    height: 100%;
-  }
-  &:hover {
-    cursor: pointer;
-  }
-}
-
 .script-box {
-  display: flex;
+  @extend .c;
   flex-direction: row;
 
-  padding-left: 5%;
-  padding-right: 5%;
+  align-items: auto;
+  justify-content: auto;
+
+  padding: auto 5%;
 
   width: 430px;
   max-width: 100%;
   height: auto;
 
-  border-radius: $btn-radius;
   background-color: $bg-color;
 
   & p {
@@ -272,17 +367,15 @@
 }
 
 .input-vars {
-  display: flex;
+  @extend .c;
   flex-direction: row;
   flex-wrap: wrap;
+
   margin: 0;
   margin-right: auto;
 
   width: 100%;
   min-width: 100%;
-
-  align-items: center;
-  align-content: center;
 
   & p {
     font-size: 15px;
@@ -291,31 +384,32 @@
 
 .input-latex {
   width: 300px;
-  height: 200px;
   min-width: 200px;
+  max-width: 400px;
+
+  height: 200px;
   min-height: 150px;
   max-height: 250px;
-  max-width: 400px;
 }
 
 .edit-latex {
   width: 300px;
-  height: 150px;
   min-width: 200px;
+  max-width: 400px;
+
+  height: 150px;
   min-height: 100px;
   max-height: 180px;
-  max-width: 400px;
 }
 
 .float-return {
+  @extend .center-h;
   width: 250px;
   height: 45px;
   bottom: 50px;
   margin: 0;
   position: absolute;
   left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, 0);
 }
 
 .input-script {

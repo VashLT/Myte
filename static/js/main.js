@@ -10,7 +10,7 @@ $.fn.hasAttr = function (name) {
 $(document).ready(function () {
     var $side_bar = $('.side-bar');
     var $home_bar = $('.side-bar--home');
-    var $messages = $('.container-flash');
+    var $messages = $('.c-flash');
     var $images = $(".image-item");
 
     $images.on("click", function () {

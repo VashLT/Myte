@@ -1,4 +1,4 @@
-// Utils
+// colors, common widths and more
 @import "./constants";
 
 // Containers
@@ -10,7 +10,10 @@
 // styles
 @import "./rules";
 
+// icon, hamburger, datepicker, overlay and more
 @import "./other";
+
+@import "./position";
 
 html,
 body {
@@ -22,26 +25,27 @@ body {
   font-family: $font-default;
 }
 
-.flex {
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  overflow-x: hidden;
+.meta {
+  @extend .c;
+  justify-content: flex-start;
+  align-items: normal;
 }
 
-#welcome {
+.welcome {
+  @extend .meta;
   background-color: $bg-color;
+  overflow-y: auto;
 }
-#home {
+.home {
   background-color: $myte-skin--light;
 }
-#login {
+.login {
   background-color: $gray-dark;
 }
 .reg {
-  @extend .flex;
-  padding-top: 10px;
+  @extend .c;
+  justify-content: flex-start;
+  padding-top: 50px;
   overflow-y: hidden;
   background-color: $myte-skin;
 }
