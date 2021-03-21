@@ -2,21 +2,64 @@
 {% load static %}
 {% block title %} Myte home {% endblock %}
 
+{% block side_bar %}
+<div class="side-bar">
+    <div class="side-bar--info">
+        <h2>Myte</h2>
+        <h3>vBeta</h3>
+        <div></div>
+    </div>
+    <div class="side-bar--item">
+        <img src="{% static 'images/theme.png' %}">
+        <a href="#" style="margin-left: 20px;"><strong>Theme</strong></a>
+    </div>
+    <div class="side-bar--item">
+        <img src="{% static 'images/premium.png' %}">
+        <a href="#" style="margin-left: 20px;"><strong>Premium</strong></a>
+    </div>
+    <div class="side-bar--item">
+        <img src="{% static 'images/git.png' %}">
+        <a href="https://github.com/VashLT/Myte" title="Myte source code" style="margin-left: 20px;"
+            target="_blank"><strong>Repositorio</strong></a>
+    </div>
+</div>
+{% endblock %}
+
+{% block nav %}
+<nav class="nav-bar" id="nav">
+    <div class="nav-bar--item" id="hamburger-container" style="width: 15%;">
+        <div class="hamburger" id="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="nav-bar--item" id="item-logo" style="width: auto;">
+        <div class="logo">
+            <img src="{% static 'images/logo.png' %}" title="Myte">
+        </div>
+    </div>
+    <div class="nav-bar--item" id="welcome-options" style="margin-left: auto; margin-right: 10px;">
+        <a href="{% url 'mauth:login' %}" class="btn-link">Ingresar</a>
+        <a href="#" class="btn-link">Acerca de</a>
+        <a href="#" class="btn-link">Otros</a>
+    </div>
+</nav>
+{% endblock %}
+
 {% block content %}
-<div class="container-home">
-    <div class="home-content--definition">
-        <div class="text-holder">
-            <h1>
-                <strong>El lugar en donde puedes manejar tus formulas</strong>
-            </h1>
-            <p>
-                Myte es un proyecto que tiene como propósito ofrecer un gestionador de fórmulas matemáticas de todo tipo
-                y pertenecientes a distintas áreas como Matemática, Física, Química, entre otros.
-            </p>
-        </div>
-        <div class="img-holder">
-            <img src="{% static 'images/myte_intro.png' %}" title="Myte">
-        </div>
+<div class="c-home" id="home-container">
+    <div class="text-holder">
+        <h1>
+            <strong>El lugar en donde puedes manejar tus formulas</strong>
+        </h1>
+        <p>
+            Myte es un proyecto que tiene como propósito ofrecer un gestionador de fórmulas matemáticas de todo tipo
+            y pertenecientes a distintas áreas como Matemática, Física, Química, entre otros.
+        </p>
+    </div>
+    <div class="image-holder" id="home-img">
+        <img src="{% static 'images/myte_intro.png' %}" title="Myte's home page">
     </div>
 </div>
 {% endblock %}
