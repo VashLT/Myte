@@ -11,10 +11,10 @@
 {% endblock %}
 
 
-{% block background %}class="reg"{% endblock %}
+{% block main %}class="reg"{% endblock %}
 
 {% block body %}
-<div class="container-stages" style="margin-top: 60px;">
+<div class="c-stages">
     {% if stage == 1 %}
         <span class="stage active" value="1"></span>
         <span class="stage" value="2"></span>
@@ -23,7 +23,7 @@
         <span class="stage active" value="2"></span>
     {% endif %}
 </div>
-<div class="container-register" id="reg-cont">
+<div class="c-register" id="reg-cont">
     <form method="POST" class="form" id="reg-form" action="">
         {% csrf_token %}
         <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
@@ -32,57 +32,57 @@
         </div>
         {{ form.non_field_errors }}
         {% if stage == 1 %}
-        <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
+        <div class="c-input" style="margin-top:50px; margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/user_white.png' %}">
             </div>
             {{ form.username|add_class:"input"|attr:"placeholder:Nombre de usuario" }}
         </div>
-        <div class="container-input" style="margin-bottom: 5%;">
+        <div class="c-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/name_white.png' %}" style="height:14px;">
             </div>
             {{ form.fullname|add_class:"input"|attr:"placeholder:Nombre completo" }}
         </div>
-        <div class="container-input--many" style="margin-bottom:5%; justify-content: space-between;">
-            <div class="container-input" style="width:50%;">
+        <div class="c-input--many" style="margin-bottom:5%; justify-content: space-between;">
+            <div class="c-input" style="width:50%;">
                 <div class="icon-holder">
                     <img src="{% static 'images/email_white.png' %}" style="height:14px;">
                 </div>
                 {{ form.email|add_class:"input--small"|attr:"placeholder:Ingresar email"|attr:"style:width:100%;" }}
             </div>
-            <div class="container-datepicker">
+            <div class="c-datepicker">
                 {{ form.birthdate.label_tag }}
                 {{ form.birthdate|add_class:"datepicker" }}
             </div>
         </div>
-        <div class="container-input" style="margin-bottom: 5%;">
+        <div class="c-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/pw_white.png' %}">
             </div>
             {{ form.pw1|add_class:"input"|attr:"placeholder:Contraseña" }}
         </div>
-        <div class="container-input" style="margin-bottom: 5%;">
+        <div class="c-input" style="margin-bottom: 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/pw_white.png' %}">
             </div>
             {{ form.pw2|add_class:"input"|attr:"placeholder:Re ingresar contraseña" }}
         </div>
         {% else %}
-        <div class="container-select" style="margin-top: 40px;">
+        <div class="c-select" style="margin-top: 40px;">
             <p>¿Cuál es tu nivel educativo?</p>
             {{ form.level|add_class:"drop-menu"|attr:"style:width:200px;"|default_option:"level"}}
         </div>
-        <div class="container-select" style="margin-top: 30px; margin-bottom: 60px;">
+        <div class="c-select" style="margin-top: 30px; margin-bottom: 60px;">
             <p>¿Qué carrera estudias o estás interesado?</p>
             {{ form.career|add_class:"drop-menu"|attr:"style:width:200px;"|default_option:"career"}}
         </div>
         {% endif %}
-        <div class="container-input--many" style="margin-top:30px; justify-content:space-between;">
-            <div class="container-input" style="width: 30%; margin-left: 60px;">
+        <div class="c-input--many" style="margin-top:30px; justify-content:space-between;">
+            <div class="c-input" style="width: 30%; margin-left: 60px;">
                 <button class="btn-submit--orange" id="previous-btn" style="width: 100%;">Anterior</button>
             </div>
-            <div class="container-input" style="width: 30%; margin-right: 60px;">
+            <div class="c-input" style="width: 30%; margin-right: 60px;">
                 <button class="btn-submit--blue" id="next-btn" style="width: 100%;">Siguiente</button>
             </div>
         </div>

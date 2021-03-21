@@ -19,7 +19,7 @@ from django.contrib.auth import (
 )
 
 from mauth.models import User, MetaUser, Rol
-from mauth.forms import RegisterForm
+from mauth.forms import RegisterForm, LoginForm
 from mauth.decorators import unauthenticated_user
 from mauth import utils
 
@@ -32,7 +32,7 @@ DEFAULT_ROL = 1
 
 
 class Cache(object):
-    """ store inputted data at register stage 
+    """ store inputted data at register stage
         main keys:
             - user: dict containing user data based on User model
             - meta: dict containing meta user data based on MetaUser model
@@ -44,27 +44,32 @@ class Cache(object):
 @unauthenticated_user
 def login(request):
     if request.method == "GET":
-        return render(request, 'mauth/login.html')
-    user = authenticate(
-        username=request.POST['username'],
-        password=request.POST['password']
-    )
-    if not user:
-        messages.error(request, "Nombre de usuario o contraseña incorrectos")
+        form = LoginForm()
+        return render(request, 'mauth/login.html', {"form": form})
+    form = LoginForm(request.POST)
+    if form.is_valid():
+        print(form.cleaned_data)
+        user = authenticate(
+            request=request,
+            **form.cleaned_data
+        )
+        if not user:
+            messages.error(
+                request, "Nombre de usuario o contraseña incorrectos")
+        else:
+            print("user authenticated, login user ...")
+            login_user(request, user)  # django login function
+            user_var = Mytevar.objects.get(nombre="current_user")
+            user_var.valor = user.id
+            user.update_last_login()
 
-    else:
-        print("user authenticated, login user ...")
-        login_user(request, user)  # django login function
-        user_var = Mytevar.objects.get(nombre="current_user")
-        user_var.valor = user.id
-        user.update_last_login()
-        user.save()
-        user_var.save()
-        if settings.REDIRECT_FIELD_NAME in request.POST:
-            return redirect(request.POST.get(settings.REDIRECT_FIELD_NAME))
-        return redirect('main:home')
+            user.save()
+            user_var.save()
+            if settings.REDIRECT_FIELD_NAME in request.POST:
+                return redirect(request.POST.get(settings.REDIRECT_FIELD_NAME))
+            return redirect('main:home')
 
-    return render(request, 'mauth/login.html')
+    return render(request, 'mauth/login.html', {"form": form})
 
 
 @unauthenticated_user

@@ -11,6 +11,11 @@ CAREERS = [obj.nombre for obj in Carrera.objects.all()]
 LEVELS = [obj.nombre for obj in Niveleducativo.objects.all()]
 
 
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=100)
+    password = forms.CharField(max_length=100, widget=forms.PasswordInput())
+
+
 class RegisterForm(forms.Form):
     # stage 1
     username = forms.CharField(max_length=100)

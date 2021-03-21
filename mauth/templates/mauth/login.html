@@ -1,40 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}
 Log In
 {% endblock %}
 
-{% block background %}id="login"{% endblock %}
+{% block main %}class="login"{% endblock %}
 
 {% block body %}
 
-<div class="container-login center-full">
+<div class="c-login center-full">
     <form method="POST" class="form">
         {% csrf_token %}
-        {% if request.GET.rfn %} {# rfn stands for Redirect Field Name, is sent when non-logged user tries to reach a permission-based page #}
+        {% if request.GET.rfn %} {# rfn stands for Redirect Field Name, is sent when non-logged user tries to reach an auth-required page #}
         <input type="hidden" name="rfn" value="{{ request.GET.rfn }}">
         {% endif %}
-        <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
-            <img src="{% static 'images/logo.png' %}" title="Myte"
-                style="width:100px;height:100px;">
-            <h2 style="margin-top:40px; margin-bottom:20px; color:#c57e63">Log In</h2>
+        <div class="myte-header">
+            <img src="{% static 'images/logo.png' %}" title="Myte">
+            <h2 style="margin-top: 20px;">Log In</h2>
         </div>
-        <div class="container-input" style="margin-top:50px; margin-bottom: 5%;">
+        <div class="c-input" style="margin:40px auto 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/user_white.png' %}">
             </div>
-            <input type="text" id="username" name="username" placeholder="Enter username" class="input"
-                style="background-color: rgba(79, 82, 90, 0.5);color:#fff;" />
+            {{ form.non_field_errors }}
+            {{ form.username|add_class:"input__login"|attr:"placeholder:Ingresar nombre de usuario"}}
         </div>
-        <div class="container-input" style="margin-bottom: 5%;">
+        <div class="c-input">
             <div class="icon-holder">
                 <img src="{% static 'images/pw_white.png' %}">
             </div>
-            <input type="password" id="password" name="password" placeholder="Enter password" class="input"
-                style="background-color: rgba(79, 82, 90, 0.5);color:#fff;" />
+            {{ form.password|add_class:"input__login"|attr:"placeholder:Ingresar contraseña"}}
         </div>
-        <div class="container-input" style="margin-top:40px; justify-content: center;">
+        <div class="c-login-redirect" style="margin-top: 10px;">
+            <a href="#">Olvide mi contraseña</a>
+        </div>
+        <div class="c-input" style="margin-top:30px; justify-content: center;">
             <input type="submit" value="Enviar" style="margin-bottom:30px;" class="btn-submit" />
         </div>
         <a href="{% url 'mauth:register' %}">No tienes una cuenta todavia?</a>
