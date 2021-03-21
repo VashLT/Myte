@@ -19,7 +19,9 @@ CREATE TABLE Usuario(
     nombre VARCHAR(100) NOT NULL,
     fecha_registro DATE,
     email VARCHAR(120) NOT NULL,
-    fecha_nacimiento DATE
+    fecha_nacimiento DATE,
+    activo INT DEFAULT 1,
+    ultimo_ingreso DATETIME
 );
 CREATE TABLE Historial(
     id_historial INT PRIMARY KEY AUTO_INCREMENT,
