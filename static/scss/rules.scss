@@ -446,7 +446,6 @@ textarea.invalid {
   width: 100%;
   border-radius: $btn-radius;
   justify-content: space-between;
-  background-color: #9eff95;
   align-items: center;
 
   & span {
@@ -463,6 +462,13 @@ textarea.invalid {
     top: 50%;
     margin-left: 10px;
     font-size: 20px;
+  }
+}
+.flash-box--success {
+  @extend .flash-box;
+  background-color: #9eff95;
+
+  & p {
     color: #72bb6c;
   }
 }
