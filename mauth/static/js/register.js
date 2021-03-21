@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     NextBtn.onclick = function () {
         var form = document.getElementById("reg-form");
-        alert("going forward");
         if (curStage == stages[stages.length - 1]) {
             $("#reg-form").append('<input type="hidden" name="finish" />');
         }

@@ -12,6 +12,9 @@ Log In
 <div class="container-login center-full">
     <form method="POST" class="form">
         {% csrf_token %}
+        {% if request.GET.rfn %} {# rfn stands for Redirect Field Name, is sent when non-logged user tries to reach a permission-based page #}
+        <input type="hidden" name="rfn" value="{{ request.GET.rfn }}">
+        {% endif %}
         <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
             <img src="{% static 'images/logo.png' %}" title="Myte"
                 style="width:100px;height:100px;">

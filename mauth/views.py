@@ -9,11 +9,21 @@ from django.core.validators import validate_email
 
 from django.core.exceptions import ValidationError
 
-from .models import User, MetaUser, Rol
+from django.contrib.auth import (
+    authenticate,
+    login as login_user,
+    logout as logout_user
+)
 
-from .forms import RegisterForm
+from mauth.models import User, MetaUser, Rol
+from mauth.forms import RegisterForm
+from mauth.decorators import unauthenticated_user
+from mauth import utils
 
-from . import utils
+from main.models import Mytevar
+
+from django.conf import settings
+
 
 DEFAULT_ROL = 1
 
@@ -28,42 +38,49 @@ class Cache(object):
     register = {}
 
 
-def login(request):
-    if request.method == "POST":
-        print(request.POST)
-        details = request.POST
-        name = details["username"]
-        pw = details["password"]
+@unauthenticated_user
+def login(request, test=None):
+    print(test)
+    print(f"login request\n[GET]:{request.GET}\n[POST]:{request.POST}")
+    if request.method == "GET":
+        return render(request, 'mauth/login.html')
+    user = authenticate(
+        username=request.POST['username'],
+        password=request.POST['password']
+    )
+    if not user:
+        messages.error(request, "Nombre de usuario o contraseña incorrectos")
 
-        meta = MetaUser.objects.get(pk=name)
-        if meta:
-            messages.success("Succesfully logged in")
-            login_user(meta.usuario, remember=True)
-            mysql_cursor.execute("""
-                UPDATE MyteVar SET valor = %s WHERE nombre = "current_user"
-            """, (meta.usuario.id))
-            mysql.get_db().commit()
-            return redirect(url_for('views.home'))
-        else:
-            messages.error("Nombre de usuario o contraseña incorrectos")
+    else:
+        print("user authenticated, login user ...")
+        login_user(request, user)  # django login function
+        user_var = Mytevar.objects.get(nombre="current_user")
+        user_var.valor = user.id
+        user.update_last_login()
+        user.save()
+        user_var.save()
+        print(settings.REDIRECT_FIELD_NAME)
+        if settings.REDIRECT_FIELD_NAME in request.POST:
+            return redirect(request.POST.get(settings.REDIRECT_FIELD_NAME))
+        return redirect(reverse('views.home', args=(user,)))
 
     return render(request, 'mauth/login.html')
 
 
+@unauthenticated_user
 def register(request, stage=1):
-    cache_user = None
-    clean_data = {}
+    context = {"stage": stage}
     print(f"[STAGE {stage}] printing POST data: {request.POST.dict()}")
     if stage == 1:
         if request.method == "GET":
             if "valid_request" in Cache.register:
-                form = RegisterForm(Cache.register["valid_request"])
+                context["form"] = RegisterForm(Cache.register["valid_request"])
             else:
-                form = RegisterForm()
+                context["form"] = RegisterForm()
         else:
             print("validating POST ...")
-            form = RegisterForm(request.POST)
-            if user(request):
+            context["form"] = RegisterForm(request.POST)
+            if valid_user(request):
                 messages.info(request, "Valid first stage")
                 Cache.register["valid_request"] = request.POST.dict()
                 utils.populate_cache(
@@ -72,10 +89,10 @@ def register(request, stage=1):
                     {
                         "user":
                         {
-                            "username": "nombre_usuario",
+                            "username": "meta",
                             "fullname": ["nombre", utils.format_name],
                             "email": "email",
-                            "birthdate": "fecha_nacimiento",
+                            "birthdate": ["fecha_nacimiento", utils.format_date],
                         },
                         "meta": {
                             "username": "nombre_usuario",
@@ -98,7 +115,7 @@ def register(request, stage=1):
                     'mauth:register',
                     args=(1,))
                 )
-            elif extra_info(request) and "finish" in data:
+            elif valid_extra_info(request) and "finish" in data:
                 messages.info(request, "Valid second stage")
                 Cache.register["carrera"] = data["career"]
                 Cache.register["niveleducativo"] = data["level"]
@@ -106,21 +123,51 @@ def register(request, stage=1):
 
                 return redirect(reverse('mauth:register', args=(3,)))
 
-        form = RegisterForm(Cache.register["valid_request"])
+        context["form"] = RegisterForm(Cache.register["valid_request"])
 
     elif stage == 3:
         if not "valid_request" in Cache.register:
             return redirect(reverse('mauth:register', args=(1,)))
+        print(Cache.register)
+        user_credentials = Cache.register["user"]
+        meta = MetaUser(**Cache.register["meta"])
+
+        user_credentials["rol"] = Rol.objects.get(pk=DEFAULT_ROL)
+        user_credentials["meta"] = meta
+        new_user = User(**user_credentials)
+
+        meta.save()
+        new_user.save()
+
+        user = authenticate(
+            request=request,
+            username=meta.nombre_usuario,
+            password=Cache.register["valid_request"]["pw2"]
+        )
+        if not user:
+            print(Cache.register["valid_request"])
+            raise Exception(
+                "something went wrong when authenticating the new User")
+
+        formulas = None
         Cache.register = {}
-        return HttpResponse("<h1>Nice UwU</h1>")
+        print(type(user))
+        login_user(request, user)
+        print("User logged in!")
+        messages.success(request, "Welcome %s" % meta.nombre_usuario)
+        print("redirecting to home")
+        print(redirect("main:home"))
+
+        return redirect(reverse("main:home"))
     else:
         raise Exception("Invalid stage")
-    context = {
-        "form": form,
-        "stage": stage,
-        "cache": Cache.register
-    }
     return render(request, 'mauth/register.html', context)
+
+
+def logout(request):
+    logout_user(request)
+    messages.success(request, "Sesión cerrada correctamente")
+    return redirect("")
 
 
 def validate(func):
@@ -135,7 +182,7 @@ def validate(func):
 
 
 @validate
-def user(data):
+def valid_user(data):
     """
         validate user data to create user
     """
@@ -150,7 +197,7 @@ def user(data):
 
 
 @validate
-def extra_info(data):
+def valid_extra_info(data):
     """
         validate career and educational level data
     """

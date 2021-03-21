@@ -1,4 +1,6 @@
+from datetime import datetime
 from hashlib import sha256
+from django.core.validators import EmailValidator, ValidationError
 import re
 
 
@@ -30,11 +32,23 @@ def encrypt(password):
     return sha256(password.encode()).hexdigest()
 
 
-def is_email(email):
-    return re.match(
-        r"[A-Za-z0-9.]+@[A-Za-z.]+[A-Za-z]$",
-        email
-    )
+def is_email(email, simple=False):
+    if simple:
+        return re.match(
+            r"[A-Za-z0-9.]+@[A-Za-z.]+[A-Za-z]$",
+            email
+        )
+    try:
+        EmailValidator(email)
+        return True
+    except ValidationError:
+        return False
+
+
+def format_date(date, old_format=r"%d/%m/%Y", new_format=r"%Y-%m-%d"):
+    if isinstance(date, datetime):
+        return date.strftime(new_format)
+    return datetime.strptime(date, old_format).strftime(new_format)
 
 
 def format_newline(latex):

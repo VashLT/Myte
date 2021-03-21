@@ -6,7 +6,7 @@ app_name = 'mauth'
 
 urlpatterns = [
     path('login/', views.login, name='login'),
-    # re_path(r'^register/((?P<stage>\d+)/)?$', views.register, name='register')
+    path('login/<str:test>', views.login, name='login'),
     path("register/", views.register),
     path("register/<int:stage>", views.register, name='register'),
 ]
