@@ -1,4 +1,6 @@
-{% extends 'myte/base.html' %}
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Home{% endblock %}
 
@@ -45,80 +47,18 @@
     </div>
     <div class="item-home">
         <img src="{% static 'images/list_formulas.png' %}">
-        <a href="{% url 'formulas.index' %}" title="Myte source code" style="margin-left: 20px;"
+        <a href="{% url 'formulas:index' %}" title="Myte source code" style="margin-left: 20px;"
             target="_blank"><strong>Mis formulas</strong></a>
     </div>
 </div>
 {% endblock %}
-
-{#
-{% block content %}
-<div class="container-formulas">
-    {% for formula in formulas %}
-    <div data-modal-target="#modal{{ loop.index }}" class="container-formula" id="f{{ loop.index }}">
-        <div class="formula-header">
-            <h2>{{ formula["nombre"] }}</h2>
-        </div>
-        <div class="formula-content">
-            <p>$$ {{ formula["codigo_latex"] }} $$</p>
-            {% if formula["tags"] %}
-            <div class="container-tags">
-                {% for tag in formula["tags"] %}
-                <div>
-                    <p>{{ tag }}</p>
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    <div class="modal-formula" id="modal{{ loop.index }}">
-        <div class="augmented-header">
-            <h1>{{ formula["nombre"] }}</h1>
-        </div>
-        <div class="augmented-formula">
-            <p>$$ {{ formula["codigo_latex"] }} $$</p>
-        </div>
-        {% if formula["tags"] %}
-        <div class="augmented-tags">
-            {% for tag in formula["tags"] %}
-            <div>
-                <p>{{ tag }}</p>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        <div class="augmented-options">
-            {% if formula["images"] %}
-            <a href="{% url 'formulas.index' %} " class="option--yellow"
-                target="_blank">Imagenes</a>
-            {% else %}
-            <a class="option" aria-disabled="true">Imagenes</a>
-            {% endif %}
-            {% if formula["script"] %}
-            <a href="{% url 'formulas:index' %}" class="option--skin"
-                target="_blank">Ejecutar script</a>
-            {% else %}
-            <a class="option" aria-disabled="true">Ejecutar script</a>
-            {% endif %}
-            <a href="{% url 'formulas:index %}" class="option--green"
-                target="_blank">Editar</a>
-            <a href="{% url 'formulas:index %}" id="delete" class="option--blue"
-                target="_blank">Eliminar</a>
-        </div>
-    </div>
-
-    {% endfor %}
-</div>
 
 <div class="expand-bar" id="ctrl-side-bar">
     <img src="{% static 'images/arrow.png' %}" style="width: 17px; height: 29px;">
 </div>
 <div class="expand-bar" id="add-formula" style="left: auto; right: 6%;">
     <a href="{% url 'formulas:index' %}" target="_blank">
-        <img src="{% static images/add.png' %}">
+        <img src="{% static 'images/add.png' %}">
     </a>
 </div>
-#}
-{% endblock %}
 {% endblock %}

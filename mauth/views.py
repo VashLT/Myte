@@ -9,6 +9,9 @@ from django.core.validators import validate_email
 
 from django.core.exceptions import ValidationError
 
+from django.contrib.auth.decorators import login_required
+
+
 from django.contrib.auth import (
     authenticate,
     login as login_user,
@@ -39,9 +42,7 @@ class Cache(object):
 
 
 @unauthenticated_user
-def login(request, test=None):
-    print(test)
-    print(f"login request\n[GET]:{request.GET}\n[POST]:{request.POST}")
+def login(request):
     if request.method == "GET":
         return render(request, 'mauth/login.html')
     user = authenticate(
@@ -59,10 +60,9 @@ def login(request, test=None):
         user.update_last_login()
         user.save()
         user_var.save()
-        print(settings.REDIRECT_FIELD_NAME)
         if settings.REDIRECT_FIELD_NAME in request.POST:
             return redirect(request.POST.get(settings.REDIRECT_FIELD_NAME))
-        return redirect(reverse('views.home', args=(user,)))
+        return redirect('main:home')
 
     return render(request, 'mauth/login.html')
 
@@ -124,11 +124,10 @@ def register(request, stage=1):
                 return redirect(reverse('mauth:register', args=(3,)))
 
         context["form"] = RegisterForm(Cache.register["valid_request"])
-
     elif stage == 3:
         if not "valid_request" in Cache.register:
             return redirect(reverse('mauth:register', args=(1,)))
-        print(Cache.register)
+        print(f"Final cache:\n{Cache.register}")
         user_credentials = Cache.register["user"]
         meta = MetaUser(**Cache.register["meta"])
 
@@ -151,14 +150,11 @@ def register(request, stage=1):
 
         formulas = None
         Cache.register = {}
-        print(type(user))
         login_user(request, user)
-        print("User logged in!")
+        print(f"User logged in!, {request.user}")
         messages.success(request, "Welcome %s" % meta.nombre_usuario)
-        print("redirecting to home")
-        print(redirect("main:home"))
 
-        return redirect(reverse("main:home"))
+        return redirect("main:home")
     else:
         raise Exception("Invalid stage")
     return render(request, 'mauth/register.html', context)
@@ -167,7 +163,7 @@ def register(request, stage=1):
 def logout(request):
     logout_user(request)
     messages.success(request, "Sesión cerrada correctamente")
-    return redirect("")
+    return redirect("main:index")
 
 
 def validate(func):

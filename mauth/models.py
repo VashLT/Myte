@@ -8,6 +8,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 from django.utils.translation import gettext_lazy as _
 
+from django.utils.crypto import salted_hmac
+
 from mauth import utils
 
 
@@ -60,16 +62,16 @@ class UserManager(BaseUserManager):
             raise ValueError("User must have a birthdate")
         if not password:
             raise ValueError("User must have a password")
-        user = self.model(
-            email=self.normalize_email(email),
-            nombre_usuario=username,
-            nombre=name,
-            rol=rol,
-            fecha_nacimiento=birthdate
-        )
         meta = MetaUser(
             nombre_usuario=username,
             clave_encriptada=utils.encrypt(password)
+        )
+        user = self.model(
+            email=self.normalize_email(email),
+            meta=meta,
+            nombre=name,
+            rol=rol,
+            fecha_nacimiento=birthdate
         )
         meta.save(using=self._db)
         user.save(using=self._db)
@@ -116,24 +118,41 @@ class User(AbstractBaseUser):
         managed = False
         db_table = 'usuario'
 
-    @property
-    def username(self):
-        return str(self.meta.nombre_usuario).capitalize()
-
     def __str__(self):
-        return "Usuario named %s with id %d" % (self.meta.nombre_usuario, self.id)
+        return "Usuario named %s with id %d" % (self.get_username(), self.id)
+
+    def get_username(self):
+        return self.meta.nombre_usuario
 
     def update_last_login(self):
         self.last_login = timezone.now()
 
-    def set_password(self, raw_pw):
-        self.meta.set_password(raw_pw)
+    def set_password(self, raw_password):
+        self.meta.set_password(raw_password)
+
+    def check_password(self, raw_password):
+        return self.meta.check_password(raw_password)
 
     def get_full_name(self):
         return self.nombre
 
     def get_short_name(self):
         return self.nombre.split(" ")[0]
+
+    def get_session_auth_hash(self):
+        """
+        Slight modification of django get_session_auth_hash to make it compatible with Myte
+        Return an HMAC of the password field.
+        """
+        key_salt = "django.contrib.auth.models.AbstractBaseUser.get_session_auth_hash"
+        return salted_hmac(
+            key_salt,
+            self.meta.clave_encriptada,
+            # RemovedInDjango40Warning: when the deprecation ends, replace
+            # with:
+            # algorithm='sha256',
+            algorithm=settings.DEFAULT_HASHING_ALGORITHM,
+        ).hexdigest()
 
 
 class Niveleducativo(models.Model):

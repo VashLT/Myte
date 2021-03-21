@@ -10,8 +10,24 @@ class Backend(BaseBackend):
         try:
             meta = MetaUser.objects.get(nombre_usuario=username)
             if meta.check_password(password):
-                return User.objects.get(meta=meta)
+                user = User.objects.get(meta=meta)
+                print(f"Valid authentication for {user}")
+                return user
 
             print("[FAIL] password doesn't match")
         except MetaUser.DoesNotExist:
             return None
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+    
+    def user_can_authenticate(self, user):
+        """
+        Reject users with is_active=False. Custom user models that don't have
+        that attribute are allowed.
+        """
+        is_active = getattr(user, 'is_active', None)
+        return bool(is_active)
