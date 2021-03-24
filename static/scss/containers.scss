@@ -32,6 +32,7 @@ $mauth-form-width: 600px;
     width: $mauth-form-width;
     height: $mauth-form-width * 0.9;
     background-color: $blue-dark_b;
+    justify-content: flex-start;
 
     &-redirect {
       @extend .c;
@@ -62,9 +63,14 @@ $mauth-form-width: 600px;
     height: $mauth-form-width * 1.25;
     background-color: #fff;
     transition: all 0.5s linear;
+    justify-content: flex-start;
     &:hover {
       box-shadow: 0 4px 8px 0 #e0dede, 0 6px 20px 0 #dbdada;
     }
+  }
+  &-premium {
+    @extend .c-register;
+    height: 600px;
   }
 
   &-input {

@@ -226,17 +226,9 @@ textarea.invalid {
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
+  @extend .c;
   height: auto;
   width: 80%;
-
-  & a {
-    color: $blue-link;
-    font-size: 15px;
-  }
 }
 
 // buttons
@@ -244,8 +236,15 @@ textarea.invalid {
   border: none;
   border-radius: $btn-radius;
 
+  &:hover {
+    background-color: $btn-blue--hover;
+  }
+
   &-submit {
+    @extend .c;
     @extend .btn;
+
+    text-decoration: none;
     background-color: $btn-blue;
     margin-right: 0;
     width: 40%;
@@ -256,6 +255,7 @@ textarea.invalid {
     &--orange {
       @extend .btn-submit;
       background-color: $myte-orange;
+
       &:hover {
         background-color: $myte-orange_b;
         cursor: pointer;
@@ -277,8 +277,36 @@ textarea.invalid {
         background-color: rgb(52, 96, 143);
       }
     }
-    &:hover {
-      background-color: $btn-blue--hover;
+
+    &--gold {
+      @extend .btn-submit;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+        0 3px 6px rgba(110, 80, 20, 0.4),
+        inset 0 -2px 5px 1px rgba(139, 66, 8, 1),
+        inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
+      background-image: linear-gradient(
+        160deg,
+        #a54e07,
+        #b47e11,
+        #fef1a2,
+        #bc881b,
+        #a54e07
+      );
+      color: rgb(120, 50, 5);
+      text-shadow: 0 2px 2px rgba(250, 227, 133, 1);
+      transition: all 0.2s ease-in-out;
+      background-size: 100% 100%;
+      background-position: center;
+      border: 1px solid #a55d07;
+      &:hover,
+      &:focus {
+        background-size: 150% 150%;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+          0 6px 6px rgba(0, 0, 0, 0.23), inset 0 -2px 5px 1px #b17d10,
+          inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
+        border: 1px solid rgba(165, 93, 7, 0.6);
+        color: rgba(120, 50, 5, 0.8);
+      }
     }
   }
 
