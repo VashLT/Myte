@@ -83,6 +83,8 @@ def register(request, stage=1):
             else:
                 context["form"] = RegisterForm()
         else:
+            if "back" in request.POST:
+                return redirect("main:index")
             print("validating POST ...")
             context["form"] = RegisterForm(request.POST)
             if valid_user(request):
@@ -114,16 +116,15 @@ def register(request, stage=1):
                     args=(1,))
                 )
         else:
-            data = request.POST
-            if "back" in data:
+            if "back" in request.POST:
                 return redirect(reverse(
                     'mauth:register',
                     args=(1,))
                 )
-            elif valid_extra_info(request) and "finish" in data:
+            elif valid_extra_info(request) and "finish" in request.POST:
                 messages.info(request, "Valid second stage")
-                Cache.register["carrera"] = data["career"]
-                Cache.register["niveleducativo"] = data["level"]
+                Cache.register["carrera"] = request.POST["career"]
+                Cache.register["niveleducativo"] = request.POST["level"]
                 Cache.register["valid_request"].update(request.POST.dict())
 
                 return redirect(reverse('mauth:register', args=(3,)))

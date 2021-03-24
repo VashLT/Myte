@@ -26,13 +26,13 @@
 <div class="c-register" id="reg-cont">
     <form method="POST" class="form" id="reg-form" action="">
         {% csrf_token %}
-        <div style="margin-top: 20px; display:flex; flex-direction: column; align-items: center;">
-            <img src="{% static 'images/logo.png' %}" style="height:100px;width:100px;" title="Myte">
+        <div class="myte-header">
+            <img src="{% static 'images/logo.png' %}" title="Myte">
             <h2 style="color:#212121;">Tu gestor de formulas</h2>
         </div>
         {{ form.non_field_errors }}
         {% if stage == 1 %}
-        <div class="c-input" style="margin-top:50px; margin-bottom: 5%;">
+        <div class="c-input" style="margin:50px auto 5%;">
             <div class="icon-holder">
                 <img src="{% static 'images/user_white.png' %}">
             </div>
@@ -80,14 +80,18 @@
         {% endif %}
         <div class="c-input--many" style="margin-top:30px; justify-content:space-between;">
             <div class="c-input" style="width: 30%; margin-left: 60px;">
-                <button class="btn-submit--orange" id="previous-btn" style="width: 100%;">Anterior</button>
+                {% if stage == 1 %}
+                    <a class="btn-submit--orange" href="{% url 'main:index' %}"  style="width: 100%;">Regresar</a>
+                {% else %}
+                    <button class="btn-submit--orange" id="previous-btn" style="width: 100%;">Anterior</button>
+                {% endif %}
             </div>
             <div class="c-input" style="width: 30%; margin-right: 60px;">
                 <button class="btn-submit--blue" id="next-btn" style="width: 100%;">Siguiente</button>
             </div>
         </div>
     </form>
-    <a href="{% url 'mauth:login' %}" class="redirect" style="margin-top: 30px; align-self: center;">¿Ya tienes una cuenta?</a>
+    <a href="{% url 'mauth:login' %}" class="link" style="margin-top: 30px; align-self: center;">¿Ya tienes una cuenta?</a>
 </div>
 {% endblock %}
 

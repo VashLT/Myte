@@ -35,31 +35,20 @@ function getCurrentStage() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const PrevBtn = document.getElementById('previous-btn');
     const NextBtn = document.getElementById('next-btn');
     var stages = document.getElementsByClassName("stage");
     var curStage, index;
     [index, curStage] = getCurrentStage();
     console.log(curStage.getAttribute('value'));
     // determines state and content of buttons
-    if (curStage == stages[0]) {
-        PrevBtn.disabled = true;
-        PrevBtn.style.backgroundColor = 'darkgray';
-    } else if (curStage == stages[stages.length - 1]) {
+    if (curStage == stages[stages.length - 1]) {
         NextBtn.innerText = "Enviar";
     } else {
         NextBtn.innerText = "Siguiente";
-        PrevBtn.disabled = false;
     }
     if (curStage.getAttribute('value') === '2') {
         var container = document.getElementById("reg-cont");
         container.style.height = "600px";
-    }
-    PrevBtn.onclick = function () {
-        if (curStage != stages[0]) {
-            $("#reg-form").append('<input type="hidden" name="back" />');
-            $("#reg-form").submit();
-        }
     }
     NextBtn.onclick = function () {
         var form = document.getElementById("reg-form");
