@@ -7,4 +7,5 @@ app_name = 'main'
 urlpatterns = [
     path('', views.index, name='index'),
     path("home/", views.home, name='home'),
+    path("home/premium", views.premium, name='premium'),
 ]
