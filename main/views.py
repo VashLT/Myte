@@ -4,14 +4,15 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 
-
 from django.conf import settings
-
-from mauth.models import Rol
 
 from main.decorators import normal_user_required
 
 from main.forms import UpgradeForm
+
+from formulas.utils import load_formulas
+
+from mauth.models import Rol
 
 
 def index(request):
@@ -21,7 +22,10 @@ def index(request):
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
 def home(request):
     user = request.user
-    formulas = None
+    formulas = load_formulas(user)
+    if formulas:
+        messages.info(request, "Succesfully loaded %d formulas" %
+                      len(formulas))
     context = {"user": user, "formulas": formulas}
     return render(request, "main/home.html", context)
 

@@ -51,6 +51,32 @@ class Formula(models.Model):
     class Meta:
         managed = False
         db_table = 'formula'
+    
+    @property
+    def tags(self, user):
+        if not user.is_premium:
+            return []
+        user_tags = Tag.objects.filter(id_usuario=user.id)
+        if not user_tags:
+            return []
+        return [
+            tag for tag in user_tags
+            if TagFormula.objects.get(id_formula=self.id, id_tag=tag.id)
+        ]
+    
+    @property
+    def latex(self):
+        return clean_latex(self.codigo_latex)
+    
+    @classmethod
+    def clean_latex(cls):
+        """
+            format latex code with '\n' in it to html newline for each newline char
+        """
+        splits = cls.codigo_latex.split(r"\n")
+        return "$$ $$".join(splits)
+        
+
 
 
 class Historial(models.Model):
@@ -83,7 +109,11 @@ class Indice(models.Model):
         settings.AUTH_USER_MODEL, models.CASCADE, db_column='id_usuario', blank=True, null=True)
     id_formula = models.ForeignKey(
         Formula, models.CASCADE, db_column='id_formula', blank=True, null=True)
-    numero_usos = models.IntegerField(blank=True, null=True)
+    n_clicks = models.IntegerField(
+        blank=True,
+        null=True,
+        db_column="numero_usos",
+        verbose_name="Numero de veces que una formula ha sido clickeada")
 
     class Meta:
         managed = False
@@ -113,7 +143,7 @@ class Tag(models.Model):
         db_table = 'tag'
 
 
-class Tagformula(models.Model):
+class TagFormula(models.Model):
     id_tag = models.IntegerField(primary_key=True)
     id_formula = models.IntegerField()
 

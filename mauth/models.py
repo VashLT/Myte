@@ -121,6 +121,16 @@ class User(AbstractBaseUser):
     def __str__(self):
         return "Usuario named %s with id %d" % (self.get_username(), self.id)
 
+    @property
+    def is_admin(self):
+        return self.rol.id == settings.ADMIN_ROL
+
+    @property
+    def is_premium(self):
+        if self.is_admin:
+            return True
+        return self.rol.id == settings.PREMIUM_ROL
+
     def get_username(self):
         return self.meta.nombre_usuario
 
