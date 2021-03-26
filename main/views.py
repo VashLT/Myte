@@ -23,9 +23,6 @@ def index(request):
 def home(request):
     user = request.user
     formulas = load_formulas(user)
-    print("loaded following formulas")
-    for formula in formulas:
-        print(formula)
 
     if formulas:
         messages.info(request, "Succesfully loaded %d formulas" %
@@ -44,9 +41,10 @@ def premium(request):
     if user.rol.id == settings.ADMIN_ROL:
         messages.info(request, "%s tiene el máximo rango" %
                       user.get_username())
+    else:
+        user.rol = Rol.objects.get(pk=settings.ADMIN_ROL)  # admin rol
+        user.save()
+        messages.success(request, "%s es ahora un usuario premium!" %
+                         user.get_username())
 
-    user.rol = Rol.objects.get(pk=3)  # admin rol
-    user.save()
-    messages.success(request, "%s es ahora un usuario premium!" %
-                     user.get_username())
     return redirect("main:home")
