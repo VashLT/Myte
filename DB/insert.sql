@@ -543,19 +543,18 @@ INSERT INTO Script VALUES
     (1, 30, "sum([x**i / math.factorial(i) for i in range(int(n))])", "x,n"),
     (2, 6, "ms/vs", "ms,vs"),
     (3, 8, "(-b + math.sqrt(b**2 - 4*a*c))/(2*a)", "a,b,c"),
-    (4, 8, "(-b - math.sqrt(b**2 - 4*a*c))/(2*a)", "a,b,c"),
-    (5, 10, "a11 * a22 - a21 * a12", "a11,a12,a21,a22"),
-    (6, 12, "ab * h", "ab,h"),
-    (7, 14, "c * b / a", "a,b,c"),
-    (8, 18, "math.pi * r**2", "r"),
-    (9, 19, "math.factorial(n) / math.factorial(n-r)", "n,r"),
-    (10, 23, "(q1 * q2)/(r**2 * math.pi * 8.854187817 * 10**(-12))", "q1,q2,r"),
-    (11, 24, "l / T", "l,T"),
-    (12, 25, "a * v", "a,v"),
-    (13, 28, "abs(p - pp)", "p,pp"),
-    (14, 29, "abs(p - pp) / abs(p)", "p,pp"),
-    (15, 31, "1/2 * m * v**2 + m * g * h", "m,g,h,v"),
-    (16, 33, "xi + vx * (tf-ti)", "xi,vx,tf,ti")
+    (4, 10, "a11 * a22 - a21 * a12", "a11,a12,a21,a22"),
+    (5, 12, "ab * h", "ab,h"),
+    (6, 14, "c * b / a", "a,b,c"),
+    (7, 18, "math.pi * r**2", "r"),
+    (8, 19, "math.factorial(n) / math.factorial(n-r)", "n,r"),
+    (9, 23, "(q1 * q2)/(r**2 * math.pi * 8.854187817 * 10**(-12))", "q1,q2,r"),
+    (10, 24, "l / T", "l,T"),
+    (11, 25, "a * v", "a,v"),
+    (12, 28, "abs(p - pp)", "p,pp"),
+    (13, 29, "abs(p - pp) / abs(p)", "p,pp"),
+    (14, 31, "1/2 * m * v**2 + m * g * h", "m,g,h,v"),
+    (15, 33, "xi + vx * (tf-ti)", "xi,vx,tf,ti")
 ;
 
 -- Añadiendo tarjetas de crédito
