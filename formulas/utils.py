@@ -58,7 +58,7 @@ def load_from_history(user_id, cant_max=20):
 def load_randomly(cant_max=20):
     all_ids = Formula.objects.all().values_list('id', flat=True)
     if not all_ids:
-        raise Exception(f"No formulas to load for User with id {user_id}")
+        raise Exception(f"No formulas to load")
     if cant_max > len(all_ids):
         cant_max = len(all_ids)
     random_ids = random.sample(all_ids, cant_max)
