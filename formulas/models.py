@@ -4,6 +4,10 @@ from django.db import models
 
 from mauth.models import User, Niveleducativo, Carrera
 
+from main.models import Mytevar
+
+from main.utils import get_session_user
+
 
 class Categoria(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_categoria')
@@ -51,32 +55,59 @@ class Formula(models.Model):
     class Meta:
         managed = False
         db_table = 'formula'
-    
+
+    def __str__(self):
+        return "<Formula %s>" % self.nombre
+
     @property
-    def tags(self, user):
+    def images(self, cache=True):
+        try:
+            if cache and hasattr(self, "_cache_images"):
+                return self._cache_images
+            self._cache_images = Imagen.objects.get(id_formula=self.id)
+            return self._cache_images
+        except Imagen.DoesNotExist:
+            return None
+
+    @property
+    def script(self, cache=True):
+        try:
+            if cache and hasattr(self, "_cache_script"):
+                return self._cache_script
+            self._cache_script = Script.objects.get(id_formula=self.id)
+            return self._cache_script
+        except Script.DoesNotExist:
+            return None
+
+    @property
+    def get_tags(self, user=None, cache=True):
+        """
+            by defaults works with the active user in session
+        """
+        user = user or get_session_user()
         if not user.is_premium:
             return []
+        if cache and hasattr(self, "_cache_tags"):
+            return self._cache_tags
         user_tags = Tag.objects.filter(id_usuario=user.id)
         if not user_tags:
             return []
-        return [
+        self._cache_tags = [
             tag for tag in user_tags
             if TagFormula.objects.get(id_formula=self.id, id_tag=tag.id)
         ]
-    
+        return self._cache_tags
+
     @property
     def latex(self):
-        return clean_latex(self.codigo_latex)
-    
-    @classmethod
-    def clean_latex(cls):
+        return self.clean_latex()
+
+    def clean_latex(self):
         """
             format latex code with '\n' in it to html newline for each newline char
         """
-        splits = cls.codigo_latex.split(r"\n")
+        splits = self.codigo_latex.split(r"\n")
         return "$$ $$".join(splits)
-        
-
 
 
 class Historial(models.Model):
