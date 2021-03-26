@@ -23,6 +23,10 @@ def index(request):
 def home(request):
     user = request.user
     formulas = load_formulas(user)
+    print("loaded following formulas")
+    for formula in formulas:
+        print(formula)
+
     if formulas:
         messages.info(request, "Succesfully loaded %d formulas" %
                       len(formulas))

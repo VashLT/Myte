@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filters %}
 {% load widget_tweaks %}
 
 {% block title %}Home{% endblock %}
@@ -8,7 +9,6 @@
 
 {% block body %}
 <div class="overlay"></div>
-
 
 {% block nav %}
 <nav class="nav-bar--home">
@@ -51,6 +51,67 @@
         <a href="{% url 'formulas:index' %}" title="Myte source code" style="margin-left: 20px;"
             target="_blank"><strong>Mis formulas</strong></a>
     </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="c-formulas">
+{% for formula in formulas %}
+    <div data-modal-target="#modal{{ forloop.counter }}" class="c-formula" id="f{{ forloop.counter }}">
+        <div class="formula-header">
+            <h2>{{ formula.nombre }}</h2>
+        </div>
+        <div class="formula-content">
+            <p>$$ {{ formula.latex }} $$</p>
+            {% if formula.get_tags %}
+            <div class="c-tags">
+                {% for tag in formula.get_tags %}
+                <div>
+                    <p>{{ tag }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="modal-formula" id="modal{{ forloop.counter }}"> {# forloop.counter starts at 1 #}
+        <div class="aug-header">
+            <h1>{{ formula.nombre }}</h1>
+        </div>
+        <div class="aug-formula">
+            <p>$$ {{ formula.latex }} $$</p>
+        </div>
+        {% if formula.get_tags %}
+        <div class="aug-tags">
+            {% for tag in formula.get_tags %}
+            <div>
+                <p>{{ tag }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="aug-options">
+            {% if formula.images %}
+            <a href="{% url 'formulas:images' id_formula=formula.id) }} " class="option--yellow"
+                target="_blank">Imagenes</a>
+            {% else %}
+            <a class="option" aria-disabled="true">Imagenes</a>
+            {% endif %}
+            {% if formula.script %}
+            <a href="{% url 'formulas:script' id_formula = formula.id) }}" class="option--skin"
+                target="_blank">Ejecutar script</a>
+            {% else %}
+            <a class="option" aria-disabled="true">Ejecutar script</a>
+            {% endif %}
+            {% if user.is_premium %}
+            <a href="{% url 'formulas:edit' id_formula=formula.id) }}" class="option--green"
+                target="_blank">Editar</a>
+            {% endif %}
+            <a href="{% url 'formulas:delete' id_formula=formula.id) }}" id="delete" class="option--blue"
+                target="_blank">Eliminar</a>
+        </div>
+    </div>
+{% endfor %}
 </div>
 {% endblock %}
 

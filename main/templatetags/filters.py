@@ -8,6 +8,12 @@ register = template.Library()
 
 
 @register.filter
+def call_method(obj, method_name, *args):
+    method = getattr(obj, method_name)
+    return method(*args)
+
+
+@register.filter
 def level2class(level):
     """
         map integer to css flash class based on:
