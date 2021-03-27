@@ -124,3 +124,8 @@
     </a>
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"</script>
+<script type=text/javascript src="{% static 'formulas_js/formulas.js' %}"></script>
+{% endblock %}

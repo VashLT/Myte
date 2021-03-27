@@ -1,8 +1,14 @@
 from django.shortcuts import render, HttpResponse
 
+from django.http import JsonResponse
+
 from django.contrib.auth.decorators import login_required
 
 from django.conf import settings
+
+from .models import Formula, Indice
+
+from .decorators import ajax_required
 
 
 def index(request):  # temporary
@@ -10,11 +16,28 @@ def index(request):  # temporary
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
+@ajax_required
 def liveupdate(request):
     """
         Asynchronously updates Index table every time user  click on a formula
     """
-    return HttpResponse("<h1> Ajax updater </h1>")
+    response = ""
+    print(f"AJAX Request POST: {request.POST}")
+    id = int(request.POST["id_formula"])
+    try:
+        index = Indice.objects.get(id_formula=id, id_usuario=request.user.id)
+        index.n_clicks += 1
+        index.save()
+        response = "Updated %d!" % id
+
+    except index.DoesNotExist:
+        assert Formula.objects.filter(pk=id).exists()
+        Indice.objects.create(
+            id_formula=id, id_usuario=request.user.id, n_clicks=1)
+        response = "Created %d!" % id
+
+    finally:
+        return JsonResponse({"message": response}, status=200)
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
