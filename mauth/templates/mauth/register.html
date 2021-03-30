@@ -1,20 +1,20 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load widget_tweaks %}
-{% load filters %}
+{% extends 'base.html' %} 
 
-{% block title %}Register{% endblock %}
+{% load static %} 
+{% load widget_tweaks %} 
+{% load filters %} 
+
+{% block title %}Register{% endblock %} 
 
 {% block media %}
 <!-- Date picker media -->
-{{ form.media }}
-{% endblock %}
+{{ form.media }} 
+{% endblock %} 
 
-
-{% block main %}class="reg"{% endblock %}
+{% block main %}class="reg"{% endblock %} 
 
 {% block body %}
-<div class="c-stages">
+    <div class="c-stages">
     {% if stage == 1 %}
         <span class="stage active" value="1"></span>
         <span class="stage" value="2"></span>
@@ -22,82 +22,84 @@
         <span class="stage finish" value="1"></span>
         <span class="stage active" value="2"></span>
     {% endif %}
-</div>
-<div class="c-register" id="reg-cont">
-    <form method="POST" class="form" id="reg-form" action="">
-        {% csrf_token %}
-        <div class="myte-header">
-            <img src="{% static 'images/logo.png' %}" title="Myte">
-            <h2 style="color:#212121;">Tu gestor de formulas</h2>
-        </div>
-        {{ form.non_field_errors }}
-        {% if stage == 1 %}
-        <div class="c-input" style="margin:50px auto 5%;">
-            <div class="icon-holder">
-                <img src="{% static 'images/user_white.png' %}">
+    </div>
+    <div class="c-register" id="reg-cont">
+        <form method="POST" class="form" id="reg-form" action="">
+            {% csrf_token %}
+            <div class="myte-header">
+                <img src="{% static 'images/logo.png' %}" title="Myte" />
+                <h2 style="color: #212121">Tu gestor de formulas</h2>
             </div>
-            {{ form.username|add_class:"input"|attr:"placeholder:Nombre de usuario" }}
-        </div>
-        <div class="c-input" style="margin-bottom: 5%;">
+            {{ form.non_field_errors }} 
+            {% if stage == 1 %}
+            <div class="c-input" style="margin: 50px auto 5%">
             <div class="icon-holder">
-                <img src="{% static 'images/name_white.png' %}" style="height:14px;">
+                <img src="{% static 'images/user_white.png' %}" />
             </div>
-            {{ form.fullname|add_class:"input"|attr:"placeholder:Nombre completo" }}
-        </div>
-        <div class="c-input--many" style="margin-bottom:5%; justify-content: space-between;">
-            <div class="c-input" style="width:50%;">
-                <div class="icon-holder">
-                    <img src="{% static 'images/email_white.png' %}" style="height:14px;">
+                {% render_field form.username class="input" placeholder="Nombre de usuario" %}
+            </div>
+            <div class="c-input" style="margin-bottom: 5%">
+            <div class="icon-holder">
+                <img src="{% static 'images/name_white.png' %}" style="height: 14px" />
+            </div>
+                {% render_field form.fullname class="input" placeholder="Nombre completo" %}
+            </div>
+            <div class="c-input--many" style="margin-bottom: 5%; justify-content: space-between">
+                <div class="c-input" style="width: 50%">
+                    <div class="icon-holder">
+                        <img
+                            src="{% static 'images/email_white.png' %}"
+                            style="height: 14px"
+                        />
+                    </div>
+                    {% render_field form.email class="input--small" placeholder="Ingresar email" style="width:100%;" %}
                 </div>
-                {{ form.email|add_class:"input--small"|attr:"placeholder:Ingresar email"|attr:"style:width:100%;" }}
+                <div class="c-datepicker">
+                    {{ form.birthdate.label_tag }} {{ form.birthdate|add_class:"datepicker"}}
+                </div>
             </div>
-            <div class="c-datepicker">
-                {{ form.birthdate.label_tag }}
-                {{ form.birthdate|add_class:"datepicker" }}
+            <div class="c-input" style="margin-bottom: 5%">
+                <div class="icon-holder">
+                    <img src="{% static 'images/pw_white.png' %}" />
+                </div>
+                {{ form.pw1|add_class:"input"|attr:"placeholder:Contraseña" }}
             </div>
-        </div>
-        <div class="c-input" style="margin-bottom: 5%;">
-            <div class="icon-holder">
-                <img src="{% static 'images/pw_white.png' %}">
+            <div class="c-input" style="margin-bottom: 5%">
+                <div class="icon-holder">
+                    <img src="{% static 'images/pw_white.png' %}" />
+                </div>
+                {{ form.pw2|add_class:"input"|attr:"placeholder:Re ingresar contraseña" }}
             </div>
-            {{ form.pw1|add_class:"input"|attr:"placeholder:Contraseña" }}
-        </div>
-        <div class="c-input" style="margin-bottom: 5%;">
-            <div class="icon-holder">
-                <img src="{% static 'images/pw_white.png' %}">
+            {% else %}
+            <div class="c-select" style="margin-top: 40px">
+                <p>¿Cuál es tu nivel educativo?</p>
+                {{ form.level|add_class:"drop-menu"|attr:"style: width:200px;"|default_option:"level" }}
             </div>
-            {{ form.pw2|add_class:"input"|attr:"placeholder:Re ingresar contraseña" }}
-        </div>
-        {% else %}
-        <div class="c-select" style="margin-top: 40px;">
-            <p>¿Cuál es tu nivel educativo?</p>
-            {{ form.level|add_class:"drop-menu"|attr:"style:width:200px;"|default_option:"level"}}
-        </div>
-        <div class="c-select" style="margin-top: 30px; margin-bottom: 60px;">
-            <p>¿Qué carrera estudias o estás interesado?</p>
-            {{ form.career|add_class:"drop-menu"|attr:"style:width:200px;"|default_option:"career"}}
-        </div>
-        {% endif %}
-        <div class="c-input--many" style="margin-top:30px; justify-content:space-between;">
-            <div class="c-input" style="width: 30%; margin-left: 60px;">
-                {% if stage == 1 %}
-                    <a class="btn-submit--orange" href="{% url 'main:index' %}"  style="width: 100%;">Regresar</a>
-                {% else %}
-                    <button class="btn-submit--orange" id="previous-btn" style="width: 100%;">Anterior</button>
-                {% endif %}
+            <div class="c-select" style="margin-top: 30px; margin-bottom: 60px">
+                <p>¿Qué carrera estudias o estás interesado?</p>
+                {{ form.career|add_class:"drop-menu"|attr:"style: width:200px;"|default_option:"career" }}
             </div>
-            <div class="c-input" style="width: 30%; margin-right: 60px;">
-                <button class="btn-submit--blue" id="next-btn" style="width: 100%;">Siguiente</button>
+            {% endif %}
+            <div class="c-input--many" style="margin-top: 30px; justify-content: space-between">   
+                <div class="c-input" style="width: 30%; margin-left: 60px">
+                    {% if stage == 1 %}
+                    <a class="btn-submit--orange" href="{% url 'main:index' %}" style="width: 100%">Regresar</a>
+                    {% else %}
+                    <button class="btn-submit--orange" id="previous-btn" style="width: 100%">Anterior</button>
+                    {% endif %}
+                </div>
+                <div class="c-input" style="width: 30%; margin-right: 60px">
+                    <button class="btn-submit--blue" id="next-btn" style="width: 100%">Siguiente</button>
+                </div>
             </div>
-        </div>
-    </form>
-    <a href="{% url 'mauth:login' %}" class="link" style="margin-top: 30px; align-self: center;">¿Ya tienes una cuenta?</a>
-</div>
-{% endblock %}
+        </form>
+        <a href="{% url 'mauth:login' %}" class="link" style="margin-top: 30px; align-self: center">¿Ya tienes una cuenta?</a>
+    </div>
+{% endblock %} 
 
 {% block scripts %}
-<script type=text/javascript src="{% static 'mauth_js/register.js' %}"></script>
+<script
+  type="text/javascript"
+  src="{% static 'mauth_js/register.js' %}"
+></script>
 {% endblock %}
-
-
-

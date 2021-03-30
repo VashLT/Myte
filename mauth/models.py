@@ -13,7 +13,6 @@ from django.utils.crypto import salted_hmac
 from mauth import utils
 
 
-ADMIN_ROL = 3
 DATE_INPUT_FORMATS = [r"%d/%m/%Y"]
 
 
@@ -83,7 +82,7 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             nombre_usuario=username,
             nombre=name,
-            rol=ADMIN_ROL,
+            rol=settings.ADMIN_ROL,
             fecha_nacimiento=birthdate
         )
         return user
@@ -158,9 +157,6 @@ class User(AbstractBaseUser):
         return salted_hmac(
             key_salt,
             self.meta.clave_encriptada,
-            # RemovedInDjango40Warning: when the deprecation ends, replace
-            # with:
-            # algorithm='sha256',
             algorithm=settings.DEFAULT_HASHING_ALGORITHM,
         ).hexdigest()
 
@@ -173,6 +169,15 @@ class Niveleducativo(models.Model):
         managed = False
         db_table = 'niveleducativo'
 
+    def __str__(self):
+        return f"< NivelEducativo: {self.nombre} >"
+
+    @classmethod
+    def get_choices(cls):
+        return tuple([
+            (ins.id, ins.nombre) for ins in cls.objects.all()
+        ])
+
 
 class Carrera(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_carrera')
@@ -181,6 +186,15 @@ class Carrera(models.Model):
     class Meta:
         managed = False
         db_table = 'carrera'
+
+    def __str__(self):
+        return f"< Carrera: {self.nombre} >"
+
+    @classmethod
+    def get_choices(cls):
+        return tuple([
+            (ins.id, ins.nombre) for ins in cls.objects.all()
+        ])
 
 
 class Interes(models.Model):

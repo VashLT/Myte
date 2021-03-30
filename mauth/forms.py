@@ -7,8 +7,6 @@ from mauth.templates.widgets import FengyuanChenDatePicker
 from mauth import utils
 
 TIME_FORMAT = r"%d/%m/%Y"
-CAREERS = [obj.nombre for obj in Carrera.objects.all()]
-LEVELS = [obj.nombre for obj in Niveleducativo.objects.all()]
 
 
 class LoginForm(forms.Form):
@@ -33,11 +31,11 @@ class RegisterForm(forms.Form):
     # stage 2
     career = forms.CharField(
         max_length=100,
-        widget=forms.Select(choices=utils.get_choices(Carrera))
+        widget=forms.Select(choices=Carrera.get_choices())
     )
     level = forms.CharField(
         max_length=100,
-        widget=forms.Select(choices=utils.get_choices(Niveleducativo))
+        widget=forms.Select(choices=Niveleducativo.get_choices())
     )
 
     @property

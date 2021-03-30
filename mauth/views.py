@@ -18,10 +18,10 @@ from django.contrib.auth import (
     logout as logout_user
 )
 
-from mauth.models import User, MetaUser, Rol
-from mauth.forms import RegisterForm, LoginForm
-from mauth.decorators import unauthenticated_user
-from mauth import utils
+from .models import User, MetaUser, Rol
+from .forms import RegisterForm, LoginForm
+from .decorators import unauthenticated_user
+from . import utils
 
 from main.models import Mytevar
 
@@ -43,12 +43,12 @@ class Cache(object):
 
 @unauthenticated_user
 def login(request):
+    print(f"GET: {request.GET}\nPOST: {request.POST}")
     if request.method == "GET":
         form = LoginForm()
         return render(request, 'mauth/login.html', {"form": form})
     form = LoginForm(request.POST)
     if form.is_valid():
-        print(form.cleaned_data)
         user = authenticate(
             request=request,
             **form.cleaned_data
@@ -82,32 +82,37 @@ def register(request, stage=1):
                 context["form"] = RegisterForm(Cache.register["valid_request"])
             else:
                 context["form"] = RegisterForm()
-        else:
-            if "back" in request.POST:
-                return redirect("main:index")
-            print("validating POST ...")
-            context["form"] = RegisterForm(request.POST)
-            if valid_user(request):
-                messages.info(request, "Valid first stage")
-                Cache.register["valid_request"] = request.POST.dict()
-                utils.populate_cache(
-                    request.POST,
-                    Cache.register,
+
+            return render(request, 'mauth/register.html', context)
+
+        if "back" in request.POST:
+            return redirect("main:index")
+
+        print("validating POST ...")
+        context["form"] = RegisterForm(request.POST)
+
+        if valid_user(request):
+            Cache.register["valid_request"] = request.POST.dict()
+            utils.populate_cache(
+                request.POST,
+                Cache.register,
+                {
+                    "user":
                     {
-                        "user":
-                        {
-                            "username": "meta",
-                            "fullname": ["nombre", utils.format_name],
-                            "email": "email",
-                            "birthdate": ["fecha_nacimiento", utils.format_date],
-                        },
-                        "meta": {
-                            "username": "nombre_usuario",
-                            "pw1": ["clave_encriptada", utils.encrypt]
-                        }
+                        "username": "meta",
+                        "fullname": ["nombre", utils.format_name],
+                        "email": "email",
+                        "birthdate": ["fecha_nacimiento", utils.format_date],
+                    },
+                    "meta": {
+                        "username": "nombre_usuario",
+                        "pw1": ["clave_encriptada", utils.encrypt]
                     }
-                )
-                return redirect(reverse('mauth:register', args=(2,)))
+                }
+            )
+
+        return redirect(reverse('mauth:register', args=(2,)))
+
     elif stage == 2:
         if request.method == "GET":
             if not "user" in Cache.register:
@@ -115,55 +120,65 @@ def register(request, stage=1):
                     'mauth:register',
                     args=(1,))
                 )
-        else:
-            if "back" in request.POST:
-                return redirect(reverse(
-                    'mauth:register',
-                    args=(1,))
-                )
-            elif valid_extra_info(request) and "finish" in request.POST:
-                messages.info(request, "Valid second stage")
-                Cache.register["carrera"] = request.POST["career"]
-                Cache.register["niveleducativo"] = request.POST["level"]
-                Cache.register["valid_request"].update(request.POST.dict())
+            context["form"] = RegisterForm(Cache.register["valid_request"])
+            return render(request, 'mauth/register.html', context)
 
-                return redirect(reverse('mauth:register', args=(3,)))
+        if "back" in request.POST:
+            return redirect(reverse(
+                'mauth:register',
+                args=(1,))
+            )
 
-        context["form"] = RegisterForm(Cache.register["valid_request"])
+        if not valid_extra_info(request):
+            return redirect(reverse('mauth:register', args=(2,)))
+
+        Cache.register["carrera"] = request.POST["career"]
+        Cache.register["niveleducativo"] = request.POST["level"]
+        Cache.register["valid_request"].update(request.POST.dict())
+
+        return redirect(reverse('mauth:register', args=(3,)))
+
     elif stage == 3:
         if not "valid_request" in Cache.register:
             return redirect(reverse('mauth:register', args=(1,)))
+
         print(f"Final cache:\n{Cache.register}")
         user_credentials = Cache.register["user"]
-        meta = MetaUser(**Cache.register["meta"])
+
+        meta = MetaUser.objects.create(**Cache.register["meta"])
 
         user_credentials["rol"] = Rol.objects.get(pk=DEFAULT_ROL)
         user_credentials["meta"] = meta
-        new_user = User(**user_credentials)
 
-        meta.save()
-        new_user.save()
+        new_user = User.objects.create(**user_credentials)
 
         user = authenticate(
             request=request,
             username=meta.nombre_usuario,
             password=Cache.register["valid_request"]["pw2"]
         )
+
         if not user:
             print(Cache.register["valid_request"])
             raise Exception(
                 "something went wrong when authenticating the new User")
 
         formulas = None
-        Cache.register = {}
+        Cache.register = {}  # clean cache
+
         login_user(request, user)
         print(f"User logged in!, {request.user}")
         messages.success(request, "Welcome %s" % meta.nombre_usuario)
 
         return redirect("main:home")
+
     else:
-        raise Exception("Invalid stage")
-    return render(request, 'mauth/register.html', context)
+        context = {
+            "title": "Internal error",
+            "description": f"Stage in register process was not found. [stage={stage}]",
+            "trace": traceback.format_exc()
+        }
+        return render(request, "main/404.html", context)
 
 
 def logout(request):

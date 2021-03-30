@@ -5,11 +5,9 @@ import re
 
 
 def validate_username(UserClass, username):
-    try:
-        UserClass.objects.get(pk=username)
+    if UserClass.objects.filter(pk=username).exists():
         return False
-    except UserClass.DoesNotExist:
-        return True
+    return True
 
 
 def display(ModelClass):
@@ -26,13 +24,17 @@ def format_name(name):
 
 def encrypt(password):
     """
-            password: str
-            output: password encrypted
+            > password: str
+
+            OUTPUT: password encrypted (str)
         """
     return sha256(password.encode()).hexdigest()
 
 
 def is_email(email, simple=False):
+    """
+        if 'simple' is True performs a basic email regex
+    """
     if simple:
         return re.match(
             r"[A-Za-z0-9.]+@[A-Za-z.]+[A-Za-z]$",
@@ -46,20 +48,18 @@ def is_email(email, simple=False):
 
 
 def format_date(date, old_format=r"%d/%m/%Y", new_format=r"%Y-%m-%d"):
+    """
+        handles Django required date format
+    """
     if isinstance(date, datetime):
         return date.strftime(new_format)
     return datetime.strptime(date, old_format).strftime(new_format)
 
 
-def format_newline(latex):
-    """
-        format latex code with '\n' in it to html newline for each newline char
-    """
-    splits = latex.split(r"\n")
-    return "$$ $$".join(splits)
-
-
 def format_tags(tags):
+    """
+        returns tags-like #{tag name}
+    """
     fmt = []
     for tag in tags:
         block = "-".join(tag.nombre.split(" "))
@@ -70,15 +70,17 @@ def format_tags(tags):
 def populate_cache(POST, cache, data_map):
     """
         translates keys in POST to Model fields based on data_map dict
-        args:
-            POST: QueryDict
-            cache: dict
-            data_map: dict-like {
-                'key': 
-                {
-                'sub_key': [value, func], 
-                'sub_key2': value ...}
-                }
+        POST > QueryDict
+        cache > dict
+        data_map > dict-like {
+            'key': 
+            {
+            'sub_key': [value, func], 
+            'sub_key2': value ...}
+            }
+
+        OUTPUT: None, cache ref is affected
+
     """
     for key, value in data_map.items():
         cache.setdefault(key, {})
@@ -93,9 +95,3 @@ def populate_cache(POST, cache, data_map):
                 val = POST[key_map]
             temp_dict.setdefault(new_key, val)
         cache[key].update(temp_dict)
-
-
-def get_choices(Model):
-    return tuple([
-        (obj.id, obj.nombre) for obj in Model.objects.all()
-    ])
