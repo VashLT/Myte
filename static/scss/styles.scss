@@ -49,6 +49,12 @@ body {
   overflow-y: hidden;
   background-color: $myte-skin;
 }
+.add-formula {
+  @extend .c;
+  overflow-y: hidden;
+  background-color: $myte-orange;
+}
+
 .upgrade {
   @extend .reg;
   padding: 0;

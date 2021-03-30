@@ -205,7 +205,7 @@ $mauth-form-width: 600px;
     flex-direction: row-reverse;
     justify-content: space-evenly;
     width: 100%;
-    height: 100%;
+    height: auto;
   }
 
   &-datepicker {
@@ -358,7 +358,6 @@ $mauth-form-width: 600px;
 
   &-add_formula {
     @extend .c-register;
-    transition: all 500ms ease-in-out;
     height: 700px;
     &:hover {
       box-shadow: 0 3px 3px 0 #6b6a74, 0 2px 2px 0 #6b6a74;

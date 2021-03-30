@@ -1,6 +1,4 @@
-$.getScript("/static/js/forms.js", function () { });
-$.getScript("/static/js/formulas.js", function() {});
-
+// $.getScript("static/js/forms.js", function () { });
 
 $.fn.hasAttr = function (name) {
     return this.attr(name) !== undefined;
@@ -11,16 +9,7 @@ $(document).ready(function () {
     var $side_bar = $('.side-bar');
     var $home_bar = $('.side-bar--home');
     var $messages = $('.c-flash');
-    var $images = $(".image-item");
-
-    $images.on("click", function () {
-            var $clicked_image_id = $(this).attr('id');
-        var $modal = $("#im" + $clicked_image_id);
-            $modal.addClass("active");
-            $overlay.addClass("active");
-    });
     
-
     $("#ilatex").on('input', function () {
         var input_latex = $(this).val();
         var preview = $("#preview-content");

@@ -278,6 +278,14 @@ textarea.invalid {
       }
     }
 
+    &--purple {
+      @extend .btn-submit;
+      background-color: rgb(132, 84, 230);
+      &:hover {
+        background-color: rgb(118, 75, 204);
+      }
+    }
+
     &--gold {
       @extend .btn-submit;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
