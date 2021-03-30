@@ -8,6 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}" sizes="64x64">
+
     {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/styles.scss' %}" media="screen" />
     {% endcompress %}
@@ -62,6 +64,7 @@
     {% endblock %}
 
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+
     {% block scripts %}
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>

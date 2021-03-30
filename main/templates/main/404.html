@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<head>
+    <title>{{ title }}</title>
+</head>
+
+<body class="bad-request">
+    <h1>Oops, The requested page was not found: {{ title }}</h1>
+    <p style="font-size: 20px; margin-bottom: 10px;">{{ description }}
+    <p><a href="{{ url_for('views.welcome') }}">Go back welcome page</a>
+    <h2>Traceback</h2>
+    {% if trace %}
+    {% for line in trace.splitlines() %}
+    <p>{{ line }}</p>
+    {% endfor %}
+    {% else %}
+    <p>Traceback is not available</p>
+    {% endif %}
+
+</body>

@@ -8,6 +8,12 @@ register = template.Library()
 
 
 @register.filter
+def insert_text(html, text):
+    result = html.replace('><', ''.join(['>', text, '<']), 1)
+    return mark_safe(result)
+
+
+@register.filter
 def call_method(obj, method_name, *args):
     method = getattr(obj, method_name)
     return method(*args)
@@ -43,11 +49,16 @@ def level2class(level):
 def default_option(body, name):
     if name == 'career':
         text = "Seleccionar carrera"
+
     elif name == 'level':
         text = "Nivel educativo"
+
     else:
         text = "Seleccionar"
+
     tag = _('<option value="select">%(text)s</option>' % {'text': text})
+
     split_body = str(body).split("\n")
     split_body.insert(1, tag)
+
     return mark_safe('\n'.join(split_body))
