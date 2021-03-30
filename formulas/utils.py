@@ -1,9 +1,14 @@
 from itertools import chain
 
+from pathlib import Path
+
 import random
 
-from mauth.models import User, MetaUser
-from formulas.models import (
+from django.conf import settings
+
+from django.core.files.images import ImageFile
+
+from .models import (
     Historial,
     Indice,
     Formula,
@@ -12,6 +17,42 @@ from formulas.models import (
     Imagen,
     Script
 )
+
+from mauth.models import User, MetaUser
+
+
+def store_file(file):
+    """
+        handles uploaded files storage
+    """
+    image = ImageFile(file)
+    path = Path(get_image_path(formula.id) / file.name)
+    if path.exists():
+        # temporary: Image is overwrite without asking to the user
+        pass
+
+    # file is not big enought and therefore can be load in memory
+    if not upload_file.multiple_chunks():
+        file.save(path)
+    else:
+        with open(Path(path / file.name), 'wb+') as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+    return path
+
+
+def get_image_path(id_formula):
+    """
+        build a valid location to store (new) image of formula with
+        id 'id_formula'
+        > exists: True indicates that an image already exists
+
+        OUTPUT: Path object
+    """
+    path = Path(settings.UPLOAD_FOLDER / "formulas" / id_formula)
+    if not path.exists():
+        path.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def load_formulas(user, cant_max=20):
@@ -84,7 +125,7 @@ def load_from_history(user_id, cant_max=20, memo_id=None):
 
 
 def load_randomly(cant_max=20):
-    formulas = Formula.objects.all()
+    formulas = list(Formula.objects.all())
     if not formulas:
         raise Exception(f"No formulas to load")
 

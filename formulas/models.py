@@ -48,9 +48,9 @@ class Formula(models.Model):
     id = models.AutoField(primary_key=True, db_column='id_formula')
     nombre = models.CharField(max_length=100)
     codigo_latex = models.CharField(max_length=250, blank=True, null=True)
-    fecha_creacion = models.DateField(blank=True, null=True)
+    fecha_creacion = models.DateField(auto_now_add=True)
     creada = models.IntegerField()
-    eliminada = models.IntegerField()
+    eliminada = models.IntegerField(default=0,verbose_name="1: Formula eliminada")
 
     class Meta:
         managed = False
