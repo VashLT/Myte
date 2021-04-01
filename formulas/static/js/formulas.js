@@ -31,33 +31,28 @@ document.addEventListener('DOMContentLoaded', function () {
     var $overlay = $('.overlay');
     var $formulas = $('.c-formula');
     var $stages = $('.stage');
+    var $nextBtn = $('#next-btn');
 
     if ($stages.length) {
         var $active = $('.stage.active');
         var $render = $('#render-btn');
-        var $nextBtn = $('#next-btn');
         var $prevBtn = $('#previous-btn');
+        var $form = $('#add-form');
         const formulaHeader = document.getElementById('formula-state-header')
         
         $render.click(function () {
             setTimeout(function(){
-                formulaHeader.innerText = 'Renderizando ...';
+                formulaHeader.innerText = '$$\\text{Renderizando ...}$$';
                 $form.append('<input type="hidden" name="render" />');
                 $form.submit();
             }, 600);
         });
 
-        $nextBtn.click(function () {
-            if (validForm('add-form')) {
-                $form.submit();
-            }
-        });
-
         $prevBtn.click(function () {
-            var form = $("form");
-            if (form.length === 1) {
-                form.append('<input type="hidden" name="back" value="" />');
-                form.submit();
+
+            if ($form.length === 1) {
+                $form.append('<input type="hidden" name="back" value="" />');
+                $form.submit();
             }
         });
 
@@ -69,10 +64,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } else {
             $('.c-add_formula').css('height', '500px');
-            formulaHeader.innerText = 'Formula';
+            formulaHeader.innerText = '$$\\text{Formula}$$';
             $prevBtn.prop('disabled', false);
             $nextBtn.text('Enviar');
         }
+    }
+
+    if ($nextBtn.length > 0) {
+        $nextBtn.click(function () {
+            console.log('clicked next btn')
+            if (validForm('add-form')) {
+                $('#add-form').submit();
+            }
+        });
     }
 
     $formulas.click(function () {
@@ -84,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // updates 'numero_usos' column in 'Indice' table
         $.ajax({
             type: "POST",
-            url: "/home/liveupdate",
+            url: "/home/formulas/liveupdate/",
             data: {
                 'csrfmiddlewaretoken': window.CSRF_TOKEN,
                 'id_formula': $clicked_formula_id.substring(1)
