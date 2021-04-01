@@ -1,0 +1,37 @@
+Myte TODOs
+
+- [x] authentication
+    - [x] register users
+    - [x] login users
+- [] recommend formulas
+    - [] add to History formulas for new users
+    - [x] load formulas
+- [] formulas
+    - [x] add formulas
+        - [x] add basic formula
+        - [x] add images
+        - [x] add script
+    - [] edit formulas
+        - [x] edit basic attributes
+        - [x] edit images
+        - [x] edit script
+    - [] delete formulas
+    - [] view images
+    - [] run script
+    - [] search formulas
+        - [] search by tag
+        - [] search by name
+    - [] tags
+        - [] add tags
+        - [] delete tags
+    - [] ordering
+        - [] group formulas by tag
+        - [] group by category
+
+- [] premium
+    - [x] upgrade user from normal to premium
+    - [] implement pay methods
+
+# last update: 1/4/2021
+
+
