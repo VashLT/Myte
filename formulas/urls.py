@@ -5,14 +5,12 @@ from . import views
 app_name = 'formulas'
 
 urlpatterns = [
-    path('home/formulas', views.index, name='index'),
-    path('home/formulas/add', views.add, name='add'),
-    path('home/formulas/add/<int:stage>', views.add, name='add'),
-    path('home/formulas/edit/<int:id_formula>', views.edit, name='edit'),
-    path('home/formulas/delete/<int:id_formula>', views.delete, name='delete'),
-    path('home/formulas/images/add/<int:id_formula>',
-         views.add_image, name='images'),
-    path('home/formulas/script/<int:id_formula>',
-         views.add_script, name='script'),
-    path('home/liveupdate', views.liveupdate, name='liveupdate')
+    path('', views.index, name='index'),
+    path('add/', views.add, name='add'),
+    path('add/<int:stage>', views.add, name='add'),
+    path('edit/<int:id_formula>', views.edit, name='edit'),
+    path('delete/<int:id_formula>', views.delete, name='delete'),
+    path('images/add/<int:id_formula>', views.add_image, name='add_image'),
+    path('script/add/<int:id_formula>', views.add_script, name='add_script'),
+    path('liveupdate/', views.liveupdate, name='liveupdate')
 ]

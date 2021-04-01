@@ -6,8 +6,6 @@ import random
 
 from django.conf import settings
 
-from django.core.files.images import ImageFile
-
 from .models import (
     Historial,
     Indice,
@@ -18,27 +16,28 @@ from .models import (
     Script
 )
 
+from .storage import FileStorage
+
 from mauth.models import User, MetaUser
 
 
-def store_file(file):
+def store_file(file, id_formula):
     """
         handles uploaded files storage
+
+        OUTPUT: Path object (contains path where file was stored)
     """
-    image = ImageFile(file)
-    path = Path(get_image_path(formula.id) / file.name)
+    fs = FileStorage()
+
+    path = Path(get_image_path(id_formula) / file.name)
     if path.exists():
         # temporary: Image is overwrite without asking to the user
         pass
 
-    # file is not big enought and therefore can be load in memory
-    if not upload_file.multiple_chunks():
-        file.save(path)
-    else:
-        with open(Path(path / file.name), 'wb+') as destination:
-            for chunk in image.chunks():
-                destination.write(chunk)
-    return path
+    filename = fs.save(str(path), file)
+    image_web_url = fs.url(filename)
+
+    return filename, image_web_url
 
 
 def get_image_path(id_formula):
@@ -49,7 +48,7 @@ def get_image_path(id_formula):
 
         OUTPUT: Path object
     """
-    path = Path(settings.UPLOAD_FOLDER / "formulas" / id_formula)
+    path = Path(settings.MEDIA_ROOT / "formulas" / str(id_formula))
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
     return path
@@ -136,3 +135,27 @@ def load_randomly(cant_max=20):
 
     print(f"loaded {total} randomly")
     return random.sample(formulas, cant_max)
+
+
+def sanitize_script(script_body, script_vars):
+    """
+
+    """
+
+    script_vars = script_vars.replace(' ', '')
+
+    processed_vars = script_vars.split(',')
+
+    for var in processed_vars:
+        if var[0].isnumeric():
+            print('variable no permitida en script!')
+            return None
+
+    blacklisted_code = ['os.', 'system.', '__', '\\']
+    for element in blacklisted_code:
+
+        if element in script_body:
+            print('Elemento no permitido en script!')
+            return None
+
+    return (script_body, script_vars)

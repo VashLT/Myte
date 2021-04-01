@@ -22,6 +22,8 @@ from mauth.decorators import premium_required
 
 from myte.shortcuts import home
 
+from myte.constants import MAX_IMAGES
+
 
 class Cache(object):
     """ store inputted data at register stage
@@ -52,14 +54,17 @@ def liveupdate(request):
         index.save()
         response = "Updated %d!" % id
 
-    except index.DoesNotExist:
+    except Indice.DoesNotExist:
         assert Formula.objects.filter(pk=id).exists()
+        formula = Formula.objects.get(pk=id)
+
         Indice.objects.create(
-            id_formula=id, id_usuario=request.user.id, n_clicks=1)
+            id_formula=formula, id_usuario=request.user, n_clicks=1)
         response = "Created %d!" % id
 
     finally:
-        return JsonResponse({"message": response}, status=200)
+        print(response)
+        return JsonResponse({"response": response}, status=200)
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
@@ -73,16 +78,21 @@ def add(request, stage=1):
     user = request.user
     form = AddFormulaForm(request.POST)
     context = {"user": user, "stage": stage, "form": form}
+    add_formula_is_active = "formula" in Cache.add and Cache.add["formula"]
     if stage == 1:
         if request.method == "GET":
-            print(context)
-            if "formula" in Cache.add and Cache.add["formula"]:
+            if add_formula_is_active:
                 context["formula"] = Cache.add["formula"]["instance"]
+
             return render(request, "formulas/add.html", context)
 
-        formula = Formula(codigo_latex=request.POST["codigo_latex"])
+        latex = request.POST["codigo_latex"]
 
-        Cache.add.setdefault("formula", {"instance": formula})
+        formula = Formula(codigo_latex=latex)
+        Cache.add['formula'] = {
+            'codigo_latex': latex,
+            'instance': formula
+        }
 
         context["formula"] = formula
 
@@ -94,30 +104,35 @@ def add(request, stage=1):
 
     elif stage == 2:
         if request.method == "GET":
-            if not ("formula" in Cache.add and Cache.add["formula"]):
+            if not add_formula_is_active:
                 return redirect(reverse('formulas:add', args=(1,)))
+
             context["formula"] = Cache.add["formula"]["instance"]
+
             return render(request, "formulas/add.html", context)
 
         if "back" in request.POST:
             return redirect(reverse('formulas:add', args=(1,)))
 
         formula = Cache.add["formula"]["instance"]
-        formula.nombre = request.POST["nombre"]
-        request.POST["codigo_latex"] = formula.codigo_latex
+        formula.nombre = Cache.add["formula"]["nombre"] = request.POST["nombre"]
 
-        print(f"modified POST: {request.POST}")
+        print(Cache.add["formula"])
 
-        if not AddFormulaForm(request.POST).is_valid():
-            print("Form is not valid")
+        valid_form = AddFormulaForm(Cache.add["formula"]).is_valid()
+
+        if not valid_form:
+
+            messages.error(
+                request, "Codigo latex o titulo de la formula invalidos")
             return redirect(reverse('formulas:add', args=(1,)))
 
-        Historial.objects.create(id_usuario=user.id, id_formula=formula.id)
         formula.save()
+        Historial.objects.create(id_usuario=user, id_formula=formula)
 
         print(f"Created {formula}, succesfully associated to user")
 
-        if not user.is_premium:
+        if not user.is_premium:  # non-premium user only can reach stage 2
             messages.success(request, "Formula agregada exitosamente!")
             Cache.add = {}
             return home()
@@ -129,11 +144,12 @@ def add(request, stage=1):
             messages.warning(
                 request, "Para acceder a este sitio tienes que ser usuario premium")
             return home()
-        if not ("formula" in Cache.add and Cache.add["formula"]):
+        if not add_formula_is_active:
             return redirect(reverse('formulas:add', args=(1,)))
 
         id_formula = Cache.add["formula"]["instance"].id
-        return redirect(reverse('formulas:add_script', args=(id_formula)))
+        print(f"add formula stage 3, formula with id: {id_formula}")
+        return redirect(reverse('formulas:add_script', args=(id_formula,)))
 
     else:
         context = {
@@ -168,39 +184,78 @@ def add_image(request, id_formula):
     """
     try:
         formula = Formula.objects.get(pk=id_formula)
-        context = {"formula": formula}
+        add_formula_is_active = "formula" in Cache.add and Cache.add["formula"]
+
+        context = {"formula": formula,
+                   "add_formula_is_active": add_formula_is_active}
+
         if request.method == "GET":
+
+            if formula.images:  # populates context to preview the current images
+                context["images"] = formula.images
+
             return render(request, "formulas/add_image.html", context)
 
-        if "to-home" in request.POST or not "finish" in request.POST:
-            if "formula" in Cache.add and Cache.add["formula"]:
-                messages.success(request, "Formulada creada exitosamente!")
-            Cache.add = {}
+        # <input type='file' name="img"... -> 'img'
+        files = request.FILES.getlist(
+            'img') if 'img' in request.FILES else None
+        print(
+            f"ADD IMAGE INPUT:\nFILES:{files}\nPOST: {request.POST}\nid_formula:{id_formula}\n")
+
+        if files:
+            if len(files) > MAX_IMAGES:
+                messages.error(
+                    request, f'El número máximo de imagenes permitidas es {MAX_IMAGES}')
+                return redirect(reverse('formulas:add_image', args=(formula.id,)))
+
+            uploaded_images = []
+
+            total_old_images = len(formula.images)
+            images_to_delete = []
+            for it, file in enumerate(files, 1):
+                should_delete = total_old_images + it > 3
+                if should_delete:
+                    # formula.images is ordered by id, that is a way to know which
+                    # image was added first, which in turn means that formula.images
+                    # is FIFO
+                    images_to_delete.append(
+                        formula.images[total_old_images - 1]
+                    )
+                    total_old_images -= 1
+
+                    print(formula.images)
+                    print(images_to_delete)
+
+                path, web_url = utils.store_file(
+                    file, id_formula=formula.id)
+                image = Imagen(id_formula=formula, path=path, url=web_url)
+
+                print(
+                    f"store_url: {path}\nweb_url: {web_url}")
+
+                uploaded_images.append(image)
+
+            if images_to_delete:
+                [image.delete() for image in images_to_delete]
+
+            [image.save() for image in uploaded_images]
+
+            formula.update_images()
+
+            context["images"] = formula.images
+
+            messages.success(
+                request, f"Se agregaron {len(uploaded_images)} imagenes exitosamente!")
+
+        next_stage = not "load" in request.POST and "next" in request.POST
+
+        if next_stage:
+            if add_formula_is_active:
+                print("redirecting to add_formula stage 3\n")
+                return redirect(reverse('formulas:add', args=(3,)))
             return home()
 
-        files = request.FILES
-        if files:
-            Cache.add["images"] = []
-            for file in files:
-                try:
-                    print(f"processing {file.name} ...")
-                    store_path = utils.store_file(file)
-                    image = Imagen(id_formula=formula.id, path=store_path)
-                    Cache.add["images"].append(image)
-                except Exception:
-                    Cache.add["images"] = []
-                    traceback.print_exc()
-
-            [im.save() for im in Cache.add["images"]]
-            Cache.add["images"] = []
-            messages.success(
-                request, f"Se agrearon {len(files)} imagenes exitosamente!")
-
-        if "formula" in Cache.add and Cache.add["formula"]:
-            # go to stage 3 in add formula view
-            return redirect(reverse('formulas:add', args=(3,)))
-
-        return home()
+        return render(request, "formulas/add_image.html", context)
 
     except Formula.DoesNotExist:
         context = {
@@ -212,11 +267,48 @@ def add_image(request, id_formula):
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
+@premium_required
 def add_script(request, id_formula):
     """
         User writes valid Python code to evaluate their formulas
     """
-    return HttpResponse("<h1> Add script </h1>")
+    print(
+        f"[add_script INPUT]\nGET: {request.GET}\nPOST: {request.POST}\nCache: {Cache.add}")
+    formula = Formula.objects.get(pk=id_formula)
+    context = {"formula": formula}
+    if formula.script:
+        context["script"] = formula.script
+
+    if request.method == "GET":
+        return render(request, "formulas/add_script.html", context)
+
+    script_body = request.POST['script']
+    script_vars = request.POST['variables']
+
+    sanitized_script = utils.sanitize_script(script_body, script_vars)
+    if not sanitized_script:
+        messages.warning(
+            request, "Invalid Script!, remember to only use math related code")
+        return render(request, "formulas/add_script.html", context)
+
+    messages.success(request, "Script creado exitosamente!")
+
+    script = Script.objects.create(id_formula=formula,
+                                   contenido=script_body,
+                                   variables_script=script_vars
+                                   )
+    # Temporary: if formula already has an script, that script is deleted and replaced by the new one
+    if formula.script:
+        formula.update_script(script)  # deletes old script
+
+    add_formula_is_active = "formula" in Cache.add and Cache.add["formula"]
+
+    if add_formula_is_active:
+        Cache.add = {}
+        messages.success(request, "Formulada creada exitosamente!")
+        return home()
+
+    return render(request, "formulas/add_script.html", context)
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
