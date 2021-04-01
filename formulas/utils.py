@@ -6,6 +6,8 @@ import random
 
 from django.conf import settings
 
+from django.db.models import Q
+
 from .models import (
     Historial,
     Indice,
@@ -90,7 +92,7 @@ def load_from_index(user_id, cant_max=20):
         # - sign in a field it means descendent order
         formulas_ids = Indice.objects.filter(
             id_usuario=user_id).order_by('-n_clicks').values_list('id_formula', flat=True)
-        formulas = Formula.objects.filter(id__in=formulas_ids)
+        formulas = Formula.objects.filter(id__in=formulas_ids, eliminada=False)
 
         if len(formulas_ids) > cant_max:
             print(f"loaded {cant_max} from index")
@@ -110,13 +112,15 @@ def load_from_history(user_id, cant_max=20, memo_id=None):
         if memo_id:
             formulas_ids = formulas_ids.difference(memo_id)  # distinct ids
 
-        formulas = list(Formula.objects.filter(id__in=formulas_ids))
+        formulas = list(Formula.objects.filter(
+            id__in=formulas_ids, eliminada=False))
         gotten_formulas = len(formulas)
-
-        print(f"loaded {gotten_formulas} from history")
 
         if gotten_formulas < cant_max:
             formulas.extend(load_randomly(cant_max - gotten_formulas))
+
+        print(
+            f"loaded {gotten_formulas} formulas from history, and {cant_max} were taken")
 
         return formulas[:cant_max]
     except Historial.DoesNotExist:

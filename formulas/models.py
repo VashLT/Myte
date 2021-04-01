@@ -80,7 +80,6 @@ class Formula(models.Model):
 
         self._cache_images = list(Imagen.objects.filter(
             id_formula=self.id).order_by('-id'))
-        print(f"self._cache_images = {self._cache_images}\n")
         return self._cache_images
 
     def update_images(self):
@@ -101,21 +100,6 @@ class Formula(models.Model):
 
         except Script.DoesNotExist:
             return None
-
-    def update_script(self, new_script):
-        if self._cache_script:
-            self._cache_script.delete()
-
-        else:
-            current_scripts = Script.objects.filter(
-                id_formula=self.id)  # two scripts should be found
-            assert len(current_scripts) == 2
-            # here ~Q means 'not equal to', https://docs.djangoproject.com/en/3.1/topics/db/queries/#complex-lookups-with-q-objects
-            old_script = current_scripts.filter(~Q(id=new_script.id))
-            old_script.delete()
-
-        self._cache_script = new_script
-        return self._cache_script
 
     @ property
     def get_tags(self, user=None, cache=True):
@@ -139,6 +123,31 @@ class Formula(models.Model):
     @ property
     def latex(self):
         return self.clean_latex()
+
+    def update_script(self, new_script):
+        if self._cache_script:
+            self._cache_script.delete()
+
+        else:
+            current_scripts = Script.objects.filter(
+                id_formula=self.id)  # two scripts should be found
+            assert len(current_scripts) == 2
+            # here ~Q means 'not equal to', https://docs.djangoproject.com/en/3.1/topics/db/queries/#complex-lookups-with-q-objects
+            old_script = current_scripts.filter(~Q(id=new_script.id))
+            old_script.delete()
+
+        self._cache_script = new_script
+        return self._cache_script
+
+    def disable(self):
+        """
+            Formulas are not delete but instead they are disable
+        """
+        self.eliminada = True
+        query = Indice.objects.filter(id_formula=self.id)
+        if query:
+            print(f"Elements in next query will be deleted: {query}")
+            query.delete()
 
     def clean_latex(self):
         """
@@ -292,6 +301,13 @@ class Tag(models.Model):
     class Meta:
         managed = False
         db_table = 'tag'
+
+    def clean_nombre(self):
+        """
+        returns tags-like #{tag name}
+        """
+        block = "-".join(self.nombre.split(" "))
+        return "".join(["#", block])
 
 
 class TagFormula(models.Model):

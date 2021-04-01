@@ -173,7 +173,18 @@ def delete(request, id_formula):
     """
         Delete formulas, does not render a template but commit database
     """
-    return HttpResponse("<h1> Delete formula </h1>")
+    print(f"[DELETE] GET: {request.GET}\n\tPOST: {request.POST}")
+    try:
+        # Formulas are not delete as such, but instead 'eliminada' is set to True
+        formula = Formula.objects.get(pk=id_formula)
+        formula.disable()
+        messages.info(request, f"'{formula.nombre}' se envió a la papelera")
+    except Formula.DoesNotExist:
+        print(f"Formula no encontrada id:{id_formula}")
+        messages.error(request, "Formula no encontrada")
+
+    finally:
+        return redirect('main:home')
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
