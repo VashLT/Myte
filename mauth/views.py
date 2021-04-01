@@ -27,9 +27,7 @@ from main.models import Mytevar
 
 from django.conf import settings
 
-
-DEFAULT_ROL = 1
-
+from myte.constants import DEFAULT_ROL
 
 class Cache(object):
     """ store inputted data at register stage

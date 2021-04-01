@@ -12,6 +12,8 @@ from django.utils.crypto import salted_hmac
 
 from mauth import utils
 
+from myte.constants import ADMIN_ROL, PREMIUM_ROL
+
 
 DATE_INPUT_FORMATS = [r"%d/%m/%Y"]
 
@@ -77,12 +79,12 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, username, email, name, rol, birthdate, password=None):
+    def create_superuser(self, meta, email, name, rol, birthdate, password=None):
         user = self.create_user(
             email=self.normalize_email(email),
-            nombre_usuario=username,
+            nombre_usuario=meta,
             nombre=name,
-            rol=settings.ADMIN_ROL,
+            rol=Rol.objects.get(pk=ADMIN_ROL),
             fecha_nacimiento=birthdate
         )
         return user
@@ -122,13 +124,13 @@ class User(AbstractBaseUser):
 
     @property
     def is_admin(self):
-        return self.rol.id == settings.ADMIN_ROL
+        return self.rol.id == ADMIN_ROL
 
     @property
     def is_premium(self):
         if self.is_admin:
             return True
-        return self.rol.id == settings.PREMIUM_ROL
+        return self.rol.id == PREMIUM_ROL
 
     def get_username(self):
         return self.meta.nombre_usuario
