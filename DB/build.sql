@@ -103,7 +103,8 @@ CREATE TABLE Formula(
 CREATE TABLE Imagen(
     id_imagen INT PRIMARY KEY AUTO_INCREMENT,
     id_formula INT,
-    path VARCHAR(200) NOT NULL
+    path VARCHAR(200) NOT NULL,
+    url VARCHAR(200) NOT NULL
 );
 CREATE TABLE CategoriaFormula(
     id_categoria INT,
