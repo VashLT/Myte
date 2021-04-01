@@ -127,14 +127,17 @@
   width: 52px;
   height: 42px;
   max-height: 100%;
+
   align-items: flex-start;
   justify-self: flex-start;
+
   & img {
+    margin: 0;
     align-self: center;
     justify-self: center;
     z-index: 2;
     width: 17px;
-    height: 20px;
+    height: auto;
   }
 }
 
@@ -512,7 +515,7 @@
   font-size: 25px;
   border-radius: $btn-radius;
 
-  &--gray {
+  &.gray {
     @extend .option;
     background-color: #464646;
     &:hover {
@@ -520,7 +523,7 @@
     }
   }
 
-  &--yellow {
+  &.yellow {
     @extend .option;
     background-color: rgb(218, 184, 51);
 
@@ -529,7 +532,7 @@
     }
   }
 
-  &--skin {
+  &.skin {
     @extend .option;
     background-color: rgb(120, 78, 179);
 
@@ -538,7 +541,7 @@
     }
   }
 
-  &--green {
+  &.green {
     @extend .option;
     background-color: rgb(83, 150, 67);
 
@@ -547,7 +550,7 @@
     }
   }
 
-  &--blue {
+  &.blue {
     @extend .option;
     background-color: #383e56;
 

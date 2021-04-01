@@ -24,6 +24,8 @@ Myte TODOs
     - [] tags
         - [] add tags
         - [] delete tags
+    - [] history
+        - [] view deleted formulas
     - [] ordering
         - [] group formulas by tag
         - [] group by category
