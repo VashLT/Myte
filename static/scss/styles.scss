@@ -52,18 +52,21 @@ body {
 .add-formula {
   @extend .c;
   overflow-y: hidden;
-  background-color: $myte-orange;
+  background-color: #f0d192;
+}
+
+.add-image {
+  @extend .add-formula;
+  background-color: $myte-skin;
+}
+
+.add-script {
+  @extend .add-formula;
+  background-color: #f2c894;
 }
 
 .upgrade {
   @extend .reg;
   padding: 0;
   justify-content: center;
-}
-#add_formula {
-  background-color: $gray-dark;
-}
-#email-register {
-  margin-left: 10px;
-  align-self: flex-start;
 }
