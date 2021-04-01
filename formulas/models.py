@@ -1,6 +1,14 @@
+import traceback
+
+import os
+
 from django.conf import settings
 
 from django.db import models
+
+from django.db.models import Q
+
+from .storage import FileStorage
 
 from mauth.models import User, Niveleducativo, Carrera
 
@@ -49,37 +57,67 @@ class Formula(models.Model):
     nombre = models.CharField(max_length=100)
     codigo_latex = models.CharField(max_length=250, blank=True, null=True)
     fecha_creacion = models.DateField(auto_now_add=True)
-    creada = models.IntegerField()
-    eliminada = models.IntegerField(default=0,verbose_name="1: Formula eliminada")
+    creada = models.IntegerField(
+        default=1, verbose_name='1: Creada por el usuario, 0: Predefinida')
+    eliminada = models.IntegerField(
+        default=0, verbose_name="1: Formula eliminada")
+
+    _cache_images = None
+    _cache_script = None
+    _cache_tags = None
 
     class Meta:
         managed = False
         db_table = 'formula'
 
     def __str__(self):
-        return "<Formula %s>" % self.nombre
+        return "<Formula %s>" % (self.nombre or 'No name yet')
 
     @property
-    def images(self, cache=True):
-        try:
-            if cache and hasattr(self, "_cache_images"):
-                return self._cache_images
-            self._cache_images = Imagen.objects.get(id_formula=self.id)
+    def images(self):
+        if self._cache_images:
             return self._cache_images
-        except Imagen.DoesNotExist:
-            return None
 
-    @property
-    def script(self, cache=True):
+        self._cache_images = list(Imagen.objects.filter(
+            id_formula=self.id).order_by('-id'))
+        print(f"self._cache_images = {self._cache_images}\n")
+        return self._cache_images
+
+    def update_images(self):
+        """
+            changes value of cached images
+        """
+        self._cache_images = list(Imagen.objects.filter(id_formula=self.id))
+
+    @ property
+    def script(self):
+        if self._cache_script:
+            return self._cache_script
+
         try:
-            if cache and hasattr(self, "_cache_script"):
-                return self._cache_script
+            # as long as only 1 script is allow get will work
             self._cache_script = Script.objects.get(id_formula=self.id)
             return self._cache_script
+
         except Script.DoesNotExist:
             return None
 
-    @property
+    def update_script(self, new_script):
+        if self._cache_script:
+            self._cache_script.delete()
+
+        else:
+            current_scripts = Script.objects.filter(
+                id_formula=self.id)  # two scripts should be found
+            assert len(current_scripts) == 2
+            # here ~Q means 'not equal to', https://docs.djangoproject.com/en/3.1/topics/db/queries/#complex-lookups-with-q-objects
+            old_script = current_scripts.filter(~Q(id=new_script.id))
+            old_script.delete()
+
+        self._cache_script = new_script
+        return self._cache_script
+
+    @ property
     def get_tags(self, user=None, cache=True):
         """
             by defaults works with the active user in session
@@ -87,7 +125,7 @@ class Formula(models.Model):
         user = user or get_session_user()
         if not user.is_premium:
             return []
-        if cache and hasattr(self, "_cache_tags"):
+        if hasattr(self, "_cache_tags"):
             return self._cache_tags
         user_tags = Tag.objects.filter(id_usuario=user.id)
         if not user_tags:
@@ -98,7 +136,7 @@ class Formula(models.Model):
         ]
         return self._cache_tags
 
-    @property
+    @ property
     def latex(self):
         return self.clean_latex()
 
@@ -128,10 +166,39 @@ class Imagen(models.Model):
     id_formula = models.ForeignKey(
         Formula, models.CASCADE, db_column='id_formula', blank=True, null=True)
     path = models.CharField(max_length=200)
+    url = models.CharField(
+        max_length=200,
+        verbose_name="Url relativa donde se visualiza la imagen en el navegador"
+    )
 
     class Meta:
         managed = False
         db_table = 'imagen'
+
+    @ property
+    def name(self):
+        """
+            name of file
+        """
+        if hasattr(self, "_cache_name"):
+            return self._cache_name
+        self._cache_name = os.path.basename(self.path)
+        return self._cache_name
+
+    def get_file(self):
+        if hasattr(self, "_file"):
+            return self._file
+
+        self._file = FileStorage(location=self.path, base_url=self.url)
+        return self._file
+
+    def set_file(self, file):
+        """
+            file: formulas.storage.FileStorage type
+        """
+        assert isinstance(file, FileStorage)
+        self._file = file
+        self.url = self._file.url(self.path)
 
 
 class Indice(models.Model):
@@ -156,11 +223,64 @@ class Script(models.Model):
     id_formula = models.ForeignKey(
         Formula, models.CASCADE, db_column='id_formula', blank=True, null=True)
     contenido = models.CharField(max_length=1000)
-    variables_script = models.CharField(max_length=100, blank=True, null=True)
+    variables_script = models.CharField(
+        max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'script'
+
+    @property
+    def code(self):
+        return self.contenido
+
+    def get_var_list(self):
+        return Script.format_input(self.variables_script)
+
+    def run(self, values):
+        """
+            > values: <str> with format -> val1, val2, ..., valn
+
+            OUTPUT: <float> code property evaluated in values
+        """
+        can_be_cached = hasattr(
+            self, "_cache") and values == self._cache['values']
+
+        if can_be_cached:
+            return self._cache['result']
+
+        processed_values = Script.format_input(values)
+
+        try:
+            value_list = [float(value) for value in processed_values]
+
+        except:
+            print('Invalid value!, returning nothing . . .')
+            return None
+
+        vars = self.get_var_list()
+
+        var_dict = {}
+
+        # Generates var_dict for eval function (AKA locals)
+        for i, name in enumerate(vars):
+            var_dict[name] = value_list[i]
+
+        var_dict.update({'math': math})
+
+        try:
+            result = eval(self.contenido, var_dict)
+        except Exception:
+            traceback.print_exc()
+            return None
+
+        self._cache = {'values': values, 'result': result}
+
+        return result
+
+    @staticmethod
+    def format_input(input):
+        return input.replace(' ', '').split(',')
 
 
 class Tag(models.Model):
