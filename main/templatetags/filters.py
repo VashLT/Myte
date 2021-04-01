@@ -8,12 +8,6 @@ register = template.Library()
 
 
 @register.filter
-def insert_text(html, text):
-    result = html.replace('><', ''.join(['>', text, '<']), 1)
-    return mark_safe(result)
-
-
-@register.filter
 def call_method(obj, method_name, *args):
     method = getattr(obj, method_name)
     return method(*args)

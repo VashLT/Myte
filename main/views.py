@@ -14,6 +14,8 @@ from formulas.utils import load_formulas
 
 from mauth.models import Rol
 
+from myte.constants import ADMIN_ROL
+
 
 def index(request):
     return render(request, "main/index.html")
@@ -38,11 +40,11 @@ def premium(request):
         return render(request, "main/premium.html", {"form": UpgradeForm()})
     form = UpgradeForm(request.POST)
     user = request.user
-    if user.rol.id == settings.ADMIN_ROL:
+    if user.rol.id == ADMIN_ROL:
         messages.info(request, "%s tiene el máximo rango" %
                       user.get_username())
     else:
-        user.rol = Rol.objects.get(pk=settings.ADMIN_ROL)  # admin rol
+        user.rol = Rol.objects.get(pk=ADMIN_ROL)  # admin rol
         user.save()
         messages.success(request, "%s es ahora un usuario premium!" %
                          user.get_username())
