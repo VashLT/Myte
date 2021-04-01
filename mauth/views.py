@@ -27,7 +27,7 @@ from main.models import Mytevar
 
 from django.conf import settings
 
-from myte.constants import DEFAULT_ROL
+from myte.constants import DEFAULT_ROL, MINIMUM_AGE
 
 class Cache(object):
     """ store inputted data at register stage
@@ -172,7 +172,7 @@ def register(request, stage=1):
 
     else:
         context = {
-            "title": "Internal error",
+            "title": "Stage parameter is not valid",
             "description": f"Stage in register process was not found. [stage={stage}]",
             "trace": traceback.format_exc()
         }
@@ -208,6 +208,8 @@ def valid_user(data):
         logs.append("Username already exists")
     if not utils.is_email(data['email']):
         logs.append("Not a valid email")
+    if not utils.validate_date(data["birthdate"], min_years=MINIMUM_AGE):
+        logs.append("Birthdate must be at least {MINIMUM_AGE} years old")
     return logs
 
 

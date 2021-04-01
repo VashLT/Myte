@@ -1,4 +1,6 @@
-from datetime import datetime
+import traceback
+
+from datetime import datetime, timedelta
 from hashlib import sha256
 from django.core.validators import EmailValidator, ValidationError
 import re
@@ -9,6 +11,17 @@ def validate_username(UserClass, username):
         return False
     return True
 
+
+def validate_date(date, min_years=1, fmt=r"%d/%m/%Y"):
+    try:
+        input_date = datetime.strptime(date, fmt)
+        oldest_allowed_date = datetime.now() - timedelta(days=365.25 * min_years)
+        if oldest_allowed_date > input_date:
+            return False
+        return True
+    except Exception:
+        traceback.print_exc()
+        return False
 
 def display(ModelClass):
     print(f"Listing below data from {ModelClass.__name__}")
@@ -55,16 +68,6 @@ def format_date(date, old_format=r"%d/%m/%Y", new_format=r"%Y-%m-%d"):
         return date.strftime(new_format)
     return datetime.strptime(date, old_format).strftime(new_format)
 
-
-def format_tags(tags):
-    """
-        returns tags-like #{tag name}
-    """
-    fmt = []
-    for tag in tags:
-        block = "-".join(tag.nombre.split(" "))
-        fmt.append("".join(["#", block]))
-    return fmt
 
 
 def populate_cache(POST, cache, data_map):

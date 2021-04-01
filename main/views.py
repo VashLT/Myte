@@ -25,10 +25,6 @@ def index(request):
 def home(request):
     user = request.user
     formulas = load_formulas(user)
-
-    if formulas:
-        messages.info(request, "Succesfully loaded %d formulas" %
-                      len(formulas))
     context = {"user": user, "formulas": formulas}
     return render(request, "main/home.html", context)
 

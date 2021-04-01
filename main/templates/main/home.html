@@ -92,22 +92,21 @@
         {% endif %}
         <div class="aug-options">
             {% if formula.images %}
-            <a href="{% url 'formulas:add_image' id_formula=formula.id %} " class="option--yellow" target="_blank">Imagenes</a>
+            <a href="{% url 'formulas:add_image' id_formula=formula.id %} " class="option yellow" target="_blank">Imagenes</a>
             {% else %}
             <a class="option" aria-disabled="true">Imagenes</a>
             {% endif %}
             {% if formula.script %}
-            <a href="{% url 'formulas:add_script' id_formula=formula.id %}" class="option--skin"
+            <a href="{% url 'formulas:add_script' id_formula=formula.id %}" class="option skin"
                 target="_blank">Ejecutar script</a>
             {% else %}
             <a class="option" aria-disabled="true">Ejecutar script</a>
             {% endif %}
             {% if user.is_premium %}
-            <a href="{% url 'formulas:edit' id_formula=formula.id %}" class="option--green"
+            <a href="{% url 'formulas:edit' id_formula=formula.id %}" class="option green"
                 target="_blank">Editar</a>
             {% endif %}
-            <a href="{% url 'formulas:delete' id_formula=formula.id %}" id="delete" class="option--blue"
-                target="_blank">Eliminar</a>
+            <a href="{% url 'formulas:delete' id_formula=formula.id %}" id="delete" class="option blue">Eliminar</a>
         </div>
     </div>
 {% endfor %}
