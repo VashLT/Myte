@@ -44,7 +44,7 @@
             </div>
                 {% render_field form.fullname class="input" placeholder="Nombre completo" %}
             </div>
-            <div class="c-input--many" style="margin-bottom: 5%; justify-content: space-between">
+            <div class="c-input many" style="margin-bottom: 5%; justify-content: space-between">
                 <div class="c-input" style="width: 50%">
                     <div class="icon-holder">
                         <img
@@ -52,7 +52,7 @@
                             style="height: 14px"
                         />
                     </div>
-                    {% render_field form.email class="input--small" placeholder="Ingresar email" style="width:100%;" %}
+                    {% render_field form.email class="input small" placeholder="Ingresar email" style="width:100%;" %}
                 </div>
                 <div class="c-datepicker">
                     {{ form.birthdate.label_tag }} {{ form.birthdate|add_class:"datepicker"}}
@@ -80,7 +80,7 @@
                 {{ form.career|add_class:"drop-menu"|attr:"style: width:200px;"|default_option:"career" }}
             </div>
             {% endif %}
-            <div class="c-input--many" style="margin-top: 30px; justify-content: space-between">   
+            <div class="c-input many" style="margin-top: 30px; justify-content: space-between">   
                 <div class="c-input" style="width: 30%; margin-left: 60px">
                     {% if stage == 1 %}
                     <a class="btn-submit orange" href="{% url 'main:index' %}" style="width: 100%">Regresar</a>

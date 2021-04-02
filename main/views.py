@@ -12,6 +12,8 @@ from main.forms import UpgradeForm
 
 from formulas.utils import load_formulas
 
+from formulas.views import Cache
+
 from mauth.models import Rol
 
 from myte.constants import ADMIN_ROL
@@ -23,6 +25,8 @@ def index(request):
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
 def home(request):
+    if Cache.add:  # every time user go to home page, if there is cache then is cleaned
+        Cache.add = {}
     user = request.user
     formulas = load_formulas(user)
     context = {"user": user, "formulas": formulas}

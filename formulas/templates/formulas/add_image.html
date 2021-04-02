@@ -11,7 +11,7 @@
 <div class="c-add-view">
     <div class="render-box">
         <div class="header">
-            <p id="f-header">$$\text{ {{ formula.nombre }} }$$</p>
+            <p id="f-header" style="color: #7c795d;" >$\text{ {{ formula.nombre }} }$</p>
             <hr style="background-color: #d1b9ae;">
         </div>
         <div class="content">
@@ -50,7 +50,7 @@
             {% endfor %}
             </div>
         {% endif %}
-        <div class="c-input--many" style="justify-content:space-evenly;">
+        <div class="c-input many" style="justify-content:space-evenly;">
             <div class="c-input" id="submit-parent" style="width: 30%;">
                 <img 
                     src="{% static 'images/load_image.png' %}"
@@ -59,11 +59,19 @@
                 <button class="btn-submit orange" id="load-img-btn" name="completed" style="width: 100%;">Cargar</button>
             </div>
             <div class="c-input" id="submit-parent" style="width: 30%;">
+                {% if add_formula_is_active %}
                 <img 
                     src="{% static 'images/continue.png' %}"
                     alt="Continuar" 
                     onclick="document.getElementById('next-btn').click()"/>
                 <button class="btn-submit" id="next-btn" name="next" style="width: 100%;">Continuar</button>
+                {% else %}
+                <img 
+                    src="{% static 'images/add_script.png' %}"
+                    alt="Agregar imagenes" 
+                    onclick="document.getElementById('next-btn').click()"/>
+                <button class="btn-submit" id="next-btn" name="next" style="width: 100%;">Agregar</button>
+                {% endif %}
             </div>
         </div>
     </div>

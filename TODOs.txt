@@ -15,7 +15,7 @@ Myte TODOs
         - [x] edit basic attributes
         - [x] edit images
         - [x] edit script
-    - [] delete formulas
+    - [x] delete formulas
     - [] view images
     - [] run script
     - [] search formulas

@@ -21,7 +21,11 @@
 <div class="c-add-view">
     <div class="render-box">
         <div class="header">
+        {% if formula.nombre %}
+            <p id="formula-state-header" style="color: #7c795d;">$\text{ {{ formula.nombre }} }$</p>
+        {% else %}
             <p id="formula-state-header" style="color: #7c795d;"></p>
+        {% endif %}
         </div>
         <div class="content">
             {% if formula %}
@@ -69,7 +73,7 @@
             </div>
             {% endif %}
         </form>
-        <div class="c-input--many" style="margin-top:30px; justify-content: space-evenly;">
+        <div class="c-input many" style="margin-top:30px; justify-content: space-evenly;">
             <div class="c-input" style="width: 30%;margin-left: 40px;">
                 <img 
                     src="{% static 'images/return.png' %}"

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var $render = $('#render-btn');
         var $prevBtn = $('#previous-btn');
         var $form = $('#add-form');
-        const formulaHeader = document.getElementById('formula-state-header')
+        const formulaHeader = document.getElementById('formula-state-header');
         
         $render.click(function () {
             setTimeout(function(){
@@ -58,15 +58,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if ($active.attr('value') === '1') {
             var $form = $('#add-form');
-
+            formulaHeader.innerText = '$\\text{Formula vista previa}$';
             $prevBtn.prop('disabled', true);
             $nextBtn.text('Siguiente');
 
         } else {
-            $('.c-add_formula').css('height', '500px');
-            formulaHeader.innerText = '$$\\text{Formula}$$';
+            var $inputTitulo = $('#id_nombre');
+            console.log($inputTitulo.val());
+
             $prevBtn.prop('disabled', false);
             $nextBtn.text('Enviar');
+            $('.c-add_formula').css('height', '500px');
+            if (formulaHeader.innerText === '') {
+                formulaHeader.innerText = '$\\text{Formula}$';   
+            } else {
+                $('div.render-box>div.header').append('<hr>');
+            }
+            // formulaHeader.innerText = '$$\\text{' + $inputTitulo.val() + '}$$';
         }
     }
 
