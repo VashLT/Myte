@@ -24,40 +24,35 @@ function validForm(id_form) {
     return valid; // return the valid status
 }
 
-function getCurrentStage() {
-    var stages = document.getElementsByClassName("stage");
-    for (let i = 0; i < stages.length; i++){
-        if (stages[i].classList.contains('active')) {
-            return [i, stages[i]];
-        }
-    }
-    return [0, stages[0]];
-}
-
 document.addEventListener('DOMContentLoaded', function () {
-    const NextBtn = document.getElementById('next-btn');
-    var stages = document.getElementsByClassName("stage");
-    var curStage, index;
-    [index, curStage] = getCurrentStage();
-    console.log(curStage.getAttribute('value'));
+    var $nextBtn = $('#next-btn');
+    var $prevBtn = $('#previous-btn');
+    var $stage = $('.stage.active');
+    var $form = $('#reg-form');
+    
     // determines state and content of buttons
-    if (curStage == stages[stages.length - 1]) {
-        NextBtn.innerText = "Enviar";
-    } else {
-        NextBtn.innerText = "Siguiente";
-    }
-    if (curStage.getAttribute('value') === '2') {
-        var container = document.getElementById("reg-cont");
-        container.style.height = "600px";
-    }
-    NextBtn.onclick = function () {
-        var form = document.getElementById("reg-form");
-        if (curStage == stages[stages.length - 1]) {
-            $("#reg-form").append('<input type="hidden" name="finish" />');
-        }
-        if (validForm("reg-form")) {
-            form.submit();
-        }
+    if ($stage.attr('value') === '1') {
+        $nextBtn.text('Siguiente');
+        $prevBtn.prop('disabled', true);
+    } else if ($stage.attr('value') === '2') {
+        $nextBtn.text('Enviar');
+        $prevBtn.prop('disabled', false);
+        $('#c-reg').css('height', '600px');
     }
 
+    $prevBtn.click(function () {
+        if ($stage.attr('value') === '2') {
+            $form.append('<input type="hidden" name="back" />')
+        }
+        $form.submit();
+    });
+
+    $nextBtn.click(function () {
+        if ($stage.attr('value') === '2') {
+            $form.append('<input type="hidden" name="finish" />')
+        }
+        if (validForm('reg-form')) {
+           $('#reg-form').submit()
+       }
+    });
 });

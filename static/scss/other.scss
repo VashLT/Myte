@@ -10,6 +10,7 @@
   width: 45%;
   height: 600px;
 }
+
 .hid {
   display: none;
 }
@@ -39,6 +40,17 @@
 .link {
   color: $blue-link;
   font-size: 15px;
+}
+
+img.in-btn {
+  width: 20px;
+  height: auto;
+  margin-right: -30px;
+  z-index: 5;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .drop-menu {
@@ -106,12 +118,14 @@
   height: 70px;
   border-radius: 50%;
   margin-left: 20px;
+
   & div {
     background-color: $white;
     width: $hamburger-btn-width;
     height: 4px;
     margin-bottom: 3px;
   }
+
   &:hover {
     background-color: $gray-dark--hover;
     cursor: pointer;
@@ -143,6 +157,7 @@
 
 .logo {
   @extend .c;
+  margin: 0;
   align-items: flex-start;
   width: 24%;
   height: 100%;
@@ -178,31 +193,23 @@
   display: flex;
   flex-direction: row;
   padding-left: 10px;
-  & div {
+
+  & div.version {
     margin-top: 2px;
     height: 100%;
+    width: 40%;
+
     & h2 {
       margin-bottom: 5px;
       font-size: 30px;
       color: $gray-dark;
     }
+
     & h3 {
       margin-top: 5px;
       font-size: 16px;
       color: $gray-dark;
     }
-  }
-}
-
-.show-user {
-  @extend .c;
-  max-height: 100%;
-  align-content: center;
-  & p {
-    margin: 0;
-    top: 50%;
-    font-size: 25px;
-    color: rgb(23, 23, 44);
   }
 }
 
@@ -223,6 +230,7 @@
   pointer-events: none;
 
   &.active {
+    overflow: hidden;
     opacity: 0.7;
     pointer-events: all;
     transition: 200ms ease-out;
@@ -283,11 +291,13 @@
     p.empty {
       font-size: 1.5vw;
     }
+
     & p.empty {
       color: rgb(191, 191, 191);
       font-size: 30px;
       font-weight: 400;
     }
+
     &:hover {
       box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf;
     }
@@ -297,19 +307,23 @@
     @extend .render-box;
     width: 400px;
     height: 300px;
+
     & div.content {
       @extend .c;
       width: 100%;
       height: 90%;
       background-color: whitesmoke;
+
       & p {
         font-size: 1.2vw;
       }
+
       & p.empty {
         color: rgb(191, 191, 191);
         font-size: 20px;
         font-weight: 400;
       }
+
       &:hover {
         box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf;
       }
@@ -351,6 +365,7 @@
           font-weight: 600;
         }
       }
+
       & img {
         border-radius: $btn-radius;
         width: 80%;
@@ -364,6 +379,7 @@
       }
     }
   }
+
   &-box {
     @extend .preview;
 
@@ -378,20 +394,24 @@
       height: 10%;
       width: 100%;
       margin-top: 30px;
+
       & h3 {
         color: $myte-orange;
         font-size: 20px;
       }
     }
+
     & div.content {
       @extend .c;
       width: 100%;
       height: 50%;
       background-color: $gray;
       overflow-x: auto;
+
       & p {
         font-size: 1vw;
       }
+
       &:hover {
         box-shadow: 0 2px 3px 0 #727171, 0 3px 3px 0 #616060;
       }
@@ -403,8 +423,8 @@
   @extend .c;
   flex-direction: row;
 
-  align-items: auto;
-  justify-content: auto;
+  align-items: flex-start;
+  justify-content: flex-start;
 
   padding: auto 5%;
 
@@ -426,6 +446,8 @@
   @extend .c;
   flex-direction: row;
   flex-wrap: wrap;
+
+  justify-content: flex-start;
 
   margin: 0;
   margin-right: auto;
@@ -460,6 +482,7 @@
   padding: 5px;
 
   border-radius: 2px;
+
   &:focus {
     outline: none;
   }
@@ -524,6 +547,7 @@
   &.gray {
     @extend .option;
     background-color: #464646;
+
     &:hover {
       background-color: #383838;
     }
@@ -573,6 +597,7 @@
 .left {
   margin-right: auto;
 }
+
 .right {
   margin-left: auto;
 }

@@ -11,12 +11,13 @@ from django.core.exceptions import ValidationError
 
 from django.contrib.auth.decorators import login_required
 
-
 from django.contrib.auth import (
     authenticate,
     login as login_user,
     logout as logout_user
 )
+
+from django.utils.translation import gettext as _
 
 from .models import User, MetaUser, Rol
 from .forms import RegisterForm, LoginForm
@@ -27,7 +28,8 @@ from main.models import Mytevar
 
 from django.conf import settings
 
-from myte.constants import DEFAULT_ROL, MINIMUM_AGE
+from myte.constants import DEFAULT_ROL, MINIMUM_AGE, MAX_AGE
+
 
 class Cache(object):
     """ store inputted data at register stage
@@ -53,7 +55,7 @@ def login(request):
         )
         if not user:
             messages.error(
-                request, "Nombre de usuario o contraseña incorrectos")
+                request, _("Nombre de usuario o contraseña incorrectos"))
         else:
             print("user authenticated, login user ...")
             login_user(request, user)  # django login function
@@ -83,31 +85,29 @@ def register(request, stage=1):
 
             return render(request, 'mauth/register.html', context)
 
-        if "back" in request.POST:
-            return redirect("main:index")
-
         print("validating POST ...")
         context["form"] = RegisterForm(request.POST)
 
-        if valid_user(request):
-            Cache.register["valid_request"] = request.POST.dict()
-            utils.populate_cache(
-                request.POST,
-                Cache.register,
+        if not valid_user(request):
+            return redirect(reverse('mauth:register', args=(1,)))
+        Cache.register["valid_request"] = request.POST.dict()
+        utils.populate_cache(
+            request.POST,
+            Cache.register,
+            {
+                "user":
                 {
-                    "user":
-                    {
-                        "username": "meta",
-                        "fullname": ["nombre", utils.format_name],
-                        "email": "email",
-                        "birthdate": ["fecha_nacimiento", utils.format_date],
-                    },
-                    "meta": {
-                        "username": "nombre_usuario",
-                        "pw1": ["clave_encriptada", utils.encrypt]
-                    }
+                    "username": "meta",
+                    "fullname": ["nombre", utils.format_name],
+                    "email": "email",
+                    "birthdate": ["fecha_nacimiento", utils.format_date],
+                },
+                "meta": {
+                    "username": "nombre_usuario",
+                    "pw1": ["clave_encriptada", utils.encrypt]
                 }
-            )
+            }
+        )
 
         return redirect(reverse('mauth:register', args=(2,)))
 
@@ -166,7 +166,8 @@ def register(request, stage=1):
 
         login_user(request, user)
         print(f"User logged in!, {request.user}")
-        messages.success(request, "Welcome %s" % meta.nombre_usuario)
+        message = "Bienvenido %s" % meta.nombre_usuario
+        messages.success(request, _(message))
 
         return redirect("main:home")
 
@@ -181,7 +182,7 @@ def register(request, stage=1):
 
 def logout(request):
     logout_user(request)
-    messages.success(request, "Sesión cerrada correctamente")
+    messages.success(request, _("Sesión cerrada correctamente"))
     return redirect("main:index")
 
 
@@ -190,7 +191,7 @@ def validate(func):
         logs = func(request.POST)
         print(f"logs: {logs}")
         for log in logs:
-            messages.error(request, log)
+            messages.error(request, _(log))
         if not logs:
             return True
     return wrapper
@@ -203,13 +204,14 @@ def valid_user(data):
     """
     logs = []
     if data["pw1"] != data["pw2"]:
-        logs.append("Passwords must be the same!")
+        logs.append("Las contraseña deben ser las mismas")
     if not utils.validate_username(MetaUser, data['username']):
-        logs.append("Username already exists")
+        logs.append("El usuario ya existe")
     if not utils.is_email(data['email']):
-        logs.append("Not a valid email")
-    if not utils.validate_date(data["birthdate"], min_years=MINIMUM_AGE):
-        logs.append("Birthdate must be at least {MINIMUM_AGE} years old")
+        logs.append("Email no valido")
+    if not utils.validate_date(data["birthdate"], min_years=MINIMUM_AGE, max_years=MAX_AGE):
+        logs.append(
+            f"El usuario debe tener al menos {MINIMUM_AGE} años y máximo {MAX_AGE} años")
     return logs
 
 

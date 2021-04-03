@@ -3,6 +3,7 @@
 {% load filters %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,42 +24,33 @@
     {% endblock %}
 
     <!-- MathJax -->
-    <script type="text/javascript"
-            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
+    <script src="{% static 'js/mathjax.js'%}" async></script>
+    
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                processEscapes: true
-            }
-        });
-    </script>
-        
+
 </head>
 
 <body {% block main %}class="welcome" {% endblock %}>
     {% if messages %}
     <!-- flash messages -->
     <div class="c-flash">
-    {% for message in messages %}
+        {% for message in messages %}
         <div class="{{ message.level|level2class }}">
             <p>{{ message }}</p>
             <span class="dismissible">&times;</span>
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
     {% endif %}
 
     {% block body %}
-    
-    {% block side_bar %}
+
+    {% block sidebar %}
     {% endblock %}
 
     {% block nav %}
     {% endblock %}
+    
     <div class="c-base">
         {% block content %}
         {% endblock %}

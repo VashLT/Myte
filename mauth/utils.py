@@ -12,16 +12,26 @@ def validate_username(UserClass, username):
     return True
 
 
-def validate_date(date, min_years=1, fmt=r"%d/%m/%Y"):
+def validate_date(date, min_years=1, max_years=100, fmt=r"%d/%m/%Y"):
     try:
         input_date = datetime.strptime(date, fmt)
-        oldest_allowed_date = datetime.now() - timedelta(days=365.25 * min_years)
-        if oldest_allowed_date > input_date:
-            return False
-        return True
+
+        oldest_allowed_date = datetime.now() - timedelta(days=365.25 * max_years)
+        newest_allowed_date = datetime.now() - timedelta(days=365.25 * min_years)
+
+        date_is_valid = newest_allowed_date > input_date and oldest_allowed_date < input_date
+
+        print(
+            f"oldest: {oldest_allowed_date}\nnewest: {newest_allowed_date}\ninput:{input_date}")
+
+        if date_is_valid:
+            return True
+
+        return False
     except Exception:
         traceback.print_exc()
         return False
+
 
 def display(ModelClass):
     print(f"Listing below data from {ModelClass.__name__}")
@@ -67,7 +77,6 @@ def format_date(date, old_format=r"%d/%m/%Y", new_format=r"%Y-%m-%d"):
     if isinstance(date, datetime):
         return date.strftime(new_format)
     return datetime.strptime(date, old_format).strftime(new_format)
-
 
 
 def populate_cache(POST, cache, data_map):

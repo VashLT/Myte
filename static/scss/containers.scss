@@ -12,6 +12,11 @@ $mauth-form-width: 600px;
   border: none;
   border-radius: $btn-radius;
 
+  &.row {
+    @extend .c;
+    flex-direction: row;
+  }
+
   &-base {
     @extend .c;
     width: 100%;
@@ -53,10 +58,12 @@ $mauth-form-width: 600px;
         }
       }
     }
+
     &:hover {
       box-shadow: 0 4px 8px 0 #131313, 0 6px 20px 0 #151414;
     }
   }
+
   &-register {
     @extend .c;
     width: $mauth-form-width;
@@ -64,10 +71,12 @@ $mauth-form-width: 600px;
     background-color: #fff;
     transition: all 0.5s linear;
     justify-content: flex-start;
+
     &:hover {
       box-shadow: 0 4px 8px 0 #e0dede, 0 6px 20px 0 #dbdada;
     }
   }
+
   &-premium {
     @extend .c-register;
     height: 600px;
@@ -86,22 +95,12 @@ $mauth-form-width: 600px;
       margin-bottom: 20px;
       color: $myte-blue;
     }
+
     & p {
       align-self: flex-start;
       font-size: 20px;
       color: rgb(29, 29, 29);
       font-weight: 500;
-    }
-
-    & img {
-      width: 20px;
-      height: auto;
-      margin-right: -30px;
-      z-index: 5;
-
-      &:hover {
-        cursor: pointer;
-      }
     }
 
     &.many {
@@ -117,32 +116,31 @@ $mauth-form-width: 600px;
     flex-direction: column;
   }
 
-  &-view {
+  &-main {
     @extend .c;
     width: 100%;
     height: 100%;
     margin: 0;
 
     &--formulas {
-      @extend .c-view;
+      @extend .c-main;
       align-items: flex-start;
       padding: 20px auto 40px 10px;
     }
 
-    &--images {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      margin: 0;
+    &-images {
+      @extend .c-main;
+
       align-items: center;
+      justify-content: flex-start;
+
       & h1 {
         font-size: 30px;
       }
     }
 
     &--editar {
-      @extend .c-view;
+      @extend .c-main;
       flex-direction: row;
     }
   }
@@ -151,16 +149,19 @@ $mauth-form-width: 600px;
     @extend .c;
     width: 100%;
     height: auto;
+
     &--header {
       display: block;
       width: 100%;
       margin-left: 20px;
+
       & h1 {
         font-size: 30px;
         font-weight: 600;
         margin: 0px;
         color: $myte-blue;
       }
+
       & div {
         margin-top: 2px;
         width: 98%;
@@ -168,6 +169,7 @@ $mauth-form-width: 600px;
         background-color: $myte-orange;
       }
     }
+
     &--formulas {
       @extend .c;
       flex-direction: row;
@@ -179,6 +181,7 @@ $mauth-form-width: 600px;
 
   &-editar {
     @extend .c;
+
     &--left,
     &--right {
       width: 50%;
@@ -203,13 +206,74 @@ $mauth-form-width: 600px;
     @extend .c;
     flex-direction: row;
     justify-content: space-evenly;
-    width: 100%;
+    width: 60%;
     height: auto;
+  }
+
+  &-image {
+    @extend .c;
+    width: 33%;
+    height: auto;
+    max-height: 60%;
+    background-color: red;
+
+    & div.header {
+      @extend .c-image;
+      width: 100%;
+      height: 20%;
+
+      & h3 {
+        font-size: 20px;
+      }
+    }
+
+    & div.content {
+      @extend .c-image;
+      width: 80%;
+      height: auto;
+      max-height: 80%;
+
+      & img {
+        border-radius: $btn-radius;
+        width: 100%;
+        height: auto;
+
+        &:hover {
+          cursor: pointer;
+          box-shadow: 0 2px 5px 0 #c0c0c0, 0 3px 5px 0px #c0bfbf;
+        }
+      }
+    }
+
+    &-holder {
+      @extend .c;
+      height: auto;
+      width: 40%;
+      margin-right: 20px;
+      border-radius: 5px;
+
+      & img {
+        height: auto;
+        width: 100%;
+        min-width: 100%;
+        border-radius: $btn-radius;
+
+        &:hover {
+          cursor: pointer;
+          box-shadow: 0 2px 5px 0 #c0c0c0, 0 3px 5px 0px #c0bfbf;
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &-edit-images {
     @extend .c-images;
     flex-direction: column;
+
     & h3 {
       font-size: 40px;
       color: rgb(96, 98, 102);
@@ -328,6 +392,8 @@ $mauth-form-width: 600px;
     width: 100%;
     height: auto;
 
+    overflow-x: hidden;
+
     justify-content: flex-start;
     align-items: flex-start;
   }
@@ -391,6 +457,7 @@ $mauth-form-width: 600px;
     flex-direction: row;
     justify-content: space-between;
     vertical-align: middle;
+
     & p {
       color: rgb(29, 29, 29);
       font-size: 15px;
@@ -411,6 +478,7 @@ $mauth-form-width: 600px;
     @extend .c-register;
     height: 600px;
     padding-bottom: 20px;
+
     &:hover {
       box-shadow: 0 2px 3px 0 #c0c0c0, 0 3px 3px 0 #c0bfbf;
     }
@@ -418,6 +486,9 @@ $mauth-form-width: 600px;
 
   &-script {
     @extend .c;
+
+    justify-content: flex-start;
+
     margin: 0;
     width: 600px;
     height: auto;
@@ -428,6 +499,7 @@ $mauth-form-width: 600px;
       color: rgb(28, 29, 46);
       margin-bottom: 20px;
     }
+
     &:hover {
       box-shadow: 0 1px 3px 0 #e0dede, 0 1px 3px 0 #dbdada;
     }
@@ -438,6 +510,25 @@ $mauth-form-width: 600px;
     height: 650px;
     width: 600px;
     transition: 300ms ease-in-out;
+  }
+
+  &-user {
+    @extend .c;
+    max-height: 100%;
+    align-content: center;
+    width: 60%;
+
+    & p {
+      margin: 0;
+      margin-top: 10%;
+      top: 50%;
+      font-size: 30px;
+      color: rgb(23, 23, 44);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
 
@@ -471,6 +562,7 @@ $mauth-form-width: 600px;
     top: 0;
     left: 0;
     width: 100%;
+
     & h1 {
       text-align: center;
       font-size: 30px;
@@ -484,6 +576,7 @@ $mauth-form-width: 600px;
 
     height: 10%;
     padding: auto 10px;
+
     & div {
       @extend .c;
       flex-direction: row;
@@ -502,6 +595,11 @@ $mauth-form-width: 600px;
       }
     }
   }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 // .form-register {

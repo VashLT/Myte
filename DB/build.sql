@@ -90,7 +90,7 @@ CREATE TABLE Script(
     id_script INT PRIMARY KEY AUTO_INCREMENT,
     id_formula INT,
     contenido VARCHAR(1000) NOT NULL,
-    variables_script VARCHAR(100)
+    variables VARCHAR(100) 
 );
 CREATE TABLE Formula(
     id_formula INT PRIMARY KEY AUTO_INCREMENT,

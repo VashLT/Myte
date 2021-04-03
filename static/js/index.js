@@ -4,10 +4,9 @@ $.fn.hasAttr = function (name) {
     return this.attr(name) !== undefined;
 };
 
-
 $(document).ready(function () {
-    var $side_bar = $('.side-bar');
-    var $home_bar = $('.side-bar--home');
+    var $sideBar = $('.sidebar');
+    var $homeBar = $('.sidebar.home');
     var $messages = $('.c-flash');
     
     $("#ilatex").on('input', function () {
@@ -23,16 +22,18 @@ $(document).ready(function () {
 
     // flash messages
     if ($messages.length) {
-        if ($(".nav-bar").length) {
-            $messages.attr('style', 'margin-top: '.concat($(".nav-bar").css("height")));
-        } else if ($(".nav-bar--home").length) {
-            $messages.attr('style', 'margin-top: '.concat($(".nav-bar--home").css("height")));
+        if ($(".navbar").length) {
+            $messages.attr('style', 'margin-top: '.concat($(".navbar").css("height")));
+        } else if ($(".navbar.home").length) {
+            $messages.attr('style', 'margin-top: '.concat($(".navbar.home").css("height")));
         }
         $messages.children().each(function (i) {
             $(this).delay(400 * i).fadeIn(300);
             $(this).attr("style", "display: flex");
         });
     }
+
+    // flash messages
 
     $(".dismissible").click(function () {
         var $to_remove = $(this).parent('div');
@@ -43,39 +44,39 @@ $(document).ready(function () {
 
     $("#ctrl-side-bar").click(function () { // click on hamburger button
         event.preventDefault();
-        $home_bar.animate({ width: "toggle" }, 300);
-        if (!$home_bar.hasAttr("state") || $home_bar.attr("state") == "hidden") {
-            $home_bar.attr("state", "active");
+        $homeBar.animate({ width: "toggle" }, 300);
+        if (!$homeBar.hasAttr("state") || $homeBar.attr("state") == "hidden") {
+            $homeBar.attr("state", "active");
         }
         event.stopPropagation();
     });
 
-    $home_bar.click(function () {
+    $homeBar.click(function () {
         event.stopPropagation();
     })
 
 
     $(".hamburger").click(function () { // click on hamburger button
         event.preventDefault();
-        $side_bar.animate({ width: "toggle" }, 300);
-        if (!$side_bar.hasAttr("state") || $side_bar.attr("state") == "hidden") {
-            $side_bar.attr("state", "active");
+        $sideBar.animate({ width: "toggle" }, 300);
+        if (!$sideBar.hasAttr("state") || $sideBar.attr("state") == "hidden") {
+            $sideBar.attr("state", "active");
         }
         event.stopPropagation();
     });
 
-    $side_bar.click(function () {
+    $sideBar.click(function () {
         event.stopPropagation();
     })
 
     $("body").click(function () {
-        if ($side_bar.hasAttr("state") && $side_bar.attr("state") === "active") {
-            $side_bar.animate({ width: "toggle" }, 300);
-            $side_bar.attr("state", "hidden");
+        if ($sideBar.hasAttr("state") && $sideBar.attr("state") === "active") {
+            $sideBar.animate({ width: "toggle" }, 300);
+            $sideBar.attr("state", "hidden");
         }
-        if ($home_bar.hasAttr("state") && $home_bar.attr("state") === "active") {
-            $home_bar.animate({ width: "toggle" }, 400);
-            $home_bar.attr("state", "hidden");
+        if ($homeBar.hasAttr("state") && $homeBar.attr("state") === "active") {
+            $homeBar.animate({ width: "toggle" }, 400);
+            $homeBar.attr("state", "hidden");
         }
     });
 });

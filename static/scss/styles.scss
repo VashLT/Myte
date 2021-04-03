@@ -36,12 +36,16 @@ body {
   background-color: $bg-color;
   overflow-y: auto;
 }
+
 .home {
+  overflow-x: hidden;
   background-color: $myte-skin--light;
 }
+
 .login {
   background-color: $gray-dark;
 }
+
 .reg {
   @extend .c;
   justify-content: flex-start;
@@ -49,6 +53,7 @@ body {
   overflow-y: hidden;
   background-color: $myte-skin;
 }
+
 .add-formula {
   @extend .c;
   overflow-y: hidden;
@@ -63,6 +68,16 @@ body {
 .add-script {
   @extend .add-formula;
   background-color: #f2c894;
+}
+
+.images {
+  @extend .add-formula;
+  background-color: $blue-dark;
+}
+
+.scripts {
+  @extend .add-formula;
+  background-color: $myte-skin;
 }
 
 .upgrade {

@@ -6,8 +6,13 @@ textarea.invalid {
 }
 
 // bars
-.side-bar {
+.sidebar {
   border-radius: 0 $btn-radius $btn-radius 0;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+  justify-content: center;
 
   top: 0;
   left: 0;
@@ -18,20 +23,32 @@ textarea.invalid {
   z-index: 10;
   display: none;
 
-  &--info {
+  & hr {
+    border: none;
+    align-self: center;
+    margin-left: -10px;
+    margin-top: 2px;
+    width: 98%;
+    height: 1px;
+  }
+
+  & div.info {
     display: flex;
     flex-direction: column;
     padding-left: 10px;
+
     & h2 {
       margin-bottom: 5px;
       font-size: 30px;
       color: $white;
     }
+
     & h3 {
       margin-top: 5px;
       font-size: 16px;
       color: $white;
     }
+
     & div {
       align-self: center;
       margin-left: -10px;
@@ -42,23 +59,40 @@ textarea.invalid {
     }
   }
 
-  &--home {
-    @extend .side-bar;
+  &.home {
+    @extend .sidebar;
     width: 400px;
     background-color: $myte-orange;
+
+    & div.item {
+      margin: 0;
+      border-bottom: 1px solid #e89875;
+      height: 60px;
+      border-radius: 0 $btn-radius $btn-radius 0;
+
+      background-color: transparent;
+
+      &:hover {
+        background-color: $blue-dark;
+        cursor: pointer;
+      }
+
+    }
   }
 
-  &--item {
+  & div.item {
+    @extend .c;
+
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+
     height: 40px;
     width: 100%;
     margin-top: 20px;
     margin-left: 0px;
+
     border-radius: 3px;
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-items: center;
+
     & a {
       margin-top: 4px;
       margin-left: 10px;
@@ -66,11 +100,13 @@ textarea.invalid {
       color: #f3f3f3;
       text-decoration: none;
     }
+
     & img {
       padding-left: 10px;
       width: 20px;
-      height: 20px;
+      height: auto;
     }
+
     &:hover {
       background-color: $gray--hover;
       cursor: pointer;
@@ -78,7 +114,12 @@ textarea.invalid {
   }
 }
 
-.nav-bar {
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
   left: 0;
   right: 0;
   top: 0;
@@ -91,76 +132,26 @@ textarea.invalid {
   border-radius: 0px 0px 3px 3px;
   background-color: $nav-bar-color;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
   overflow-x: hidden;
   z-index: 8;
 
-  &--home {
-    @extend .nav-bar;
+  &.home {
+    @extend .navbar;
     background-color: $blue-dark_b;
   }
 
-  &--item {
-    display: flex;
-    flex-direction: row;
+  & div.item {
+    @extend .c;
+
+    flex-direction: row !important;
     height: 60px;
     width: 30%;
     margin-right: 10px;
 
-    align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-start !important;
   }
 }
 
-.image {
-  @extend .c;
-  flex-direction: row;
-
-  &-item {
-    @extend .c;
-  }
-
-  &-header {
-    @extend .image;
-    width: 100%;
-    & h3 {
-      font-size: 20px;
-    }
-  }
-
-  &-content {
-    @extend .image;
-    width: 40%;
-    height: 80%;
-  }
-
-  &-holder {
-    @extend .c;
-    height: auto;
-    width: 40%;
-    margin-right: 20px;
-    border-radius: 5px;
-
-    & img {
-      height: auto;
-      width: 100%;
-      min-width: 100%;
-      border-radius: $btn-radius;
-
-      &:hover {
-        cursor: pointer;
-        box-shadow: 0 2px 5px 0 #c0c0c0, 0 3px 5px 0px #c0bfbf;
-      }
-    }
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-}
 // element class
 .input {
   font-family: $font-home;
@@ -181,6 +172,7 @@ textarea.invalid {
   &-formula {
     display: flex;
     flex-direction: column;
+
     p {
       color: rgb(23, 23, 44);
       font-size: 20px;
@@ -216,6 +208,7 @@ textarea.invalid {
           cursor: pointer;
         }
       }
+
       & button.upload {
         border-radius: $btn-radius;
         background-color: rgb(238, 80, 80);
@@ -240,6 +233,7 @@ textarea.invalid {
         }
       }
     }
+
     & label {
       justify-content: flex-start;
       margin-right: auto;
@@ -318,6 +312,7 @@ textarea.invalid {
     &.blue {
       @extend .btn-submit;
       background-color: $myte-blue_b;
+
       &:hover {
         background-color: $myte-blue_b--hover;
       }
@@ -326,6 +321,7 @@ textarea.invalid {
     &.purple {
       @extend .btn-submit;
       background-color: rgb(132, 84, 230);
+
       &:hover {
         background-color: rgb(118, 75, 204);
       }
@@ -337,20 +333,19 @@ textarea.invalid {
         0 3px 6px rgba(110, 80, 20, 0.4),
         inset 0 -2px 5px 1px rgba(139, 66, 8, 1),
         inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
-      background-image: linear-gradient(
-        160deg,
-        #a54e07,
-        #b47e11,
-        #fef1a2,
-        #bc881b,
-        #a54e07
-      );
+      background-image: linear-gradient(160deg,
+          #a54e07,
+          #b47e11,
+          #fef1a2,
+          #bc881b,
+          #a54e07);
       color: rgb(120, 50, 5);
       text-shadow: 0 2px 2px rgba(250, 227, 133, 1);
       transition: all 0.2s ease-in-out;
       background-size: 100% 100%;
       background-position: center;
       border: 1px solid #a55d07;
+
       &:hover,
       &:focus {
         background-size: 150% 150%;
@@ -370,6 +365,7 @@ textarea.invalid {
     height: 100%;
     font-size: 25px;
     text-decoration: none;
+
     &:hover {
       background-color: $myte-orange_b;
     }
@@ -378,9 +374,11 @@ textarea.invalid {
   &:focus {
     outline: none;
   }
+
   &:hover {
     cursor: pointer;
   }
+
   &:disabled {
     background-color: gray;
     pointer-events: none;
@@ -394,43 +392,15 @@ textarea.invalid {
     align-items: flex-start;
     padding: 0px;
     width: 80%;
+
     & textarea {
       border-radius: $btn-radius;
     }
+
     & p {
       color: rgb(23, 23, 44);
       font-size: 20px;
       margin-bottom: 10px;
-    }
-  }
-}
-
-.item {
-  &-btn__home {
-    right: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    justify-content: flex-end;
-    margin-left: auto;
-    margin-right: 10px;
-  }
-
-  &-home {
-    @extend .side-bar--item;
-    margin: 0;
-    border-bottom: 1px solid #e89875;
-    height: 60px;
-    border-radius: 0 $btn-radius $btn-radius 0;
-    & a {
-      color: $bg-color;
-    }
-    &:hover {
-      background-color: $blue-dark;
-      cursor: pointer;
     }
   }
 }
@@ -440,11 +410,13 @@ textarea.invalid {
   margin-left: 10px;
   width: 40%;
   height: 100%;
+
   & h1 {
     font-size: 60px;
     color: rgb(1, 1, 1);
     text-align: start;
   }
+
   & p {
     font-weight: 300;
     font-size: 18px;
@@ -469,6 +441,7 @@ textarea.invalid {
       font-size: 30px;
       color: rgb(106, 104, 104);
       margin-right: 10px;
+
       &:hover {
         cursor: pointer;
       }
@@ -596,19 +569,11 @@ textarea.invalid {
   }
 }
 
-.horizontal-bar {
-  align-self: center;
-  margin-left: -10px;
-  margin-top: 2px;
-  width: 98%;
-  height: 1px;
-  background-color: #ffffff;
-}
-
 .header {
   font-size: 30px;
   text-align: center;
   margin-top: 10px;
+
   &--underlined {
     padding-bottom: 3px;
     display: flex;
@@ -616,12 +581,14 @@ textarea.invalid {
     align-items: center;
     border: none;
     width: 100%;
+
     & h1 {
       font-size: 35px;
       color: $myte-orange_b;
       margin-top: 20px;
       margin-bottom: 2px;
     }
+
     & div {
       margin-top: 0;
       width: 80%;

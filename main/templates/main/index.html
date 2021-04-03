@@ -2,22 +2,22 @@
 {% load static %}
 {% block title %} Myte - Tu gestor de formulas{% endblock %}
 
-{% block side_bar %}
-<div class="side-bar">
-    <div class="side-bar--info">
+{% block sidebar %}
+<div class="sidebar">
+    <div class="info">
         <h2>Myte</h2>
         <h3>vBeta</h3>
         <div></div>
     </div>
-    <div class="side-bar--item">
+    <div class="item">
         <img src="{% static 'images/theme.png' %}">
         <a href="#" style="margin-left: 20px;"><strong>Theme</strong></a>
     </div>
-    <div class="side-bar--item">
+    <div class="item">
         <img src="{% static 'images/premium.png' %}">
         <a href="#" style="margin-left: 20px;"><strong>Premium</strong></a>
     </div>
-    <div class="side-bar--item">
+    <div class="item">
         <img src="{% static 'images/git.png' %}">
         <a href="https://github.com/VashLT/Myte/tree/dev" title="Myte source code" style="margin-left: 20px;"
             target="_blank"><strong>Repositorio</strong></a>
@@ -26,20 +26,20 @@
 {% endblock %}
 
 {% block nav %}
-<nav class="nav-bar" id="nav">
-    <div class="nav-bar--item" id="hamburger-container" style="width: 15%;">
+<nav class="navbar" id="nav">
+    <div class="item" id="c-hamburger" style="width: 15%;">
         <div class="hamburger" id="hamburger">
             <div></div>
             <div></div>
             <div></div>
         </div>
     </div>
-    <div class="nav-bar--item" id="item-logo" style="width: auto;">
+    <div class="item" id="item-logo" style="width: auto;">
         <div class="logo">
             <img src="{% static 'images/logo.png' %}" title="Myte">
         </div>
     </div>
-    <div class="nav-bar--item" id="welcome-options" style="margin-left: auto; margin-right: 10px;">
+    <div class="item" id="welcome-options" style="margin-left: auto; margin-right: 10px;">
         <a href="{% url 'mauth:login' %}" class="btn-link">Ingresar</a>
         <a href="#" class="btn-link">Acerca de</a>
         <a href="#" class="btn-link">Otros</a>

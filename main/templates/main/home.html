@@ -10,48 +10,48 @@
 {% block body %}
 <div class="overlay"></div>
 
+{% block sidebar %}
+<div class="sidebar home">
+    <div class="app-info">
+        <div class="version">
+            <h2>Myte</h2>
+            <h3>vBeta</h3>
+        </div>
+        <div class="c-user">
+            <p>$\text{ {{ user.get_username }} }$</p>
+        </div>
+    </div>
+    <hr style="background-color: #6b4637;">
+    <div class="item home" onclick="document.getElementById('#add-formula').click()">
+        <img src="{% static 'images/add_2.png' %}">
+        <a href="{% url 'formulas:index' %}" id="add-formula" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
+    </div>
+    <div class="item home">
+        <img src="{% static 'images/delete_gray.png' %}" onclick="document.getElementById('#delete-formula').click()">
+        <a href="#" id="delete-formula" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
+    </div>
+    <div class="item home" onclick="document.getElementById('#list-formulas').click()">
+        <img src="{% static 'images/list_formulas.png' %}">
+        <a href="{% url 'formulas:index' %}" id="list-formulas" title="Myte source code" style="margin-left: 20px;"
+            target="_blank"><strong>Mis formulas</strong></a>
+    </div>
+</div>
+{% endblock %}
+
 {% block nav %}
-<nav class="nav-bar--home">
-    <div class="nav-bar--item left" style="width: 5%; margin-left: 10px; ">
+<nav class="navbar home">
+    <div class="item left" style="width: 5%; margin-left: 10px; ">
         <img src="{% static 'images/logo.png' %}" title="Myte" style="width: 70px; height: 70px;">
     </div>
-    <div class="nav-bar--item" style="width: 50%; margin-left: 10px; justify-content: flex-start;">
+    <div class="item" style="width: 50%; margin-left: 10px; justify-content: flex-start;">
 
     </div>
-    <div class="nav-bar--item right" style="width: 40%;">
+    <div class="item right" style="width: 40%;">
         <a href="#" class="btn-link">Detalles</a>
         <a href="{% url 'main:premium' %}" class="btn-link">Mejorar</a>
         <a href="{% url 'mauth:logout' %}" id="logout" class="btn-link">Salir</a>
     </div>
 </nav>
-{% endblock %}
-
-{% block side_bar %}
-<div class="side-bar--home">
-    <div class="app-info">
-        <div style="width: 40%;">
-            <h2>Myte</h2>
-            <h3>vBeta</h3>
-        </div>
-        <div class="show-user" style="width: 60%;">
-            <p style="margin-top: 10px;">$$\text{ {{ user.get_username }} }$$</p>
-        </div>
-    </div>
-    <div class="horizontal-bar" style="background-color: #6b4637;"></div>
-    <div class="item-home">
-        <img src="{% static 'images/add_2.png' %}">
-        <a href="{% url 'formulas:index' %}" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
-    </div>
-    <div class="item-home">
-        <img src="{% static 'images/delete_gray.png' %}">
-        <a href="#" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
-    </div>
-    <div class="item-home">
-        <img src="{% static 'images/list_formulas.png' %}">
-        <a href="{% url 'formulas:index' %}" title="Myte source code" style="margin-left: 20px;"
-            target="_blank"><strong>Mis formulas</strong></a>
-    </div>
-</div>
 {% endblock %}
 
 {% block content %}
@@ -91,27 +91,30 @@
         </div>
         {% endif %}
         <div class="aug-options">
-            {% if formula.images %}
-            <a href="{% url 'formulas:add_image' id_formula=formula.id %} " class="option yellow" target="_blank">Imagenes</a>
-            {% else %}
-            <a class="option" aria-disabled="true">Imagenes</a>
-            {% endif %}
-            {% if formula.script %}
-            <a href="{% url 'formulas:add_script' id_formula=formula.id %}" class="option skin"
-                target="_blank">Ejecutar script</a>
-            {% else %}
-            <a class="option" aria-disabled="true">Ejecutar script</a>
-            {% endif %}
             {% if user.is_premium %}
-            <a href="{% url 'formulas:edit' id_formula=formula.id %}" class="option green"
-                target="_blank">Editar</a>
+                {% if formula.images %}
+                <a href="{% url 'formulas:images' id_formula=formula.id %} " class="option yellow" target="_blank">Imagenes</a>
+                {% else %}
+                <a href="{% url 'formulas:add_image' id_formula=formula.id %} " class="option yellow" target="_blank">Agregar imagenes</a>
+                {% endif %}
+                {% if formula.script %}
+                <a href="{% url 'formulas:script' id_formula=formula.id %}" class="option skin" target="_blank">Ejecutar script</a>
+                {% else %}
+                <a href="{% url 'formulas:add_script' id_formula=formula.id %}" class="option skin" target="_blank">Añadir script</a>
+                {% endif %}
+            {% else %}
+                <a class="option" aria-disabled="true">Imagenes</a>
+                <a class="option" aria-disabled="true">Ejecutar script</a>
             {% endif %}
+            <a href="{% url 'formulas:edit' id_formula=formula.id %}" class="option green" target="_blank">Editar</a>
             <a href="{% url 'formulas:delete' id_formula=formula.id %}" id="delete" class="option blue">Eliminar</a>
         </div>
     </div>
 {% endfor %}
 </div>
 {% endblock %}
+
+</div>
 
 <div class="expand-bar" id="ctrl-side-bar">
     <img src="{% static 'images/arrow.png' %}" style="width: 17px; height: 29px;">
@@ -120,8 +123,8 @@
     <a href="{% url 'formulas:add' %}" target="_blank">
         <img src="{% static 'images/add.png' %}">
     </a>
-</div>
 {% endblock %}
+
 
 {% block scripts %}
 <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"</script>

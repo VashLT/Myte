@@ -16,8 +16,8 @@ Myte TODOs
         - [x] edit images
         - [x] edit script
     - [x] delete formulas
-    - [] view images
-    - [] run script
+    - [x] view images
+    - [x] run script
     - [] search formulas
         - [] search by tag
         - [] search by name
