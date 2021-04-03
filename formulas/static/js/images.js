@@ -1,13 +1,30 @@
 $(document).ready(function () {
-    var $images = $(".image-item");
     var $overlay = $(".overlay");
 
-    $images.on("click", function () {
-        var $clicked_image_id = $(this).attr('id');
-        var $modal = $("#im" + $clicked_image_id);
+
+    if ($('body').hasClass('images')) {
+        var $images = $(".c-image");
+        console.log('In jeje    ');
+
+        $images.on("click", function () {
+            var $clicked_image_id = $(this).attr('id');
+            var $modal = $("#im" + $clicked_image_id);
+
             $modal.addClass("active");
             $overlay.addClass("active");
-    });
+        });
+
+        $overlay.click(function () {
+            if ($overlay.hasClass('active')) {
+                event.preventDefault();
+                $overlay.removeClass('active');
+                if ($(".modal-image.active").length) {
+                    $(".modal-image.active").removeClass("active");
+                }
+                event.stopPropagation();
+            }
+        });
+    }
 
     if ($('body').attr('class') === 'add-image') {
         var $preview_container = $('.preview-files');

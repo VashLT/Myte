@@ -25,10 +25,28 @@ function validForm(id_form) {
     return valid; // return the valid status
 }
 
+var $overlay = $('.overlay');
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    var $overlay = $('.overlay');
+
+$(document).keyup(function(e) {
+    if (e.key === "Escape") { // escape key maps to keycode `27`
+        var $augFormula = $('.modal-formula.active');
+        var $augImage = $('.modal-image.active');
+        if ($overlay.hasClass('active')) {
+            $overlay.removeClass('active');
+            if ($augImage.length) {
+                 $augImage.removeClass('active');
+            }
+            if ($augFormula.length) {
+                $augFormula.removeClass('active');
+            }
+        }
+    }
+});
+
+$(document).ready(function () {
+    // var $overlay = $('.overlay');
     var $formulas = $('.c-formula');
     var $stages = $('.stage');
     var $nextBtn = $('#next-btn');
@@ -41,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const formulaHeader = document.getElementById('formula-state-header');
         
         $render.click(function () {
-            setTimeout(function(){
+            setTimeout(function () {
                 formulaHeader.innerText = '$$\\text{Renderizando ...}$$';
                 $form.append('<input type="hidden" name="render" />');
                 $form.submit();
@@ -70,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $nextBtn.text('Enviar');
             $('.c-add_formula').css('height', '500px');
             if (formulaHeader.innerText === '') {
-                formulaHeader.innerText = '$\\text{Formula}$';   
+                formulaHeader.innerText = '$\\text{Formula}$';
             } else {
                 $('div.render-box>div.header').append('<hr>');
             }
@@ -110,12 +128,16 @@ document.addEventListener('DOMContentLoaded', function () {
     $overlay.click(function () {
         if ($overlay.hasClass("active")) {
             event.preventDefault();
+            var $augFormula = $('.modal-formula.active');
+            var $augImage = $('.modal-image.active');
+            
             $(".overlay").removeClass("active");
-            if ($(".modal-image.active").length) {
-                $(".modal-image.active").removeClass("active");
+            console.log("clicked!")
+            if ($augImage.length) {
+                $augImage.removeClass("active");
             }
-            if ($(".modal-formula.active").length) {
-                $(".modal-formula.active").removeClass("active");
+            if ($augFormula.length) {
+                $augFormula.removeClass("active");
             }
             event.stopPropagation();
         }
