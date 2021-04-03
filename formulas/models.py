@@ -232,7 +232,7 @@ class Script(models.Model):
     id_formula = models.ForeignKey(
         Formula, models.CASCADE, db_column='id_formula', blank=True, null=True)
     contenido = models.CharField(max_length=1000)
-    variables_script = models.CharField(
+    variables = models.CharField(
         max_length=100, blank=True, null=True)
 
     class Meta:
@@ -244,11 +244,12 @@ class Script(models.Model):
         return self.contenido
 
     def get_var_list(self):
-        return Script.format_input(self.variables_script)
+        return Script.format_input(self.variables)
 
-    def run(self, values):
+    def run(self, values, decimals=5):
         """
             > values: <str> with format -> val1, val2, ..., valn
+            > decimals: <int> specifies number of significant numbers
 
             OUTPUT: <float> code property evaluated in values
         """
@@ -275,10 +276,12 @@ class Script(models.Model):
         for i, name in enumerate(vars):
             var_dict[name] = value_list[i]
 
+        import math
+
         var_dict.update({'math': math})
 
         try:
-            result = eval(self.contenido, var_dict)
+            result = round(eval(self.contenido, var_dict), decimals)
         except Exception:
             traceback.print_exc()
             return None
