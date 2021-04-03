@@ -1,5 +1,3 @@
-import traceback
-
 from django.shortcuts import render, HttpResponse, reverse, redirect
 
 from django.http import JsonResponse
@@ -20,7 +18,7 @@ from . import utils
 
 from mauth.decorators import premium_required
 
-from myte.shortcuts import home
+from myte.shortcuts import home, error_page
 
 from myte.constants import MAX_IMAGES
 
@@ -152,12 +150,11 @@ def add(request, stage=1):
         return redirect(reverse('formulas:add_script', args=(id_formula,)))
 
     else:
-        context = {
-            "title": "Internal error",
-            "description": f"Stage in add formula process was not found. [stage={stage}]",
-            "trace": traceback.format_exc()
-        }
-        return render(request, "main/404.html", context)
+        return error_page(
+            request,
+            title="Internal error",
+            description=f"Stage in add formula process was not found. [stage={stage}]"
+        )
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
@@ -269,12 +266,11 @@ def add_image(request, id_formula):
         return render(request, "formulas/add_image.html", context)
 
     except Formula.DoesNotExist:
-        context = {
-            "title": "Internal error",
-            "description": f"Formula with id = {id_formula} does not exist",
-            "trace": traceback.format_exc()
-        }
-        return render(request, "main/404.html", context)
+        return error_page(
+            request,
+            title="Internal error",
+            description=f"Formula with id = {id_formula} does not exist"
+        )
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
@@ -306,7 +302,7 @@ def add_script(request, id_formula):
 
     script = Script.objects.create(id_formula=formula,
                                    contenido=script_body,
-                                   variables_script=script_vars
+                                   variables=script_vars
                                    )
     # Temporary: if formula already has an script, that script is deleted and replaced by the new one
     if formula.script:
@@ -323,8 +319,53 @@ def add_script(request, id_formula):
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
+@premium_required
+def images(request, id_formula):
+    """
+        Show available images for formula and allow responsive interaction
+    """
+    try:
+        formula = Formula.objects.get(pk=id_formula)
+    except Formula.DoesNotExist:
+        return error_page(
+            request,
+            title="Formula does not exist",
+            description=f"Formula with id {id_formula} could not be gotten"
+        )
+    context = {"formula": formula, "images": formula.images}
+    if "add" in request.POST:
+        return redirect(reverse('formulas:add_image', args=(id_formula,)))
+
+    return render(request, "formulas/images.html", context)
+
+
+@login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
 def script(request, id_formula):
     """
         Run Python code to compute formulas based on given arguments
     """
-    return HttpResponse("<h1> Run script </h1>")
+    try:
+        formula = Formula.objects.get(pk=id_formula)
+    except Formula.DoesNotExist:
+        return error_page(
+            request,
+            title="Formula does not exist",
+            description=f"Formula with id {id_formula} could not be gotten"
+        )
+    
+    assert formula.script
+    context = {"formula": formula, "script": formula.script}
+
+    if request.POST:
+        try:
+            context["result"] = formula.script.run(request.POST["input_vars"])
+        except Exception:
+            return error_page(
+                request,
+                title="Error when running script",
+                description=f"""The next code: \n\t{formula.script.code}
+                            \nWas tried to run with input: {request.POST['input_vars']}"""
+            )
+
+    return render(request, "formulas/script.html", context)
+

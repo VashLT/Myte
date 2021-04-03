@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Script - {{ formula.nombre }}{% endblock %}
+
+{% block main %}class="scripts"{% endblock %}
+
+{% block body %}
+<div class="c-add-view">
+    <div class="render-box">
+        <div class="header">
+            <p id="formula-view">{{ formula.nombre }}</p>
+            <hr>
+        </div>
+        <div class="content">
+            <p>$$ {{ formula.latex }} $$</p>
+        </div>
+    </div>
+    <div class="c-script">
+        <form method="POST" class="form" id="add-form" action="" style="width: 80%; margin-bottom: 30px;">
+            {% csrf_token %}
+            <div class="myte-header">
+                <img src="{% static 'images/logo.svg'%}" title="Myte" alt="Myte">
+                <h2 style="color:#35241b;">Ejecutar script</h2>
+            </div>
+            <div class="script-box" style="margin-bottom: 20px;">
+                <p>
+                    {{ script.code }}
+                </p>
+            </div>
+            <div class="input-vars" style="margin-bottom: 30px;">
+                <p>Ingresa las variables: </p>
+                <input class="input" type="text" name="input_vars" placeholder="{{ script.variables }}">
+            </div>
+        </form>
+        {% if result %}
+        <h3>El resultado es: {{ result }}</h3>
+        {% endif %}
+        <div class="c-input" id="submit-parent" style="width: 30%; margin-bottom: 30px;">
+            <button class="btn-submit" id="next-btn" name="completed" style="width: 100%;">Ejecutar</button>
+        </div>
+    </div>
+    <div class="float-return">
+        <img 
+            src="{% static 'images/home.svg' %}"
+            alt="ir a la pagina principal" 
+            onclick="document.getElementById('to-home').click()"/>
+        <a class="btn-submit yellow" href="{% url 'main:home' %}" id="to-home" style="width: 70%;">Home</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'formulas_js/formulas.js' %}"></script>
+{% endblock %}
