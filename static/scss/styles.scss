@@ -38,6 +38,7 @@ body {
 }
 
 .home {
+  @extend .meta;
   overflow-x: hidden;
   background-color: $myte-skin--light;
 }
@@ -68,6 +69,15 @@ body {
 .add-script {
   @extend .add-formula;
   background-color: #f2c894;
+}
+
+.edit-formula {
+  @extend .reg;
+  padding: 0;
+
+  width: 100%;
+
+  background-color: rgb(206, 220, 240);
 }
 
 .images {

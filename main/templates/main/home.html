@@ -8,7 +8,6 @@
 {% block main %}class="home"{% endblock %}
 
 {% block body %}
-<div class="overlay"></div>
 
 {% block sidebar %}
 <div class="sidebar home">
@@ -22,15 +21,15 @@
         </div>
     </div>
     <hr style="background-color: #6b4637;">
-    <div class="item home" onclick="document.getElementById('#add-formula').click()">
+    <div class="item home" onclick="document.getElementById('add-formula').click()">
         <img src="{% static 'images/add_2.png' %}">
-        <a href="{% url 'formulas:index' %}" id="add-formula" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
+        <a href="{% url 'formulas:add' %}" id="add-formula" target="_blank" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
     </div>
     <div class="item home">
-        <img src="{% static 'images/delete_gray.png' %}" onclick="document.getElementById('#delete-formula').click()">
-        <a href="#" id="delete-formula" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
+        <img src="{% static 'images/delete_gray.png' %}" onclick="document.getElementById('delete-formula').click()">
+        <a href="#" id="delete-formula" target="_blank" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
     </div>
-    <div class="item home" onclick="document.getElementById('#list-formulas').click()">
+    <div class="item home" onclick="document.getElementById('list-formulas').click()">
         <img src="{% static 'images/list_formulas.png' %}">
         <a href="{% url 'formulas:index' %}" id="list-formulas" title="Myte source code" style="margin-left: 20px;"
             target="_blank"><strong>Mis formulas</strong></a>
@@ -111,12 +110,13 @@
         </div>
     </div>
 {% endfor %}
+<div class="overlay"></div>
 </div>
 {% endblock %}
 
 </div>
 
-<div class="expand-bar" id="ctrl-side-bar">
+<div class="expand-bar" id="ctrl-sidebar">
     <img src="{% static 'images/arrow.png' %}" style="width: 17px; height: 29px;">
 </div>
 <div class="expand-bar" id="add-formula" style="left: auto; right: 6%;">

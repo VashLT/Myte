@@ -42,7 +42,7 @@ $(document).ready(function () {
 
     // home buttons
 
-    $("#ctrl-side-bar").click(function () { // click on hamburger button
+    $("#ctrl-sidebar").click(function () { // click on hamburger button
         event.preventDefault();
         $homeBar.animate({ width: "toggle" }, 300);
         if (!$homeBar.hasAttr("state") || $homeBar.attr("state") == "hidden") {
