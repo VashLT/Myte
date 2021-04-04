@@ -1,0 +1,77 @@
+{% extends 'myte/base.html' %}
+
+{% block title %}Mis formulas{% endblock %}
+
+{% block background %}id="body-home"{% endblock %}
+
+{% block body %}
+<div class="overlay"></div>
+
+<div class="container-view--formulas">
+    {% for category, formulas in data.items() %}
+    <div class="container-category" id= "c{{ loop.index }}" style="margin-bottom: 30px;">
+        <div class="container-category--header" style="margin-bottom: 20px;">
+            <h1>{{ category }}</h1>
+            <div></div>
+        </div>
+        <div class="container-category--formulas" id= "formulas{{ loop.index }}">
+            {% for formula in formulas %}
+            <div data-modal-target="#modal{{ loop.index }}" class="container-formula" id="f{{ loop.index }}">
+                <div class="formula-header">
+                    <h2>{{ formula["nombre"] }}</h2>
+                </div>
+                <div class="formula-content">
+                    <p>$$ {{ formula["codigo_latex"] }} $$</p>
+                    {% if formula["tags"] %}
+                        <div class="container-tags">
+                            {% for tag in formula["tags"] %}
+                            <div>
+                                <p>{{ tag }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal-formula" id="modal{{ loop.index }}">
+                <div class="augmented-header">
+                    <h1>{{ formula["nombre"] }}</h1>
+                </div>
+                <div class="augmented-formula">
+                    <p>$$ {{ formula["codigo_latex"] }} $$</p>
+                </div>
+                {% if formula["tags"] %}
+                    <div class="augmented-tags">
+                        {% for tag in formula["tags"] %}
+                        <div>
+                            <p>{{ tag }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="augmented-options">
+                    {% if formula["images"] %}
+                    <a href="{{ url_for('views.formula_images', id_formula=formula['id']) }} " class="option--yellow"
+                        target="_blank">Imagenes</a>
+                    {% else %}
+                    <a class="option" aria-disabled="true">Imagenes</a>
+                    {% endif %}
+                    {% if formula["script"] %}
+                    <a href="{{ url_for('views.formula_script', id_formula = formula['id']) }}" class="option--skin"
+                        target="_blank">Ejecutar script</a>
+                    {% else %}
+                    <a class="option" aria-disabled="true">Ejecutar script</a>
+                    {% endif %}
+                    <a href="{{ url_for('views.edit_formula', id_formula=formula['id']) }}" class="option--green"
+                        target="_blank">Editar</a>
+                    <a href="{{ url_for('views.delete_formula', id_formula=formula['id']) }}" class="option--blue"
+                        target="_blank">Eliminar</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

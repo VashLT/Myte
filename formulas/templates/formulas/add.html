@@ -35,7 +35,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="c-add_formula">
+    <div class="c-form" style="height: 600px;">
         <form method="POST" class="form" id="add-form" action="">
             {% csrf_token %}
             <div class="myte-header">
@@ -51,7 +51,7 @@
                     name="codigo_latex" 
                     cols="50"
                     rows="10"
-                    placeholder="formula ..." 
+                    placeholder="Codigo en LaTeX ...    " 
                     id="id_codigo_latex"
                     style="margin-bottom: 20px;"
                     required>{% if formula %}{{ formula.latex }}{% endif %}</textarea>
@@ -64,7 +64,7 @@
                     onclick = "document.getElementById('render-btn').click()"
                     />
                 <button class="btn-submit green" id="render-btn" name="render"
-                    style="width: 100%; margin-bottom: 20px;">Renderizar</button>
+                    style="width: 100%;">Renderizar</button>
             </div>
             {% else %}
             <div class="c-input" style="flex-direction: column;">

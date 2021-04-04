@@ -162,7 +162,19 @@ def edit(request, id_formula):
     """
         Allows editing latex code, title, images and scripts of a formula
     """
-    return HttpResponse("<h1> Edit formula </h1>")
+    try:
+        formula = Formula.objects.get(pk=id_formula)
+    except Formula.DoesNotExist:
+        return error_page(
+            request,
+            title="Formula Does not exist",
+            description=f"Formula with id {id_formula} is not available"
+        )
+    context = {
+        "user": request.user,
+        "formula": formula
+    }
+    return render(request, "formulas/edit.html", context)
 
 
 @login_required(redirect_field_name=settings.REDIRECT_FIELD_NAME)
@@ -197,12 +209,7 @@ def add_image(request, id_formula):
         context = {"formula": formula,
                    "add_formula_is_active": add_formula_is_active}
 
-        if request.method == "GET":
-
-            if formula.images:  # populates context to preview the current images
-                context["images"] = formula.images
-
-            return render(request, "formulas/add_image.html", context)
+        context["images"] = formula.images
 
         # <input type='file' name="img"... -> 'img'
         files = request.FILES.getlist(
@@ -210,50 +217,52 @@ def add_image(request, id_formula):
         print(
             f"ADD IMAGE INPUT:\nFILES:{files}\nPOST: {request.POST}\nid_formula:{id_formula}\n")
 
-        if files:
-            if len(files) > MAX_IMAGES:
-                messages.error(
-                    request, f'El número máximo de imagenes permitidas es {MAX_IMAGES}')
-                return redirect(reverse('formulas:add_image', args=(formula.id,)))
+        if request.method == "GET" or not files:
+            return render(request, "formulas/add_image.html", context)
 
-            uploaded_images = []
+        if len(files) > MAX_IMAGES:
+            messages.error(
+                request, f'El número máximo de imagenes permitidas es {MAX_IMAGES}')
+            return redirect(reverse('formulas:add_image', args=(formula.id,)))
 
-            total_old_images = len(formula.images)
-            images_to_delete = []
-            for it, file in enumerate(files, 1):
-                should_delete = total_old_images + it > 3
-                if should_delete:
-                    # formula.images is ordered by id, that is a way to know which
-                    # image was added first, which in turn means that formula.images
-                    # is FIFO
-                    images_to_delete.append(
-                        formula.images[total_old_images - 1]
-                    )
-                    total_old_images -= 1
+        uploaded_images = []
 
-                    print(formula.images)
-                    print(images_to_delete)
+        total_old_images = len(formula.images)
+        images_to_delete = []
 
-                path, web_url = utils.store_file(
-                    file, id_formula=formula.id)
-                image = Imagen(id_formula=formula, path=path, url=web_url)
+        for it, file in enumerate(files, 1):
+            should_delete = total_old_images + it > 3
 
-                print(
-                    f"store_url: {path}\nweb_url: {web_url}")
+            if should_delete:
+                # formula.images is ordered by id, that is a way to know which
+                # image was added first, which in turn means that formula.images
+                # is FIFO
+                images_to_delete.append(
+                    formula.images[total_old_images - 1]
+                )
+                total_old_images -= 1
 
-                uploaded_images.append(image)
+                print(formula.images)
+                print(images_to_delete)
 
-            if images_to_delete:
-                [image.delete() for image in images_to_delete]
+            path, web_url = utils.store_file(
+                file, id_formula=formula.id)
+            image = Imagen(id_formula=formula, path=path, url=web_url)
 
-            [image.save() for image in uploaded_images]
+            print(
+                f"store_url: {path}\nweb_url: {web_url}")
 
-            formula.update_images()
+            uploaded_images.append(image)
 
-            context["images"] = formula.images
+        if images_to_delete:
+            [image.delete() for image in images_to_delete]
 
-            messages.success(
-                request, f"Se agregaron {len(uploaded_images)} imagenes exitosamente!")
+        [image.save() for image in uploaded_images]
+
+        formula.update_images()
+
+        messages.success(
+            request, f"Se agregaron {len(uploaded_images)} imagenes exitosamente!")
 
         next_stage = not "load" in request.POST and "next" in request.POST
 
@@ -262,6 +271,8 @@ def add_image(request, id_formula):
                 print("redirecting to add_formula stage 3\n")
                 return redirect(reverse('formulas:add', args=(3,)))
             return home()
+
+        context["images"] = formula.images
 
         return render(request, "formulas/add_image.html", context)
 
@@ -352,7 +363,7 @@ def script(request, id_formula):
             title="Formula does not exist",
             description=f"Formula with id {id_formula} could not be gotten"
         )
-    
+
     assert formula.script
     context = {"formula": formula, "script": formula.script}
 
@@ -368,4 +379,3 @@ def script(request, id_formula):
             )
 
     return render(request, "formulas/script.html", context)
-

@@ -60,9 +60,10 @@ $(document).ready(function () {
         
         $render.click(function () {
             setTimeout(function () {
-                formulaHeader.innerText = '$$\\text{Renderizando ...}$$';
-                $form.append('<input type="hidden" name="render" />');
-                $form.submit();
+                if (validForm('add-form')) {
+                    $form.append('<input type="hidden" name="render" />');
+                    $form.submit();
+                }
             }, 600);
         });
 
@@ -142,4 +143,8 @@ $(document).ready(function () {
             event.stopPropagation();
         }
     });
-})
+
+    if ($('body').hasClass('home')) {
+        $('')
+    }
+});

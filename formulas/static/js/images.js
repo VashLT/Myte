@@ -30,7 +30,7 @@ $(document).ready(function () {
         var $preview_container = $('.preview-files');
         console.log($preview_container);
         if ($preview_container.length > 0) {
-            $('.c-add_formula').css(
+            $('.c-form').css(
                 {
                     'height': 'auto',
                     'padding-bottom': '40px'
