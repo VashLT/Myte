@@ -1,6 +1,7 @@
 {% load static %}
 {% load compress %}
 {% load filters %}
+{% load reactor %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,9 +29,12 @@
     
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 
+    {% reactor_header %}
+
 </head>
 
 <body {% block main %}class="welcome" {% endblock %}>
+    <div class="wrapper">
     {% if messages %}
     <!-- flash messages -->
     <div class="c-flash">
@@ -55,7 +59,14 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    {% block popups %}
+
     {% endblock %}
+
+    {% endblock %}
+
+    </div>
 
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 

@@ -4,3 +4,6 @@ django-libsass==0.8
 pymysql==1.0.2
 mysqlclient==2.0.3
 django-widget-tweaks==1.4.8
+
+channels==3.0.0
+django-reactor==2.2.1b0

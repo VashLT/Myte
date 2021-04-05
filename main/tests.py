@@ -17,23 +17,9 @@ import formulas.utils as f_utils
 
 def test(request):
     user = log_user(request)
-    formula = Formula.objects.get(id=5)
-    context = {"formula": formula}
-    print(request.FILES)
-    files = request.FILES.getlist('img') if 'img' in request.FILES else None
-    if files:
-        uploaded_images = []
-        for file in files:
-            store_url, ofile = f_utils.store_file(file, id_formula=formula.id)
-            im = Imagen(id_formula=formula, path=store_url)
-
-            print(f"store_url: {store_url}\nweb_url: {ofile.url(store_url)}")
-
-            im.set_file(ofile)  # web url where image can be seen
-            im.save()
-            uploaded_images.append(im)
-        context["uploaded_images"] = uploaded_images
-
+    formulas = f_utils.load_formulas(user)
+    context = {"user": user, "formulas": formulas}
+    
     return render(request, "main/test.html", context)
 
 

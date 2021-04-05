@@ -1,84 +1,132 @@
-{% extends 'formulas/add.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load filters %}
 {% load widget_tweaks %}
 
-{% block title %}Agregar imagenes{% endblock %}
+{% block title %}Home{% endblock %}
 
-{% block main %}class="add-image"{% endblock %}
+{% block main %}class="home"{% endblock %}
 
 {% block body %}
-<div class="c-add-view">
-    <div class="render-box">
-        <div class="header">
-            <p id="f-header" class="blue">$$\text{ {{ formula.nombre }} }$$</p>
-            <hr style="background-color: #d1b9ae;">
+
+{% block sidebar %}
+<div class="sidebar home">
+    <div class="app-info">
+        <div class="version">
+            <h2>Myte</h2>
+            <h3>vBeta</h3>
         </div>
-        <div class="content">
-            <p>$${{ formula.latex }}$$</p>
-        </div>
-    </div>
-    <div class="c-add_formula" style="height: 400px;">
-        <form method="POST" class="form" id="add-form" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="myte-header">
-                <img src="{% static 'images/logo.png' %}" title="Myte">
-                <h2 style="margin-top: 20px;">Agrega imagenes a tus formulas!</h2>
-            </div>
-            <div class="input-image" style="margin-bottom: 30px;">
-                <label for="img" style="margin-bottom: 20px;">Selecciona la/s imagenes:</label>
-                <div class="receiver" onclick="document.getElementById('img-input').click()">
-                    <img 
-                        src="{% static 'images/upload.png' %}"
-                        alt="Seleccionar imagenes" 
-                        />
-                    <button class="upload" >Escoger imagenes</button>
-                </div>
-                <input class="hid" type="file" id="img-input" name="img" accept="image/*" multiple required>
-            </div>
-        </form>
-        {% if images %} {# stand for both uploaded images or previous images #}
-            <div class="preview-files">
-            {% for image in images %}
-            <div class="file">
-                <div class="header">
-                    <p>{{ image.name }}</p>
-                </div>
-                <img src="{{ image.url }}" title="{{ image.name }}" onclick="document.getElementById('ui{{ image.id }}').click()" />
-                <a class="hid" id="ui{{ image.id }}" href="{{ image.url }}" target="_blank"></a> {# ui -> uploaded image #}
-            </div>            
-            {% endfor %}
-            </div>
-        {% endif %}
-        <div class="c-input many" style="justify-content:space-evenly;">
-            <div class="c-input" id="submit-parent" style="width: 30%;">
-                <img 
-                    src="{% static 'images/load_image.png' %}"
-                    alt="Cargar imagenes al servidor" 
-                    onclick="document.getElementById('load-img-btn').click()"/>
-                <button class="btn-submit orange" id="load-img-btn" name="completed" style="width: 100%;">Cargar</button>
-            </div>
-            <div class="c-input" id="submit-parent" style="width: 30%;">
-                <img 
-                    src="{% static 'images/continue.png' %}"
-                    alt="Continuar" 
-                    onclick="document.getElementById('next-btn').click()"/>
-                <button class="btn-submit" id="next-btn" name="next" style="width: 100%;">Continuar</button>
-            </div>
+        <div class="c-user">
+            <p>$\text{ {{ user.get_username }} }$</p>
         </div>
     </div>
-    <div class="float-return">
-        <img 
-            src="{% static 'images/home.svg' %}"
-            alt="ir a la pagina principal" 
-            onclick="document.getElementById('to-home').click()"/>
-        <a class="btn-submit yellow" href="{% url 'main:home' %}" id="to-home" style="width: 70%;">Home</a>
+    <hr style="background-color: #6b4637;">
+    <div class="item home" onclick="document.getElementById('add-formula').click()">
+        <img src="{% static 'images/add_2.png' %}">
+        <a href="{% url 'formulas:add' %}" id="add-formula" target="_blank" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
+    </div>
+    <div class="item home">
+        <img src="{% static 'images/delete_gray.png' %}" onclick="document.getElementById('delete-formula').click()">
+        <a href="#" id="delete-formula" target="_blank" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
+    </div>
+    <div class="item home" onclick="document.getElementById('list-formulas').click()">
+        <img src="{% static 'images/list_formulas.png' %}">
+        <a href="{% url 'formulas:index' %}" id="list-formulas" title="Myte source code" style="margin-left: 20px;"
+            target="_blank"><strong>Mis formulas</strong></a>
     </div>
 </div>
-
 {% endblock %}
 
+{% block nav %}
+<nav class="navbar home">
+    <div class="item left" style="width: 5%; margin-left: 10px; ">
+        <img src="{% static 'images/logo.png' %}" title="Myte" style="width: 70px; height: 70px;">
+    </div>
+    <div class="item" style="width: 50%; margin-left: 10px; justify-content: flex-start;">
+
+    </div>
+    <div class="item right" style="width: 40%;">
+        <a href="#" class="btn-link">Detalles</a>
+        <a href="{% url 'main:premium' %}" class="btn-link">Mejorar</a>
+        <a href="{% url 'mauth:logout' %}" id="logout" class="btn-link">Salir</a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="c-formulas">
+{% for formula in formulas %}
+    <div data-modal-target="#modal{{ forloop.counter }}" class="c-formula" id="f{{ forloop.counter }}">
+        <div class="header">
+            <h2>{{ formula.nombre }}</h2>
+        </div>
+        <div class="content">
+            <p>$$ {{ formula.latex }} $$</p>
+            {% if formula.get_tags %}
+            <div class="c-tags">
+                {% for tag in formula.get_tags %}
+                <div>
+                    <p>{{ tag }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="modal-formula" id="modal{{ forloop.counter }}"> {# forloop.counter starts at 1 #}
+        <div class="aug-header">
+            <h1>{{ formula.nombre }}</h1>
+        </div>
+        <div class="aug-formula">
+            <p>$$ {{ formula.latex }} $$</p>
+        </div>
+        {% if formula.get_tags %}
+        <div class="aug-tags">
+            {% for tag in formula.get_tags %}
+            <div>
+                <p>{{ tag }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="aug-options">
+            {% if user.is_premium %}
+                {% if formula.images %}
+                <a href="{% url 'formulas:images' id_formula=formula.id %} " class="option yellow" target="_blank">Imagenes</a>
+                {% else %}
+                <a href="{% url 'formulas:add_image' id_formula=formula.id %} " class="option yellow" target="_blank">Agregar imagenes</a>
+                {% endif %}
+                {% if formula.script %}
+                <a href="{% url 'formulas:script' id_formula=formula.id %}" class="option skin" target="_blank">Ejecutar script</a>
+                {% else %}
+                <a href="{% url 'formulas:add_script' id_formula=formula.id %}" class="option skin" target="_blank">Añadir script</a>
+                {% endif %}
+            {% else %}
+                <a class="option" aria-disabled="true">Imagenes</a>
+                <a class="option" aria-disabled="true">Ejecutar script</a>
+            {% endif %}
+            <a href="{% url 'formulas:edit' id_formula=formula.id %}" class="option green" target="_blank">Editar</a>
+            <a href="{% url 'formulas:delete' id_formula=formula.id %}" id="delete" class="option blue">Eliminar</a>
+        </div>
+    </div>
+{% endfor %}
+<div class="overlay"></div>
+</div>
+{% endblock %}
+
+</div>
+
+<div class="expand-bar" id="ctrl-sidebar">
+    <img src="{% static 'images/arrow.png' %}" style="width: 17px; height: 29px;">
+</div>
+<div class="expand-bar" id="add-formula" style="left: auto; right: 6%;">
+    <a href="{% url 'formulas:add' %}" target="_blank">
+        <img src="{% static 'images/add.png' %}">
+    </a>
+{% endblock %}
+
+
 {% block scripts %}
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"</script>
 <script type="text/javascript" src="{% static 'formulas_js/formulas.js' %}"></script>
-<script type="text/javascript" src="{% static 'formulas_js/images.js' %}"></script>
 {% endblock %}
