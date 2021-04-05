@@ -1,12 +1,11 @@
 $(document).ready(function () {
     var $overlay = $(".overlay");
 
-
+    // images.html template
     if ($('body').hasClass('images')) {
         var $images = $(".c-image");
-        console.log('In jeje    ');
 
-        $images.on("click", function () {
+        $images.click( function () {
             var $clicked_image_id = $(this).attr('id');
             var $modal = $("#im" + $clicked_image_id);
 
@@ -24,8 +23,17 @@ $(document).ready(function () {
                 event.stopPropagation();
             }
         });
+
+        $images.hover(function () {
+            console.log($(this).attr('id'));
+            $(this).find('div.header').css('display', 'flex');
+        }, function () {
+            $(this).find('div.header').css('display', 'none');
+        }
+        );
     }
 
+    // add_images.html template
     if ($('body').attr('class') === 'add-image') {
         var $preview_container = $('.preview-files');
         console.log($preview_container);

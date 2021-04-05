@@ -546,7 +546,7 @@ textarea.invalid {
     left: 50%;
     transition: 200ms ease-in-out;
 
-    position: fixed;
+    position: absolute;
 
     justify-content: center;
 
@@ -568,6 +568,7 @@ textarea.invalid {
     }
   }
 }
+
 
 .header {
   font-size: 30px;

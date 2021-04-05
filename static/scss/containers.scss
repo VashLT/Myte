@@ -3,6 +3,10 @@ $mauth-form-width: 600px;
 
 // using c as short abreviation of 'container'
 
+.row {
+  flex-direction: row;
+}
+
 .c {
   display: flex;
   flex-direction: column;
@@ -163,19 +167,23 @@ $mauth-form-width: 600px;
   }
 
   &-images {
-    @extend .c;
+    @extend .c-split;
+
     flex-direction: row;
     justify-content: space-evenly;
-    width: 60%;
-    height: auto;
+
+    width: auto;
+    height: 100%;
   }
 
   &-image {
     @extend .c;
-    width: 33%;
+    max-width: 33%;
+
+    width: auto;
     height: auto;
-    max-height: 60%;
-    background-color: red;
+
+    max-height: 80%;
 
     & div.header {
       @extend .c-image;
@@ -188,8 +196,10 @@ $mauth-form-width: 600px;
     }
 
     & div.content {
-      @extend .c-image;
-      width: 80%;
+      @extend .c;
+
+      width: auto;
+      max-width: 80%;
       height: auto;
       max-height: 80%;
 
@@ -281,17 +291,6 @@ $mauth-form-width: 600px;
       @extend .c-main;
       align-items: flex-start;
       padding: 20px auto 40px 10px;
-    }
-
-    &-images {
-      @extend .c-main;
-
-      align-items: center;
-      justify-content: flex-start;
-
-      & h1 {
-        font-size: 30px;
-      }
     }
 
     &--editar {
@@ -445,10 +444,11 @@ $mauth-form-width: 600px;
 
   &-formulas {
     @extend .c;
+
     flex-direction: row;
     flex-wrap: wrap;
 
-    padding: 20px 10px;
+    padding: 20px 20px;
 
     left: 0;
     right: 0;
@@ -513,6 +513,12 @@ $mauth-form-width: 600px;
       cursor: pointer;
       box-shadow: 0 2px 4px 0 #c0c0c0, 0 3px 8px 0 #c0bfbf;
     }
+
+    &-box {
+      @extend .c-split;
+      width: 20%;
+      height: 100%;
+    }
   }
 
   &-select {
@@ -560,14 +566,24 @@ $mauth-form-width: 600px;
     }
   }
 
-  &-trident {
+  &-split {
     @extend .c;
 
     margin: 0;
     padding: 0;
+    height: 100%;
+  }
+
+  &-3 {
+    @extend .c-split;
 
     width: 33.3%;
-    height: 100%;
+  }
+
+  &-2 {
+    @extend .c-split;
+
+    width: 50%;
   }
 
   &-user {
@@ -656,8 +672,41 @@ $mauth-form-width: 600px;
 }
 
 .wrapper {
-  display: flex;
-  flex-direction: column;
+  @extend .c;
+
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  justify-content: flex-start;
+
+  align-items: initial;
+}
+
+.full {
+  width: 100%;
+  height: 100%;
+}
+
+.full-size {
+  @extend .full;
+
+  z-index: 10;
+
+  position: absolute;
+
+  pointer-events: none;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.full.spaced {
+  justify-content: space-evenly;
 }
 
 // .form-register {
