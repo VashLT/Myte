@@ -50,6 +50,7 @@ $(document).ready(function () {
     var $formulas = $('.c-formula');
     var $stages = $('.stage');
     var $nextBtn = $('#next-btn');
+    var $container = $overlay.siblings('.full-size');
 
     if ($stages.length) {
         var $active = $('.stage.active');
@@ -109,7 +110,14 @@ $(document).ready(function () {
     $formulas.click(function () {
         var $clicked_formula_id = $(this).attr('id');
         var $modal = $("#modal" + $clicked_formula_id.substring(1));
+        var $container = $modal.parent();
+
+        console.log('added ' + $clicked_formula_id);
+
+        $container.css('display', 'block');
+        $container.css('pointer-events', 'none');
         $modal.addClass("active");
+        $modal.css('pointer-events', 'auto');
         $overlay.addClass("active");
 
         // updates 'numero_usos' column in 'Indice' table
@@ -126,20 +134,45 @@ $(document).ready(function () {
         });
     });
 
+    $container.click(function () {
+        if ($overlay.hasClass("active")) {
+            var $active = $('div[class^="modal"]div[class*=active]');
+
+            $(this).css('display', 'none');
+            $(this).css('pointer-events', 'auto');
+
+            console.log('removed ' + $active.attr('id'));
+
+            $overlay.removeClass('active');
+            $active.removeClass('active');
+            $active.css('pointer-events', 'none');
+        }
+    });
+
     $overlay.click(function () {
         if ($overlay.hasClass("active")) {
             event.preventDefault();
             var $augFormula = $('.modal-formula.active');
             var $augImage = $('.modal-image.active');
+            var $active = $('div[class^="modal"]div[class*=active]');
+
+            if ($container.length > 0) {
+                $container.css('display', 'none');
+                $container.css('pointer-events', 'auto');
+            }
+
+            console.log('removed ' + $active.attr('id'));
             
             $(".overlay").removeClass("active");
-            console.log("clicked!")
+            $active.removeClass('active');
+
             if ($augImage.length) {
                 $augImage.removeClass("active");
             }
             if ($augFormula.length) {
                 $augFormula.removeClass("active");
             }
+
             event.stopPropagation();
         }
     });

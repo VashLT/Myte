@@ -23,16 +23,16 @@
     <hr style="background-color: #6b4637;">
     <div class="item home" onclick="document.getElementById('add-formula').click()">
         <img src="{% static 'images/add_2.png' %}">
-        <a href="{% url 'formulas:add' %}" id="add-formula" target="_blank" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
+        <a href="{% url 'formulas:add' %}" id="add-formula" style="margin-left: 20px;"><strong>Agregar formula</strong></a>
     </div>
     <div class="item home">
         <img src="{% static 'images/delete_gray.png' %}" onclick="document.getElementById('delete-formula').click()">
-        <a href="#" id="delete-formula" target="_blank" style="margin-left: 20px;"><strong>Eliminar formula</strong></a>
+        <a href="#" id="delete-formula" tyle="margin-left: 20px;"><strong>Eliminar formula</strong></a>
     </div>
     <div class="item home" onclick="document.getElementById('list-formulas').click()">
         <img src="{% static 'images/list_formulas.png' %}">
         <a href="{% url 'formulas:index' %}" id="list-formulas" title="Myte source code" style="margin-left: 20px;"
-            target="_blank"><strong>Mis formulas</strong></a>
+            ><strong>Mis formulas</strong></a>
     </div>
 </div>
 {% endblock %}
@@ -40,7 +40,7 @@
 {% block nav %}
 <nav class="navbar home">
     <div class="item left" style="width: 5%; margin-left: 10px; ">
-        <svg title="Myte" style="width: 70px;"
+        <svg title="Myte" style="width: 70px;" class="logo"
             version="1.1" viewBox="0 0 190.5 186.8" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns4="http://www.iki.fi/pav/software/textext/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
             <defs></defs>
             <metadata>
@@ -147,20 +147,20 @@
         <div class="aug-options">
             {% if user.is_premium %}
                 {% if formula.images %}
-                <a href="{% url 'formulas:images' id_formula=formula.id %} " class="option yellow" target="_blank">Imagenes</a>
+                <a href="{% url 'formulas:images' id_formula=formula.id %} " class="option yellow" >Imagenes</a>
                 {% else %}
-                <a href="{% url 'formulas:add_image' id_formula=formula.id %} " class="option yellow" target="_blank">Agregar imagenes</a>
+                <a href="{% url 'formulas:add_image' id_formula=formula.id %} " class="option yellow" >Agregar imagenes</a>
                 {% endif %}
                 {% if formula.script %}
-                <a href="{% url 'formulas:script' id_formula=formula.id %}" class="option skin" target="_blank">Ejecutar script</a>
+                <a href="{% url 'formulas:script' id_formula=formula.id %}" class="option skin" >Ejecutar script</a>
                 {% else %}
-                <a href="{% url 'formulas:add_script' id_formula=formula.id %}" class="option skin" target="_blank">Añadir script</a>
+                <a href="{% url 'formulas:add_script' id_formula=formula.id %}" class="option skin" >Añadir script</a>
                 {% endif %}
             {% else %}
                 <a class="option" aria-disabled="true">Imagenes</a>
                 <a class="option" aria-disabled="true">Ejecutar script</a>
             {% endif %}
-            <a href="{% url 'formulas:edit' id_formula=formula.id %}" class="option green" target="_blank">Editar</a>
+            <a href="{% url 'formulas:edit' id_formula=formula.id %}" class="option green" >Editar</a>
             <a href="{% url 'formulas:delete' id_formula=formula.id %}" id="delete" class="option blue">Eliminar</a>
         </div>
     </div>
@@ -174,7 +174,7 @@
     <img src="{% static 'images/arrow.png' %}" style="width: 17px; height: 29px;">
 </div>
 <div class="expand-bar" id="add-formula" style="left: auto; right: 6%;">
-    <a href="{% url 'formulas:add' %}" target="_blank">
+    <a href="{% url 'formulas:add' %}" >
         <img src="{% static 'images/add.png' %}">
     </a>
 </div>

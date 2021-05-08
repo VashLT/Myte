@@ -8,7 +8,7 @@
 {% block main %}class="add-image"{% endblock %}
 
 {% block body %}
-<div class="c-add-view">
+<div class="c-add">
     <div class="render-box">
         <div class="header">
             <p id="f-header" style="color: #7c795d;" >$\text{ {{ formula.nombre }} }$</p>
@@ -18,7 +18,7 @@
             <p>$${{ formula.latex }}$$</p>
         </div>
     </div>
-    <div class="c-form" style="height: 400px; padding-bottom: 20px;">
+    <div class="c-form">
         <form method="POST" class="form" id="add-form" action="" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="myte-header">
@@ -46,19 +46,19 @@
                     <p>{{ image.name }}</p>
                 </div>
                 <img src="{{ image.url }}" title="{{ image.name }}" onclick="document.getElementById('ui{{ image.id }}').click()" />
-                <a class="hid" id="ui{{ image.id }}" href="{{ image.url }}" target="_blank"></a> {# ui -> uploaded image #}
+                <a class="hid" id="ui{{ image.id }}" href="{{ image.url }}"></a> {# ui -> uploaded image #}
             </div>            
             {% endfor %}
             </div>
         {% endif %}
-        <div class="c-input many" style="justify-content:space-evenly;">
+        <div class="c-input many" style="width: 80%;">
             <div class="c-input" id="submit-parent" style="width: 30%;">
                 <img
                     class="in-btn" 
                     src="{% static 'images/load_image.png' %}"
                     alt="Cargar imagenes al servidor" 
                     onclick="document.getElementById('load-img-btn').click()"/>
-                <button class="btn-submit orange" id="load-img-btn" name="completed" style="width: 100%;">Cargar</button>
+                <button class="btn-submit orange icon" id="load-img-btn" name="completed">Cargar</button>
             </div>
             <div class="c-input" id="submit-parent" style="width: 30%;">
                 {% if add_formula_is_active %}
@@ -67,14 +67,14 @@
                     src="{% static 'images/continue.png' %}"
                     alt="Continuar" 
                     onclick="document.getElementById('next-btn').click()"/>
-                <button class="btn-submit" id="next-btn" name="next" style="width: 100%;">Continuar</button>
+                <button class="btn-submit icon" id="next-btn" name="next">Continuar</button>
                 {% else %}
                 <img 
                     class="in-btn"
                     src="{% static 'images/add_script.png' %}"
                     alt="Agregar imagenes" 
                     onclick="document.getElementById('next-btn').click()"/>
-                <button class="btn-submit" id="next-btn" name="next" style="width: 100%;">Agregar</button>
+                <button class="btn-submit icon" id="next-btn" name="next">Agregar</button>
                 {% endif %}
             </div>
         </div>

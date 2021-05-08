@@ -34,10 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if ($stage.attr('value') === '1') {
         $nextBtn.text('Siguiente');
         $prevBtn.prop('disabled', true);
+        $prevBtn.parent().css('pointer-events', 'none');
     } else if ($stage.attr('value') === '2') {
         $nextBtn.text('Enviar');
         $prevBtn.prop('disabled', false);
-        $('#c-reg').css('height', '600px');
+        $prevBtn.parent().css('pointer-events', 'all');
+        // $('#c-reg').css('height', '600px');
     }
 
     $prevBtn.click(function () {

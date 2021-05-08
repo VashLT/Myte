@@ -6,7 +6,7 @@
 {% block main %}class="scripts"{% endblock %}
 
 {% block body %}
-<div class="c-add-view">
+<main class="c-add">
     <div class="render-box">
         <div class="header">
             <p id="formula-view">{{ formula.nombre }}</p>
@@ -47,7 +47,7 @@
             onclick="document.getElementById('to-home').click()"/>
         <a class="btn-submit yellow" href="{% url 'main:home' %}" id="to-home" style="width: 70%;">Home</a>
     </div>
-</div>
+</main>
 {% endblock %}
 
 {% block scripts %}

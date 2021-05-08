@@ -18,7 +18,7 @@
     {% endif %}
 </div>
 
-<div class="c-add-view">
+<div class="c-add">
     <div class="render-box">
         <div class="header">
         {% if formula.nombre %}
@@ -35,7 +35,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="c-form" style="height: 600px;">
+    <div class="c-form">
         <form method="POST" class="form" id="add-form" action="">
             {% csrf_token %}
             <div class="myte-header">
@@ -63,8 +63,7 @@
                     alt="Renderizar a LaTeX"
                     onclick = "document.getElementById('render-btn').click()"
                     />
-                <button class="btn-submit green" id="render-btn" name="render"
-                    style="width: 100%;">Renderizar</button>
+                <button class="btn-submit green icon" id="render-btn" name="render">Renderizar</button>
             </div>
             {% else %}
             <div class="c-input" style="flex-direction: column;">
@@ -75,21 +74,21 @@
             {% endif %}
         </form>
         <div class="c-input many" style="margin-top:30px; justify-content: space-evenly;">
-            <div class="c-input" style="width: 30%;margin-left: 40px;">
+            <div class="c-input" style="width: 30%;">
                 <img 
                     class="in-btn"
                     src="{% static 'images/return.png' %}"
                     alt="Continuar" 
                     onclick="document.getElementById('previous-btn').click()"/>
-                <button class="btn-submit orange" id="previous-btn" style="width: 100%;">Anterior</button>
+                <button class="btn-submit orange icon" id="previous-btn">Anterior</button>
             </div>
-            <div class="c-input" id="submit-parent" style="width: 30%; margin-right: 40px;">
+            <div class="c-input" id="submit-parent" style="width: 30%;">
                 <img 
                     class="in-btn"
                     src="{% static 'images/continue.png' %}"
                     alt="Continuar" 
                     onclick="document.getElementById('next-btn').click()"/>
-                <button class="btn-submit" id="next-btn" name="next" style="width: 100%;"></button>
+                <button class="btn-submit icon" id="next-btn" name="next"></button>
             </div>
         </div>
     </div>

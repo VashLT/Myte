@@ -5,6 +5,98 @@ textarea.invalid {
   background-color: #ffdddd;
 }
 
+button.icon,
+a.icon {
+  padding-left: 45px;
+}
+
+button {
+  &.yellow {
+
+    background-color: #ffb347;
+
+    &:hover {
+      background-color: #e9a342;
+    }
+  }
+
+  &.orange {
+    background-color: $myte-orange;
+
+    &:hover {
+      background-color: rgb(202, 120, 87);
+    }
+  }
+
+  &.green {
+
+    background-color: rgb(46, 136, 71);
+
+    &:hover {
+      background-color: rgb(32, 92, 49);
+    }
+  }
+
+  &.blue {
+
+    background-color: $myte-blue_b;
+
+    &:hover {
+      background-color: $myte-blue_b--hover;
+    }
+  }
+
+  &.purple {
+
+    background-color: rgb(132, 84, 230);
+
+    &:hover {
+      background-color: rgb(118, 75, 204);
+    }
+  }
+
+  &.gold {
+
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+      0 3px 6px rgba(110, 80, 20, 0.4),
+      inset 0 -2px 5px 1px rgba(139, 66, 8, 1),
+      inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
+    background-image: linear-gradient(160deg,
+        #a54e07,
+        #b47e11,
+        #fef1a2,
+        #bc881b,
+        #a54e07);
+    color: rgb(120, 50, 5);
+    text-shadow: 0 2px 2px rgba(250, 227, 133, 1);
+    transition: all 0.2s ease-in-out;
+    background-size: 100% 100%;
+    background-position: center;
+    border: 1px solid #a55d07;
+
+    &:hover,
+    &:focus {
+      background-size: 150% 150%;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+        0 6px 6px rgba(0, 0, 0, 0.23), inset 0 -2px 5px 1px #b17d10,
+        inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
+      border: 1px solid rgba(165, 93, 7, 0.6);
+      color: rgba(120, 50, 5, 0.8);
+    }
+  }
+}
+
+p.empty {
+  color: rgb(191, 191, 191);
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.disabled {
+  pointer-events: none;
+
+}
+
 // bars
 .sidebar {
   border-radius: 0 $btn-radius $btn-radius 0;
@@ -157,9 +249,12 @@ textarea.invalid {
   font-family: $font-home;
   z-index: 1;
   text-indent: 10px;
+
   width: 100%;
+  max-width: 100%;
   padding: 0;
   height: 40px;
+
   border: 1px solid #a2a2a2;
   border-radius: 0 $btn-radius $btn-radius 0;
 
@@ -170,10 +265,16 @@ textarea.invalid {
   }
 
   &-formula {
-    display: flex;
-    flex-direction: column;
+    @extend .c;
+
+    margin: 0;
+    padding: 0;
+
+    width: auto;
+    max-width: 100%;
 
     p {
+      align-self: flex-start;
       color: rgb(23, 23, 44);
       font-size: 20px;
       margin-bottom: 10px;
@@ -277,85 +378,15 @@ textarea.invalid {
     text-decoration: none;
     background-color: $myte-blue_b;
     margin-right: 0;
-    width: 40%;
+
+    width: auto;
+    min-width: 60%;
+
+    padding: 0 20px;
+
     height: 40px;
     font-size: 25px;
     color: #f2f2f2;
-
-    &.yellow {
-      @extend .btn-submit;
-      background-color: #ffb347;
-
-      &:hover {
-        background-color: #e9a342;
-      }
-    }
-
-    &.orange {
-      @extend .btn-submit;
-      background-color: $myte-orange;
-
-      &:hover {
-        background-color: rgb(202, 120, 87);
-      }
-    }
-
-    &.green {
-      @extend .btn-submit;
-      background-color: rgb(46, 136, 71);
-
-      &:hover {
-        background-color: rgb(32, 92, 49);
-      }
-    }
-
-    &.blue {
-      @extend .btn-submit;
-      background-color: $myte-blue_b;
-
-      &:hover {
-        background-color: $myte-blue_b--hover;
-      }
-    }
-
-    &.purple {
-      @extend .btn-submit;
-      background-color: rgb(132, 84, 230);
-
-      &:hover {
-        background-color: rgb(118, 75, 204);
-      }
-    }
-
-    &.gold {
-      @extend .btn-submit;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
-        0 3px 6px rgba(110, 80, 20, 0.4),
-        inset 0 -2px 5px 1px rgba(139, 66, 8, 1),
-        inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
-      background-image: linear-gradient(160deg,
-          #a54e07,
-          #b47e11,
-          #fef1a2,
-          #bc881b,
-          #a54e07);
-      color: rgb(120, 50, 5);
-      text-shadow: 0 2px 2px rgba(250, 227, 133, 1);
-      transition: all 0.2s ease-in-out;
-      background-size: 100% 100%;
-      background-position: center;
-      border: 1px solid #a55d07;
-
-      &:hover,
-      &:focus {
-        background-size: 150% 150%;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
-          0 6px 6px rgba(0, 0, 0, 0.23), inset 0 -2px 5px 1px #b17d10,
-          inset 0 -1px 1px 3px rgba(250, 227, 133, 1);
-        border: 1px solid rgba(165, 93, 7, 0.6);
-        color: rgba(120, 50, 5, 0.8);
-      }
-    }
   }
 
   &-link {
@@ -365,6 +396,8 @@ textarea.invalid {
     height: 100%;
     font-size: 25px;
     text-decoration: none;
+
+    transition: all 0.5s ease;
 
     &:hover {
       background-color: $myte-orange_b;
@@ -534,6 +567,8 @@ textarea.invalid {
 }
 
 .modal {
+  // pointer-events: all;
+
   &-formula {
     z-index: 10;
     display: none;

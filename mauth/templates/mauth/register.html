@@ -137,16 +137,16 @@
                         src="{% static 'images/return.png' %}"
                         alt="Continuar" 
                         onclick="document.getElementById('previous-btn').click()"/>
-                    <button class="btn-submit orange" id="previous-btn" style="width: 100%;">Anterior</button>
+                    <button class="btn-submit icon orange" id="previous-btn">Anterior</button>
                 </div>   
-                <div class="c-input" id="submit-parent" style="width: 40%;">
-                <img 
-                    class="in-btn"
-                    src="{% static 'images/continue.png' %}"
-                    alt="Continuar" 
-                    onclick="document.getElementById('next-btn').click()"/>
-                <button class="btn-submit" id="next-btn" name="next" style="width: 100%;">Siguiente</button>
-            </div>
+                    <div class="c-input" id="submit-parent" style="width: 40%;">
+                    <img 
+                        class="in-btn"
+                        src="{% static 'images/continue.png' %}"
+                        alt="Continuar" 
+                        onclick="document.getElementById('next-btn').click()"/>
+                    <button class="btn-submit icon" id="next-btn" name="next">Siguiente</button>
+                </div>
             </div>
         </form>
         <a href="{% url 'mauth:login' %}" class="link" style="margin-top: 30px; align-self: center">¿Ya tienes una cuenta?</a>
