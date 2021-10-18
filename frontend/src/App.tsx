@@ -1,20 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './static/sass/App.sass';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Home from './components/Pages/Home';
 import Dashboard from './components/Pages/Dashboard';
 import Login from './components/Pages/Login';
 import Register from './components/Pages/Register';
+import Profile from './components/Pages/Profile';
+import NotFound from './components/Pages/NotFound';
+import { AuthProvider, AuthContext } from './components/Contexts/Auth';
+import MyteThemeProvider from './components/Core/Theme/Theme';
 
-function App() {
+const App: React.FC = () => {
+  const { isAuth } = useContext(AuthContext);
   return (
-    <Router>
-      <Switch>
-        <Route exact path='/' component={Home}/>
-      </Switch>
-    </Router>
+    <AuthProvider>
+      <MyteThemeProvider>
+        <Router>
+          <Switch>
+            <Route exact path='/' render={() => {
+              return isAuth ? <Dashboard /> : <Home />
+            }} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
+            <Route
+              path='/:username([A-Za-z0-9]+)'
+              render={({ match }) => match.params.username ? <Profile /> : <NotFound />}
+            />
+            <Route path='/' component={NotFound} />
+          </Switch>
+        </Router>
+      </MyteThemeProvider>
+    </AuthProvider>
   );
 }
 
