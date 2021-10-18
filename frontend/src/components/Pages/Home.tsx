@@ -1,22 +1,27 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { ThemeContext } from '../Core/Theme/Theme';
 import React, { useContext } from 'react';
+import Page from './Page';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme: any) => ({
+    hero: {
+        minHeight: '100vh',
+        backgroundImage: 'url(https://i.imgur.com/ip6P7lU.png)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover'
+    }
+}));
 
 export const Home: React.FC = () => {
-    const { isDark, setIsDark } = useContext(ThemeContext)
-
-    const toggleTheme = () => {
-        if (isDark) {
-            setIsDark(false)
-        } else {
-            setIsDark(true)
-        }
-    }
-
+    const classes = useStyles();
     return (
-        <div>
-            <Button onClick={toggleTheme}>This is a button</Button>
-        </div>
+        <Page className={classes.hero} withNav={true}>
+            <Typography variant='h1'>
+                All your formulas in one place
+            </Typography>
+            <div id="_overlay"></div>
+        </Page>
     );
 }
 
