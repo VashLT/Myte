@@ -13,7 +13,7 @@ import Myte from '../../static/images/logo.png';
 
 const useStyles = makeStyles((theme: Theme) => ({
     content: {
-        margin: '30px 0px 40px 0px',
+        margin: '50px 0px 40px 0px',
         display: "flex",
         flexDirection: "column",
         alignItems: "center"
@@ -40,8 +40,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const SignUp: React.FC = () => {
     const classes = useStyles();
-
-
 
     return (
         <>

@@ -12,11 +12,16 @@ import { Toggle as ThemeToggle } from '../Theme/Toggle';
 import { Collapse, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Logo from '../Myte/Logo';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
     hamburger: {
         color: '#fff',
         fontSize: '1rem'
+    },
+    itemBtn: {
+        textDecoration: 'none',
+        color: 'white'
     }
 }));
 
@@ -27,7 +32,9 @@ export const Navbar: React.FC = () => {
             <AppBar position="sticky">
                 <Toolbar>
                     <Logo />
-                    <Button color="inherit">Login</Button>
+                    <Button>
+                        <Link to="/login" className={classes.itemBtn}>Login</Link>
+                    </Button>
                     <ThemeToggle />
 
                     <IconButton

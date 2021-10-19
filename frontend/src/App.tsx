@@ -13,28 +13,35 @@ import MyteThemeProvider from './components/Core/Theme/Theme';
 import { Redirect } from 'react-router';
 
 const App: React.FC = () => {
-  const { isAuth } = useContext(AuthContext);
   return (
     <AuthProvider>
       <MyteThemeProvider>
-        <Router>
-          <Switch>
-            <Route exact path='/' render={() => {
-              return isAuth ? <Dashboard /> : <Home />
-            }} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/register' render={() => <Redirect to="/signup" />} />
-            <Route exact path='/signup' component={SignUp} />
-            <Route
-              path='/:username([A-Za-z0-9]+)'
-              render={({ match }) => match.params.username ? <Profile /> : <NotFound />}
-            />
-            <Route path='/' component={NotFound} />
-          </Switch>
-        </Router>
+        <AppRouter />
       </MyteThemeProvider>
     </AuthProvider>
   );
+}
+
+const AppRouter: React.FC = () => {
+  const { isAuth, auth } = useContext(AuthContext);
+  console.log("AppRouter", { isAuth, auth })
+  return (
+    <Router>
+      <Switch>
+        <Route exact path='/' render={() => {
+          return isAuth ? <Dashboard /> : <Home />
+        }} />
+        <Route exact path='/login' render={() => isAuth ? <Redirect to="/" /> : <Login />} />
+        <Route exact path='/register' render={() => <Redirect to="/signup" />} />
+        <Route exact path='/signup' render={() => isAuth ? <Redirect to="/" /> : <SignUp />} />
+        <Route
+          path='/:username([A-Za-z0-9]+)'
+          render={({ match }) => match.params.username ? <Profile /> : <NotFound />}
+        />
+        <Route path='/' component={NotFound} />
+      </Switch>
+    </Router>
+  )
 }
 
 export default App;

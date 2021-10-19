@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,6 +13,12 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import axios from 'axios';
+import { render, unmountComponentAtNode } from 'react-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import Alert from '../Core/Alerts/Alert';
+import { Redirect } from 'react-router';
+
+import Myte from '../../static/images/logo.png';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -24,15 +28,35 @@ const useStyles = makeStyles((theme: Theme) => ({
         transform: 'translate(-50%, -50%)',
         border: '1px solid lightgray',
         borderRadius: '4px',
-        boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;'
-    }
+        boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;',
+        // maxWidth: '98vw'
+    },
+    wrapper: {
+        minWidth: '100vw',
+        minHeight: '100vh',
+        margin: '0'
+    },
+    iconContainer: {
+        position: 'relative',
+        margin: '0px',
+    },
+    avatar: {
+        position: 'absolute',
+        left: '70%',
+        bottom: '5%',
+        background: 'linear-gradient(top, rgba(255, 255, 255, .15), rgba(0, 0, 0, .25)), linear-gradient(left top, rgba(255, 255, 255, 0), rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0)) !important'
+    },
 }));
 
 export const Login = () => {
-    const styles = useStyles();
+    const [emailState, setEmailState] = useState<InputState>("initial");
+    const [passwordState, setPasswordState] = useState<InputState>("initial");
+
+    const classes = useStyles();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const alertContainer = document.getElementById("_overlay") as HTMLDivElement;
         // eslint-disable-next-line no-console
 
         // axios
@@ -42,17 +66,47 @@ export const Login = () => {
         //     })
         //     .then(res => {
         //         console.log(res)
+
+        //         if ("success" in res) {
+        //             return <Redirect to="/" />;
+        //         } else if ("failure" in res) {
+        //             unmountComponentAtNode(alertContainer);
+        //             render(
+        //                 <Alert type="error" text="Username or password are not valid" />,
+        //                 alertContainer
+        //             )
+        //         } else {
+        //             unmountComponentAtNode(alertContainer);
+        //             render(
+        //                 <Alert type="error" text="Internal error" />,
+        //                 alertContainer
+        //             )
+        //         }
+        //         setEmailState(false);
+        //         setPasswordState(false);
+        //     })
+        //     .catch(err => {
+        //         console.error(err);
+
+        //         unmountComponentAtNode(alertContainer);
+        //         render(
+        //             <Alert type="error" text="Internal error" />,
+        //             alertContainer
+        //         )
         //     })
 
         console.log({
             email: data.get('email'),
             password: data.get('password'),
         });
+
+        setEmailState(false);
+        setPasswordState(false);
     };
 
     return (
-        <>
-            <Container className={styles.container} component="main" maxWidth="xs">
+        <div className={classes.wrapper}>
+            <Container className={classes.container} component="main" maxWidth="xs">
                 <Box
                     sx={{
                         marginTop: 8,
@@ -61,9 +115,14 @@ export const Login = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
+                    <div className={classes.iconContainer}>
+                        <img src={Myte} alt="myte" style={{ height: '100px' }} />
+                        <Avatar className={classes.avatar} sx={{
+                            position: 'absolute'
+                        }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                    </div>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
@@ -73,10 +132,12 @@ export const Login = () => {
                             required
                             fullWidth
                             id="email"
-                            label="Email Address"
+                            label="Email or Username"
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            helperText={emailState === false ? "check your username" : ""}
+                            error={emailState === false ? true : false}
                         />
                         <TextField
                             margin="normal"
@@ -87,6 +148,8 @@ export const Login = () => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            helperText={passwordState === false ? "check your password" : ""}
+                            error={passwordState === false ? true : false}
                         />
                         <Button
                             type="submit"
@@ -103,9 +166,11 @@ export const Login = () => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="/signup" variant="body2">
-                                    {"Don't have an account?"}
-                                </Link>
+                                <RouterLink to="/signup">
+                                    <Link href="#" variant="body2">
+                                        {"Don't have an account?"}
+                                    </Link>
+                                </RouterLink>
                             </Grid>
                         </Grid>
                     </Box>
@@ -113,7 +178,7 @@ export const Login = () => {
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
             <div id="_overlay"></div>
-        </>
+        </div>
     );
 }
 
