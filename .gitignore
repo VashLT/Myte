@@ -1,7 +1,7 @@
 # Myte
 static/CACHE
 .webasssets-cache/
-settings.py
+# settings.py
 /media
 # Byte-compiled / optimized / DLL files
 __pycache__/
