@@ -4,7 +4,6 @@ import React from 'react';
 import Navbar from '../Core/Navbar/Navbar';
 
 export const Page: React.FC<PageProps> = ({ children, id, className, withNav, ...props }) => {
-    console.log(withNav)
     return (
         <div className={className ? className : ""} {...props}>
             <CssBaseline />
