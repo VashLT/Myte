@@ -19,6 +19,10 @@ type AlertProps = IntrinsicProps & {
     caption?: string;
 }
 
+interface SidePanelHeaderProps {
+    panelIsOpen?: boolean;
+    toggleCallback: () => void;
+}
 
 // interfaces
 interface Iauth {
