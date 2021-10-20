@@ -45,12 +45,8 @@ export const SidePanel: React.FC = () => {
     const isOpen = panelWidth > PANEL_MIN_WIDTH;
     const classes = useStyles();
 
-    console.log({ panelWidth, showPanel, isOpen })
-
     const handleToggle = useCallback((inMobile = false) => {
-        console.log({ inMobile })
         if (!inMobile) {
-            console.log("in mobile", isOpen ? PANEL_MIN_WIDTH : PANEL_MAX_WIDTH)
             setPanelWidth(isOpen ? PANEL_MIN_WIDTH : PANEL_MAX_WIDTH)
         }
         setShowPanel(!showPanel);
@@ -60,7 +56,8 @@ export const SidePanel: React.FC = () => {
     return (
         <Box
             component="nav"
-            sx={{ width: { sm: panelWidth }, flexShrink: { sm: 0 } }}
+            // width: {sm: panelWidth}
+            sx={{ width: panelWidth, flexShrink: { sm: 0 } }}
             aria-label="mailbox folders"
         >
             {/* Side panel for mobiles */}
@@ -78,7 +75,7 @@ export const SidePanel: React.FC = () => {
                 }}
             >
                 <Header panelIsOpen={isOpen} toggleCallback={() => handleToggle(true)} />
-                <Items panelIsOpen={true} />
+                <Items panelIsOpen={true} inMobile={true} />
             </Drawer>
             {/* Side panel for greater screens */}
             <Drawer

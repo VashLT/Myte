@@ -29,7 +29,7 @@ export const Navbar: React.FC = () => {
     const classes = useStyles();
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="sticky">
+            <AppBar position="fixed">
                 <Toolbar>
                     <Logo />
                     <Button>

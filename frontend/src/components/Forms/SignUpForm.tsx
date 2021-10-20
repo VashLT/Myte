@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react';
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 
@@ -141,17 +140,6 @@ export const SignUpForm: React.FC = () => {
                             onBlur={checkUsername}
                         />
                     </Grid>
-                    {/* <Grid item xs={12} sm={6}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="lname"
-                                />
-                            </Grid> */}
                     <Grid item xs={12}>
                         <TextField
                             variant="outlined"

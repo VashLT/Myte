@@ -5,16 +5,17 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import { useTheme } from '@mui/material';
 import { ThemeContext } from './Theme';
+import { storeTheme } from '../../../utils/storage';
 
 export const Toggle: React.FC = () => {
     const theme = useTheme();
     const { isDark, setIsDark } = useContext(ThemeContext);
 
     const toggleTheme = () => {
-        setIsDark(isDark === true ? false : true)
+        setIsDark(!isDark);
+        storeTheme(isDark ? "light" : "dark");
     }
 
-    console.log(theme.palette.mode)
     return (
         <IconButton onClick={toggleTheme}>
             {

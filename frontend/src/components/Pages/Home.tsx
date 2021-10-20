@@ -1,6 +1,5 @@
-import { Button, Typography } from '@mui/material';
-import { ThemeContext } from '../Core/Theme/Theme';
-import React, { useContext } from 'react';
+import { Typography } from '@mui/material';
+import React from 'react';
 import Page from './Page';
 import { makeStyles } from '@mui/styles';
 

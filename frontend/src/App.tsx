@@ -6,6 +6,7 @@ import Dashboard from './components/Pages/Dashboard';
 import Login from './components/Pages/Login';
 import SignUp from './components/Pages/SignUp';
 import Profile from './components/Pages/Profile';
+import Test from './components/Pages/Test';
 import NotFound from './components/Pages/NotFound';
 import { AuthProvider, AuthContext } from './components/Contexts/Auth';
 import MyteThemeProvider from './components/Core/Theme/Theme';
@@ -37,6 +38,7 @@ const AppRouter: React.FC = () => {
         <Route exact path='/login' render={() => isAuth ? <Redirect to="/" /> : <Login />} />
         <Route exact path='/register' render={() => <Redirect to="/signup" />} />
         <Route exact path='/signup' render={() => isAuth ? <Redirect to="/" /> : <SignUp />} />
+        <Route exact path='/test' component={Test} />
         <Route
           path='/:username([A-Za-z0-9]+)'
           render={({ match }) => match.params.username ? <Profile /> : <NotFound />}

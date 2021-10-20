@@ -1,5 +1,4 @@
 import { CssBaseline } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import React from 'react';
 import Navbar from '../Core/Navbar/Navbar';
 

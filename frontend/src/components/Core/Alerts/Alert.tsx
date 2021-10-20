@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         top: '0px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '100%'
+        width: '100%',
+        zIndex: 9999
     }
 }));
 export const Alert: React.FC<AlertProps> = ({ type, text, title, caption }) => {

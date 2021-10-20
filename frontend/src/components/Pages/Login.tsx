@@ -13,12 +13,12 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import axios from 'axios';
-import { render, unmountComponentAtNode } from 'react-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import Alert from '../Core/Alerts/Alert';
 import { Redirect } from 'react-router';
 
 import Myte from '../../static/images/logo.png';
+import { renderAt } from '../../utils/components';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         border: '1px solid lightgray',
         borderRadius: '4px',
         boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;',
-        // maxWidth: '98vw'
     },
     wrapper: {
         minWidth: '100vw',
@@ -56,44 +55,33 @@ export const Login = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const alertContainer = document.getElementById("_overlay") as HTMLDivElement;
-        // eslint-disable-next-line no-console
 
-        // axios
-        //     .post('/api/login', {
-        //         email: data.get('email'),
-        //         password: data.get('password')
-        //     })
-        //     .then(res => {
-        //         console.log(res)
+        axios
+            .post('/api/login', {
+                email: data.get('email'),
+                password: data.get('password')
+            })
+            .then(res => {
+                console.log(res)
 
-        //         if ("success" in res) {
-        //             return <Redirect to="/" />;
-        //         } else if ("failure" in res) {
-        //             unmountComponentAtNode(alertContainer);
-        //             render(
-        //                 <Alert type="error" text="Username or password are not valid" />,
-        //                 alertContainer
-        //             )
-        //         } else {
-        //             unmountComponentAtNode(alertContainer);
-        //             render(
-        //                 <Alert type="error" text="Internal error" />,
-        //                 alertContainer
-        //             )
-        //         }
-        //         setEmailState(false);
-        //         setPasswordState(false);
-        //     })
-        //     .catch(err => {
-        //         console.error(err);
+                if ("success" in res) {
+                    return <Redirect to="/" />;
+                } else if ("failure" in res) {
+                    renderAt(
+                        <Alert type="error" text="Username or password are not valid" />,
+                        "_overlay"
+                    )
+                } else {
+                    renderAt(<Alert type="error" text="Internal error" />, "_overlay")
+                }
+                setEmailState(false);
+                setPasswordState(false);
+            })
+            .catch(err => {
+                console.error(err);
 
-        //         unmountComponentAtNode(alertContainer);
-        //         render(
-        //             <Alert type="error" text="Internal error" />,
-        //             alertContainer
-        //         )
-        //     })
+                renderAt(<Alert type="error" text={String(err)} />, "_overlay")
+            })
 
         console.log({
             email: data.get('email'),

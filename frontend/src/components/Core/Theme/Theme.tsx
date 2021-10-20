@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { red, blue, indigo } from '@mui/material/colors';
-
+import { COLORS } from "../../../utils/constants";
+import { getTheme } from "../../../utils/storage";
 
 export const ThemeContext = React.createContext({
     isDark: true,
@@ -9,20 +9,20 @@ export const ThemeContext = React.createContext({
 })
 
 const MyteThemeProvider: React.FC = ({ children }) => {
-    // TODO: retrieve theme from localstorage
-    const [isDark, setIsDark] = useState(false);
+    const themeMode = getTheme();
+    const [isDark, setIsDark] = useState(themeMode === "dark");
 
     const theme = useMemo(() => {
         return createTheme({
             palette: {
-                mode: isDark ? "dark" : "light",
+                mode: themeMode,
                 primary: {
-                    main: indigo[500]
+                    main: COLORS.blue
                 }
             }
 
         })
-    }, [isDark])
+    }, [themeMode])
 
     console.log("Rendering: ", { isDark })
 

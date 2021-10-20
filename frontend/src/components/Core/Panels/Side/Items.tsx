@@ -1,8 +1,11 @@
-import { AddCircle, Category, Label } from '@mui/icons-material';
+import { AccountCircle, AddCircle, Category, Label, Logout } from '@mui/icons-material';
 import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../Contexts/Auth';
 
-export const Items: React.FC<{ panelIsOpen: boolean }> = ({ panelIsOpen }) => {
+export const Items: React.FC<{ panelIsOpen: boolean, inMobile?: boolean }> = ({ panelIsOpen, inMobile }) => {
+    const { username } = useContext(AuthContext).auth;
     return (
         <div>
             <ListItem button>
@@ -23,6 +26,27 @@ export const Items: React.FC<{ panelIsOpen: boolean }> = ({ panelIsOpen }) => {
                 </ListItemIcon>
                 {panelIsOpen ? <ListItemText primary="Add Label" /> : <></>}
             </ListItem>
+            {
+                inMobile ? <>
+                    <ListItem button component={Link} to={`/${username}`}>
+                        <ListItemIcon>
+                            <AccountCircle />
+                        </ListItemIcon>
+                        <ListItemText primary="Profile" />
+                    </ListItem>
+                    <ListItem
+                        button
+                        sx={{ mt: 'auto' }}
+                        component={Link}
+                        to='/logout'
+                    >
+                        <ListItemIcon>
+                            <Logout />
+                        </ListItemIcon>
+                        <ListItemText primary="Logout" />
+                    </ListItem>
+                </> : <></>
+            }
         </div>
     );
 }

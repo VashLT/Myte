@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { makeStyles } from '@mui/styles';
 import { Card, CardActions, CardContent, CardHeader, IconButton, Menu, MenuItem, Theme } from '@mui/material';
@@ -6,13 +6,21 @@ import { MathJax } from 'better-react-mathjax';
 import { Delete, Edit, MoreVert } from '@mui/icons-material';
 import LatexProvider from '../../Contexts/Latex';
 import Tags from './Tags';
+import { render, unmountComponentAtNode } from 'react-dom';
+import DeleteDialog from './DeleteDialog';
+import FormulaContext, { FormulaProvider } from '../../Contexts/Formula';
+import { renderAt } from '../../../utils/components';
+import EditMenu from './EditMenu';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
-        position: 'relative'
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column'
     },
     formulaBody: {
-        minWidth: '300px'
+        width: '280px',
+        alignSelf: 'center'
     },
     options: {
         position: 'absolute',
@@ -21,8 +29,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export const Formula: React.FC<FormulaProps> = ({ title, latexCode, addedAt, tags, ...props }) => {
+export const FormulaWrapper: React.FC<FormulaProps> = (props) => {
+    const { id, title, latexCode, tags } = props;
+    return (
+        <FormulaProvider formula={props}>
+            <Formula />
+        </FormulaProvider>
+    )
+}
+
+export const Formula: React.FC = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const classes = useStyles();
+
+    const { formula } = useContext(FormulaContext);
+    if (Object.keys(formula).length === 0) {
+        return <></>
+    }
+    const { id, title, latexCode, addedAt, tags } = formula as Iformula;
 
     const open = Boolean(anchorEl);
     const handleMoreClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -30,12 +54,12 @@ export const Formula: React.FC<FormulaProps> = ({ title, latexCode, addedAt, tag
     };
     const handleClose = () => { setAnchorEl(null) };
 
-    const classes = useStyles();
     return (
         <LatexProvider>
             <Card
                 className={classes.container}
                 sx={{ maxWidth: 345 }}
+                id={String(id)}
             >
                 <CardHeader
                     action={
@@ -60,11 +84,23 @@ export const Formula: React.FC<FormulaProps> = ({ title, latexCode, addedAt, tag
                     }
                 </CardActions>
             </Card>
+            <div id={"_fO" + id}></div>
         </LatexProvider>
     );
 }
 
 const FormulaMenu: React.FC<FormulaMenuProps> = ({ anchorEl, open, handleClose }) => {
+    const context = useContext(FormulaContext);
+    const containerId = "_fO" + (context.formula as Iformula).id;
+    const showEditMenu = () => {
+        if (Object.keys(context.formula).length === 0) return;
+
+        renderAt(<EditMenu context={context} />, containerId);
+    }
+    const showDeleteMenu = () => {
+        if (Object.keys(context.formula).length === 0) return;
+        renderAt(<EditMenu context={context} />, containerId)
+    }
     return (
         <Menu
             anchorEl={anchorEl}
@@ -100,14 +136,15 @@ const FormulaMenu: React.FC<FormulaMenuProps> = ({ anchorEl, open, handleClose }
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-            <MenuItem onClick={() => console.log("editing formula ...")}>
+            <MenuItem onClick={showEditMenu}>
                 <Edit /> Edit
             </MenuItem>
-            <MenuItem onClick={() => console.log("deleting formula ...")}>
+            <MenuItem onClick={showDeleteMenu}>
                 <Delete /> Delete
             </MenuItem>
-        </Menu>
+        </Menu >
     )
 }
 
-export default Formula;
+
+export default FormulaWrapper;
