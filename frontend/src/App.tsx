@@ -11,13 +11,16 @@ import { AuthProvider, AuthContext } from './components/Contexts/Auth';
 import MyteThemeProvider from './components/Core/Theme/Theme';
 
 import { Redirect } from 'react-router';
+import LatexProvider from './components/Contexts/Latex';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <MyteThemeProvider>
-        <AppRouter />
-      </MyteThemeProvider>
+      <LatexProvider>
+        <MyteThemeProvider>
+          <AppRouter />
+        </MyteThemeProvider>
+      </LatexProvider>
     </AuthProvider>
   );
 }

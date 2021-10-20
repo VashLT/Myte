@@ -9,9 +9,11 @@ export const Dashboard: React.FC = () => {
     return (
         <SidePanelProvider>
             <Box sx={{ display: 'flex' }}>
-                <TopPanel />
                 <SidePanel />
-                <WorkArea />
+                <div>
+                    <TopPanel />
+                    <WorkArea />
+                </div>
             </Box>
         </SidePanelProvider>
     );

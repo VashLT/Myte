@@ -24,11 +24,45 @@ interface SidePanelHeaderProps {
     toggleCallback: () => void;
 }
 
+type FormulaProps = Iformula;
+
+interface FormulaMenuProps {
+    anchorEl: null | HTMLElement;
+    open: boolean;
+    handleClose: () => void;
+}
+
 // interfaces
+interface Iuser {
+    id: number;
+    username: string;
+    name: string;
+    email: string;
+    avatarUrl: string;
+    registeredAt: string;
+}
+
 interface Iauth {
     username: string;
     avatarUrl: string;
     email: string;
+}
+
+interface Iformula {
+    id: number;
+    addedAt: string;
+    tags: string[];
+    title: string;
+    latexCode: string;
+    images: Iimage[];
+    isDeleted: boolean;
+}
+
+interface Iimage {
+    id: number;
+    date: string;
+    url: string;
+    title: string;
 }
 
 // types

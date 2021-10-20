@@ -18,7 +18,7 @@ export const Toggle: React.FC = () => {
     return (
         <IconButton onClick={toggleTheme}>
             {
-                theme.palette.mode === "light" ? <Brightness7Icon />
+                theme.palette.mode === "light" ? <Brightness7Icon style={{ color: 'white' }} />
                     : <Brightness4Icon />
 
             }
