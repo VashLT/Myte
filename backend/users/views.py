@@ -3,6 +3,8 @@ from django.utils.decorators import method_decorator
 
 from django.views import View
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import authenticate, login
+
 
 from django.contrib.auth.models import User, Group
 
@@ -63,3 +65,36 @@ class RegisterUser(View):
             }
 
         return JsonResponse(response)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class LoginUser(View):
+
+    def get(self, request):
+        username = 'Jose'
+        password = 'root'
+
+        return JsonResponse(self.login_user(request, username, password))
+    
+    def post(self, request):
+        username = request.headers['username']
+        password = request.headers['password']
+        
+        return JsonResponse(self.login_user(request, username, password))
+
+    def login_user(self, request, username, password):
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            response = {
+                'info': 'success validation',
+                'success': 'whatever',
+                }
+
+        else:
+            response = {
+                'info': 'password or username are not valid',
+                'failure': 'whatever',
+                }
+
+        return response

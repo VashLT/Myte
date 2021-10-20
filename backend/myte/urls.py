@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 import users.views
+import maths.views
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -26,4 +27,6 @@ urlpatterns = [
     # REST
     path('api/auth', users.views.CheckAuth.as_view()),
     path('api/user/register/', users.views.RegisterUser.as_view()),
+    path('api/user/login/', users.views.LoginUser.as_view()),
+    path('example/', maths.views.CreateFormula.as_view()),
 ]
