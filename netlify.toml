@@ -1,7 +1,7 @@
 [build]
 base = "/frontend"
-publish = "fixtures/dom/build"
-command = "npm run build --type=UMD_DEV && cd fixtures/dom/ && npm && npm prestart && npm build"
+publish = "/build"
+command = "npm run build"
 
 [[redirects]]
 from = "/*"
