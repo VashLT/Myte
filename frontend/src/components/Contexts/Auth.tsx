@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-// import axios from 'axios';
+import axios from 'axios';
 
 export const AuthContext = React.createContext({
     auth: {} as Iauth,
@@ -17,18 +17,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     const [auth, setAuth] = useState<Iauth>({} as Iauth);
 
     const getAuth = useCallback(async () => {
-        // const auth = await axios
-        //     .get('/api/auth')
-        //     .then(res => {
-        //         if ("error" in res) {
-        //             return {}
-        //         }
-        //         return res.data;
-        //     })
-        //     .catch(err => console.error(err))
+        const auth = await axios.get('/api/auth')
+            .then(res => {
+                if ("error" in res) {
+                    return {}
+                }
+                return res.data;
+            })
+            .catch(err => console.error(err))
 
-        // setAuth(auth as Iauth);
-        setAuth(mockAuth)
+        setAuth({} as Iauth);
+        // setAuth(mockAuth)
     }, [setAuth])
 
     useEffect(() => {
@@ -38,7 +37,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     return (
         <AuthContext.Provider value={{
             auth,
-            isAuth: false ? Object.keys(auth).length === 0 : true,
+            isAuth: Object.keys(auth).length > 0,
             setAuth
         }}>
             {children}

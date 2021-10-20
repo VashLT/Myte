@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
 import { makeStyles } from '@mui/styles';
-import { Box, IconButton, TextField, Theme } from '@mui/material';
+import { Box, IconButton, InputBase, Paper, TextField, Theme } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -20,50 +21,37 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const SearchBar: React.FC = () => {
     const classes = useStyles();
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [search, setSearch] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const search = (e: React.FormEvent) => {
+    const searchFormulas = (e: React.FormEvent) => {
         const input = e.currentTarget as HTMLInputElement;
         console.log(`searching '${input.value}' ...`)
-        if (input.value === "") {
-            setIsExpanded(false)
-        }
-    }
+        if (input.value === search) return;
 
-    const toggleExpand = (e: React.FormEvent) => {
-        const input = e.currentTarget as HTMLInputElement;
-        if (isExpanded && input.value === "") {
-            setIsExpanded(false)
-        } else if (isExpanded) {
-            console.log("is already expanded")
-            return
-        }
 
     }
 
     return (
-        <Box
+        <Paper
+            component="form"
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
             className={classes.container}
-            sx={{
-                width: "auto",
-                backgroundColor: 'red'
-            }}
         >
-            <IconButton>
-                <Search className={classes.searchIcon} />
+            <IconButton sx={{ p: '10px' }} aria-label="menu">
+                <Search />
             </IconButton>
-            <TextField
-                variant="outlined"
-                sx={{
-                    transform: isExpanded ? "scaleX(1)" : "scaleX(0)"
-                }}
-                name="search"
-                id="search"
-                label={isExpanded ? "Search ..." : ""}
-                onBlur={search}
-                onClick={toggleExpand}
+            <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Search "
+                inputProps={{ 'aria-label': 'search' }}
+                defaultValue={search}
+                onBlur={searchFormulas}
             />
-        </Box>
+            {/* {
+                isLoading ? 
+            } */}
+        </Paper>
     );
 }
 

@@ -56,11 +56,10 @@ export const Login = () => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        axios
-            .post('/api/login', {
-                email: data.get('email'),
-                password: data.get('password')
-            })
+        axios.post('http://localhost:8000/api/user/login', {
+            email: data.get('email'),
+            password: data.get('password')
+        })
             .then(res => {
                 console.log(res)
 
@@ -174,7 +173,7 @@ const Copyright = (props: any) => {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
+            <Link color="inherit" href="/">
                 Myte
             </Link>{' '}
             {new Date().getFullYear()}
