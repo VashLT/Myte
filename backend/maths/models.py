@@ -3,13 +3,16 @@ from djongo.models.fields import ArrayField
 from django import forms
 
 class Image(models.Model):
+    _id = models.ObjectIdField()
     id_image = models.IntegerField()
     added_at = models.DateTimeField()
     url = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
 
-    class Meta:
-        abstract = True
+    objects = models.DjongoManager()
+
+    # class Meta:
+    #     abstract = True
 
 class ImageForm(forms.ModelForm):
 
@@ -33,7 +36,7 @@ class StringObjectForm(forms.ModelForm):
             'content',
         )
 
-class Formulas(models.Model):
+class Formula(models.Model):
     id_formula = models.IntegerField()
     added_at = models.DateTimeField()
     tags = ArrayField(

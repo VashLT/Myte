@@ -86,9 +86,15 @@ class LoginUser(View):
 
         if user is not None:
             login(request, user)
-            response = {'result': 'Success'}
+            response = {
+                'info': 'success validation',
+                'success': 'whatever',
+                }
 
         else:
-            response = {'result': 'Username already exists'}
+            response = {
+                'info': 'password or username are not valid',
+                'failure': 'whatever',
+                }
 
         return response
