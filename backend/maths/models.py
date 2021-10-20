@@ -3,11 +3,10 @@ from djongo.models.fields import ArrayField
 from django import forms
 
 class Image(models.Model):
-
-    id_image = models.AutoField(primary_key=True)
+    id_image = models.IntegerField()
     added_at = models.DateTimeField()
-    url = models.CharField()
-    title = models.CharField()
+    url = models.CharField(max_length=200)
+    title = models.CharField(max_length=200)
 
     class Meta:
         abstract = True
@@ -20,18 +19,33 @@ class ImageForm(forms.ModelForm):
             'id_image', 'added_at', 'url', 'title'
         )
 
-class Formulas(models.Model):
+class StringObject(models.Model):
+    content = models.CharField(max_length=50)
 
-    id_formula = models.AutoField(primary_key=True)
+    class Meta:
+        abstract = True
+
+class StringObjectForm(forms.ModelForm):
+
+    class Meta:
+        model = StringObject
+        fields = (
+            'content',
+        )
+
+class Formulas(models.Model):
+    id_formula = models.IntegerField()
     added_at = models.DateTimeField()
-    tags = models.ArrayField(
-        model_container=models.CharField, #type:ignore
+    tags = ArrayField(
+        model_container=StringObject, #type:ignore
+        model_form_class=StringObjectForm, #type:ignore
     )
+    # tags = ArrayField(models.CharField(max_length=10, blank=True),size=8)
     title = models.TextField()
-    latex_code = models.CharField()
-    images = models.ArrayField(
+    latex_code = models.CharField(max_length=200)
+    images = ArrayField(
         model_container=Image,
         model_form_class=ImageForm
     )
     is_deleted = models.BooleanField()
-    category = models.CharField()
+    category = models.CharField(max_length=200)

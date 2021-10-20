@@ -26,4 +26,5 @@ urlpatterns = [
     # REST
     path('api/auth', users.views.CheckAuth.as_view()),
     path('api/user/register/', users.views.RegisterUser.as_view()),
+    path('api/user/login/', users.views.LoginUser.as_view()),
 ]
