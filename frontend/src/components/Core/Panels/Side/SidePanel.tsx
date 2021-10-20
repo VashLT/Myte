@@ -1,12 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { AppBar, Box, Button, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
+import React, { useCallback, useContext} from 'react';
+import { Box, Divider, Drawer} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/system';
 import Items from './Items';
 import SidePanelContext from '../../../Contexts/SidePanel';
 
 
-import Myte from '../../../../static/images/logo.png';
 import { PANEL_MAX_WIDTH, PANEL_MIN_WIDTH } from '../../../Contexts/SidePanel';
 import Header from './Header';
 

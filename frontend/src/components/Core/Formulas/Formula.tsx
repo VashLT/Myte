@@ -6,8 +6,6 @@ import { MathJax } from 'better-react-mathjax';
 import { Delete, Edit, MoreVert } from '@mui/icons-material';
 import LatexProvider from '../../Contexts/Latex';
 import Tags from './Tags';
-import { render, unmountComponentAtNode } from 'react-dom';
-import DeleteDialog from './DeleteDialog';
 import FormulaContext, { FormulaProvider } from '../../Contexts/Formula';
 import { renderAt } from '../../../utils/components';
 import EditMenu from './EditMenu';
@@ -30,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const FormulaWrapper: React.FC<FormulaProps> = (props) => {
-    const { id, title, latexCode, tags } = props;
     return (
         <FormulaProvider formula={props}>
             <Formula />

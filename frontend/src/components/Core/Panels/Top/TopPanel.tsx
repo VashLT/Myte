@@ -41,7 +41,7 @@ export const TopPanel: React.FC = () => {
                     >
                         <Menu />
                     </IconButton>
-                    {/* <SearchBar /> */}
+                    <SearchBar />
                     <ThemeToggle />
                 </Toolbar>
             </AppBar>

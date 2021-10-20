@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 
 import { makeStyles } from '@mui/styles';
-import { Box, Chip, Dialog, TextField, Theme } from '@mui/material';
+import { Box, Dialog, TextField, Theme } from '@mui/material';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import ListItem from '@mui/material/ListItem';
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) => {
-    const { formula, setFormula } = context as IfullFormulaContext;
+    const { formula } = context as IfullFormulaContext;
 
     const [open, setOpen] = useState(true);
     const [title, setTitle] = useState(formula.title);
@@ -76,8 +76,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
 
     const saveChanges = useCallback(async () => {
         setSaveLoading(true)
-        await axios.
-            post("/api/formulas/edit", {
+        await axios.post("/api/formulas/edit", {
                 ...formula, title, latex, tags
             })
             .then(res => {
