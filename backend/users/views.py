@@ -1,31 +1,14 @@
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 from django.views import View
 from django.http import HttpResponse, JsonResponse
 
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from rest_framework import permissions
-from users.serializers import UserSerializer, GroupSerializer
 
+from users import utils
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class AuthVerification(View):
+class CheckAuth(View):
 
     def get(self, request):
         response = {
@@ -35,5 +18,48 @@ class AuthVerification(View):
                 'email': 'test',
             }
         }
+
+        return JsonResponse(response)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class RegisterUser(View):
+
+    def get(self, request):
+
+        username = 'Jose'
+
+        if not utils.username_exists(username):
+            user = User.objects.create_user(username, 'jose@gmail.com', 'root') #type: ignore
+            user.save()
+
+            response = {
+                'result': 'Success'
+            }
+        
+        else:
+            response = {
+                'result': 'Username already exists'
+            }
+
+        return JsonResponse(response)
+    
+    def post(self, request):
+        username = request.headers['username']
+        name = request.headers['name'] #This will be user when the User model is ready
+        email = request.headers['email']
+        password = request.headers['password']
+
+        if not utils.username_exists(username):
+            user = User.objects.create_user(username, email, password) #type: ignore
+            user.save()
+
+            response = {
+                'result': 'Success'
+            }
+        
+        else:
+            response = {
+                'result': 'Username already exists'
+            }
 
         return JsonResponse(response)
