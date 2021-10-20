@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # REST
-    'rest_framework',
+    'users',
+    'maths',
 ]
 
 MIDDLEWARE = [
