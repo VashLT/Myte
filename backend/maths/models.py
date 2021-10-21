@@ -11,8 +11,8 @@ class Image(models.Model):
 
     objects = models.DjongoManager()
 
-    # class Meta:
-    #     abstract = True
+    def _str_(self):
+        return self.url
 
 class ImageForm(forms.ModelForm):
 

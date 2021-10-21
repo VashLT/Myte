@@ -3,6 +3,10 @@ from django.views import View
 from django.http import HttpResponse, JsonResponse
 from maths import models
 
+from rest_framework import viewsets
+from .serializers import ImageSerializer
+from .models import Image
+
 import datetime
 
 class CreateFormula(View):
@@ -20,3 +24,8 @@ class CreateFormula(View):
         }
 
         return JsonResponse(response)
+
+class ImageView(viewsets.ModelViewSet):
+    serializer_class = ImageSerializer
+    lookup_field = 'id_image'
+    queryset = Image.objects.all()
