@@ -30,7 +30,13 @@ const useStyles = makeStyles((theme: Theme) => ({
         pointerEvents: "none"
     },
     dialog: {
-        maxWidth: '98vw !important'
+        width: '98vw !important',
+        '@media (max-width: 600px)': {
+            margin: '0 !important'
+        },
+        '@media (min-width: 900px)': {
+            maxWidth: '700px !important'
+        }
     }
 }));
 

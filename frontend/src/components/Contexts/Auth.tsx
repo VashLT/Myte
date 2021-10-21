@@ -15,12 +15,16 @@ export const AuthProvider: React.FC = ({ children }) => {
         const auth = await axios.get('api/user/auth')
             .then(res => {
                 console.log({ res })
-                if ("error" in res) {
+                const data = (res as unknown as IresponseAuth).data;
+                if ("error" in data) {
                     return {}
                 }
-                return (res as unknown as IresponseAuth).data.data;
+                return data.data;
             })
-            .catch(err => console.error(err))
+            .catch(err => {
+                console.error(err)
+                return {};
+            })
 
         setAuth(auth as Iauth);
         // setAuth({} as Iauth); // disable auth
