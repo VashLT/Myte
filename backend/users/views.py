@@ -75,7 +75,7 @@ class UserViewSet(viewsets.GenericViewSet):
         """User sign up."""
         serialized_user = UserModelSerializer(request.user)
 
-        if not serialized_user:
+        if not serialized_user or serialized_user['username'] == '':
             response = {
                 'error': 'not auth'
             }
