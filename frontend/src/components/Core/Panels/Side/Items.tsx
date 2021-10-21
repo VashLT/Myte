@@ -4,16 +4,23 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { renderAt } from '../../../../utils/components';
 import { AuthContext } from '../../../Contexts/Auth';
+import AddFormula from '../../Dialogs/AddFormula';
 import AddLabel from '../../Dialogs/AddLabel';
+
+const showAddFormulaMenu = () => {
+    console.log("showing up add formula menu ...")
+    renderAt(<AddFormula />, "_overlay");
+}
+
+const showAddLabelMenu = () => {
+    renderAt(<AddLabel />, "_overlay");
+}
 
 export const Items: React.FC<{ panelIsOpen: boolean, inMobile?: boolean }> = ({ panelIsOpen, inMobile }) => {
     const { username } = useContext(AuthContext).auth;
-    const showAddLabelMenu = () => {
-        renderAt(<AddLabel />, "_overlay");
-    }
     return (
         <div>
-            <ListItem button>
+            <ListItem button onClick={showAddFormulaMenu}>
                 <ListItemIcon>
                     <AddCircle />
                 </ListItemIcon>

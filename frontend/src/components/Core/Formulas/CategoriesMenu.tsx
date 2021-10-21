@@ -36,18 +36,25 @@ export const CategoriesMenu: React.FC<CategoriesMenuProps> = ({ category, update
         setAnchorEl(event.currentTarget);
     };
 
+    const handleUpdateCategory = (category: string) => {
+        updateCategory(category);
+        setAnchorEl(null);
+    }
+
     return (
         <ListItem component={Box} className={classes.tagsContainer}>
             <IconButton sx={{ pl: '0' }} onClick={handleClick}>
                 <CategoryIcon />
             </IconButton>
             <Box className={classes.tagsMenu}>
-                <Chip
+                {category !== "" ? <Chip
                     className={classes.category}
                     label={category}
                     icon={<Functions />}
                     variant="outlined"
                 />
+                    : <></>
+                }
             </Box>
             <Menu
                 id="long-menu"
@@ -68,7 +75,7 @@ export const CategoriesMenu: React.FC<CategoriesMenuProps> = ({ category, update
                     : ""
                 }
                 {
-                    allCategories.length > 0 ? <CategorySelect categories={allCategories} currentCategory={category} onClick={updateCategory} />
+                    allCategories.length > 0 ? <CategorySelect categories={allCategories} currentCategory={category} onClick={handleUpdateCategory} />
                         : <MenuItem><Error style={{ color: 'red' }} /></MenuItem>
                 }
             </Menu>
@@ -78,7 +85,11 @@ export const CategoriesMenu: React.FC<CategoriesMenuProps> = ({ category, update
 
 const CategorySelect: React.FC<{ categories: string[], currentCategory: string, onClick: any }> = ({ categories, currentCategory, onClick }) => {
     return (
-        <>{categories.map((category, index) => <MenuItem key={index} disabled={currentCategory === category} onClick={() => onClick(category)}>
+        <>{categories.map((category, index) => <MenuItem
+            key={index}
+            disabled={currentCategory === category}
+            onClick={() => onClick(category)}
+        >
             {category}
         </MenuItem>)}
         </>

@@ -27,16 +27,15 @@ export const AddLabel: React.FC = () => {
                     renderAt(<BriefNotification type="main" severity="error" text={data.error!} />, "_overlay");
                 } else {
                     renderAt(<BriefNotification type="main" severity='success' text={data.success!} />, "_overlay")
+                    setOpen(false);
                 }
 
-                setLoading(false);
-                setOpen(false);
             })
             .catch(err => {
                 console.error(err)
                 renderAt(<BriefNotification type="main" severity="error" text={String(err)} />, "_overlay");
-                setLoading(false);
             })
+            .finally(() => setLoading(false))
     }, [setLoading, setOpen, label])
 
     const handleClose = () => {
@@ -61,7 +60,7 @@ export const AddLabel: React.FC = () => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
                 <LoadingButton loading={loading} disabled={label === ""} variant="contained" color="success" endIcon={<Add />} onClick={handleClose}>Create</LoadingButton>
             </DialogActions>
         </Dialog>

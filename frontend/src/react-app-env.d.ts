@@ -68,6 +68,11 @@ type CategoriesMenuProps = IntrinsicProps & {
 
 }
 
+interface EditLatexProps extends IntrinsicProps {
+    latex: string;
+    updateLatex: (latex: string) => void;
+}
+
 // interfaces
 interface Iobject {
     [key: string]: string;
@@ -105,8 +110,17 @@ interface Iimage {
     title: string;
 }
 
+interface IaddFormula {
+    title: string;
+    latexCode: string;
+    category: string;
+    images: Iimage[];
+}
+
 // types
 type InputState = "initial" | boolean;
+
+type MInputEvent = React.FormEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 // responses
 

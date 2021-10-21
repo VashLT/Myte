@@ -76,10 +76,6 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
         setTags(tags.filter(tag => tag !== targetTag))
     }
 
-    const handleCategoryDelete = (targetTag: string) => {
-        setTags(tags.filter(tag => tag !== targetTag))
-    }
-
     const saveChanges = useCallback(async () => {
         setSaveLoading(true)
         await axios.post("/api/formulas/edit", {
@@ -146,7 +142,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
                 >
                     <LatexProvider>
                         <TextField
-                            id="outlined-multiline-static"
+                            id="latexInput"
                             label="LaTeX code"
                             multiline
                             rows={5}

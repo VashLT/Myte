@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         justifyContent: 'space-evenly',
     },
     tagItem: {
-        margin: '5px'
+        margin: '5px !important'
     }
 }));
 
