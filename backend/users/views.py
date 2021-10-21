@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # Django REST Framework
 from rest_framework import status, viewsets
@@ -11,8 +11,6 @@ from users.serializers import (
     UserModelSerializer,
     UserSignUpSerializer,
 )
-
-from users.utils import TokenAuthSupportCookie
 
 # Models
 from django.contrib.auth.models import User
@@ -29,6 +27,8 @@ class UserViewSet(viewsets.GenericViewSet):
     def login(self, request):
         """User sign in."""
         print(request.data)
+        # First clear everything before login
+        logout(request)
         serializer = UserLoginSerializer(data=request.data)
 
         if not serializer.is_valid(raise_exception=False):
@@ -49,7 +49,8 @@ class UserViewSet(viewsets.GenericViewSet):
         }
 
         response = Response(data, status=status.HTTP_201_CREATED)
-        # response.set_cookie('access_token', token)
+
+        # Use default django authentication
         login(request, user)
 
         return response
@@ -78,7 +79,6 @@ class UserViewSet(viewsets.GenericViewSet):
     def auth(self, request):
         
         serialized_user = UserModelSerializer(request.user)
-        # user = authenticate(request)
         print(dict(serialized_user.data))
 
         if not serialized_user or serialized_user.data['username'] == '':
