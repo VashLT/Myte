@@ -56,8 +56,8 @@ class UserSignUpSerializer(serializers.Serializer):
     first_name = serializers.CharField(min_length=0, max_length=50)
 
     def validate(self, data):
-        passwd = data['password']
-        password_validation.validate_password(passwd)
+        # passwd = data['password']
+        # password_validation.validate_password(passwd)
 
         return data
 

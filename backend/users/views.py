@@ -1,17 +1,13 @@
-# from django.views.decorators.csrf import csrf_exempt
-# from django.utils.decorators import method_decorator
-
-# from django.views import View
-# from django.http import HttpResponse, JsonResponse
-# from django.contrib.auth import authenticate, login
-
-
-# from django.contrib.auth.models import User, Group
+from django.contrib.auth import login
 
 # Django REST Framework
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # Serializers
 from users.serializers import (
@@ -46,13 +42,18 @@ class UserViewSet(viewsets.GenericViewSet):
             return Response(data, status=status.HTTP_403_FORBIDDEN)
 
         user, token = serializer.save()
+        
         data = {
             "info": "success validation",
             "success": "user validated",
             "user": UserModelSerializer(user).data,
             "access_token": token,
         }
-        return Response(data, status=status.HTTP_201_CREATED)
+
+        response = Response(data, status=status.HTTP_201_CREATED)
+        response.set_cookie('access_token', token)
+
+        return response
 
     @action(detail=False, methods=["post"])
     def register(self, request):
@@ -76,7 +77,7 @@ class UserViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, methods=["get"])
     def auth(self, request):
-        """User sign up."""
+        
         serialized_user = UserModelSerializer(request.user)
 
         if not serialized_user or serialized_user.data['username'] == '':
