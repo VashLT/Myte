@@ -1,3 +1,9 @@
+export const mockAuth = {
+    username: "VashLT",
+    avatarUrl: "https://i.imgur.com/S3ZqOsu.png",
+    email: "vashlt@gmail.com"
+}
+
 export const mockFormulas = [
     {
         id: 0,
@@ -15,7 +21,7 @@ export const mockFormulas = [
         tags: ["calculo"],
         category: "Quimica",
         title: "Aproximación de seno",
-        latexCode: "\\sin{x} \\approx x",
+        latexCode: "\\text{write some LaTeX: } e^{2\\pi\\theta} + 1 = 0  \\\\ \\sin{x} \\approx x",
         images: [],
         isDeleted: false
     },

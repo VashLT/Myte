@@ -13,23 +13,22 @@ import { FormulaWrapper as Formula } from '../Formulas/Formula';
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
         backgroundColor: 'darkred',
-        [theme.breakpoints.up('lg')]: {
+        width: '100vw',
+        [theme.breakpoints.up('md')]: {
             paddingLeft: '50px',
             paddingRight: '30px'
         },
-        width: '100%',
     },
     grid: {
-        display: 'grid',
+        display: 'grid !important',
         justifyContent: 'center',
         marginLeft: '0px !important',
         marginBottom: '20px',
-        rowGap: '10px',
-        [theme.breakpoints.up('lg')]: {
+        gridTemplateColumns: 'repeat(auto-fit, 300px)',
+        gridGap: '10px',
+        [theme.breakpoints.up('md')]: {
             justifyContent: 'left',
-            gridTemplateColumns: 'repeat(auto-fit, 300px)',
             gridTemplateRows: 'repeat(auto-fit, 300px)',
-            gridGap: '10px'
         },
         [theme.breakpoints.down('sm')]: {
             width: '100vw'

@@ -44,18 +44,16 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # RESTFRAMEWORK
-    'corsheaders',
-    'rest_framework',
-    'rest_framework.authtoken',
-
+    "corsheaders",
+    "rest_framework",
+    "rest_framework.authtoken",
     # REST
     "users",
     "maths",
@@ -162,8 +160,6 @@ REST_FRAMEWORK = {
     # ]
 }
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
 
 CORS_ORIGIN_ALLOW_ALL = DEBUG

@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 
 import { makeStyles } from '@mui/styles';
 import { Card, CardActions, CardContent, CardHeader, IconButton, Menu, MenuItem, Theme } from '@mui/material';
-import { MathJax } from 'better-react-mathjax';
 import { Delete, Edit, MoreVert } from '@mui/icons-material';
 import LatexProvider from '../../Contexts/Latex';
 import Tags from './Tags';
 import FormulaContext, { FormulaProvider } from '../../Contexts/Formula';
 import { renderAt } from '../../../utils/components';
 import EditMenu from './EditMenu';
+import LatexRender from '../Render/LatexRender';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -70,9 +70,7 @@ export const Formula: React.FC = () => {
                     title={title}
                     subheader={addedAt} />
                 <CardContent className={classes.formulaBody} style={{ backgroundColor: 'white' }}>
-                    <MathJax>
-                        {`$$${latexCode}$$`}
-                    </MathJax>
+                    <LatexRender>{latexCode}</LatexRender>
                 </CardContent>
                 <CardActions disableSpacing>
                     {
