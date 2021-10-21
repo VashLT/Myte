@@ -22,7 +22,8 @@ import users.views
 import maths.views
 
 router = routers.DefaultRouter()
-router.register(r'images', maths.views.ImageView, 'Image')
+router.register(r'images', maths.views.ImageView, 'image')
+router.register(r'user', users.views.UserViewSet, 'user')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -31,9 +32,9 @@ urlpatterns = [
     # path('', admin.site.urls),
 
     # REST
-    path('api/auth', users.views.CheckAuth.as_view()),
-    path('api/user/register/', users.views.RegisterUser.as_view()),
-    path('api/user/login/', users.views.LoginUser.as_view()),
+    # path('api/auth', users.views.CheckAuth.as_view()),
+    # path('api/user/register/', users.views.RegisterUser.as_view()),
+    # path('api/user/login/', users.views.LoginUser.as_view()),
     path('example/', maths.views.CreateFormula.as_view()),
-    path('rest/', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
