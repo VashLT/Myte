@@ -78,15 +78,10 @@ class UserViewSet(viewsets.GenericViewSet):
         serialized_user = UserModelSerializer(request.user)
 
         if not serialized_user:
-<<<<<<< HEAD
-            response = {"error": "not auth"}
-            stat = status.HTTP_200_OK
-=======
             response = {
                 'error': 'not auth'
             }
             stat = status.HTTP_403_FORBIDDEN
->>>>>>> 08880bc54f1794d2753b2da3851515c595c1cba0
 
         else:
             response = {
@@ -94,8 +89,4 @@ class UserViewSet(viewsets.GenericViewSet):
             }
             stat = status.HTTP_200_OK
 
-<<<<<<< HEAD
-        return Response(serialized_user.data, status=stat)
-=======
         return Response(response, status=stat)
->>>>>>> 08880bc54f1794d2753b2da3851515c595c1cba0
