@@ -58,8 +58,9 @@ class UserViewSet(viewsets.GenericViewSet):
         """User sign up."""
         serializer = UserSignUpSerializer(data=request.data)
 
-        if not serializer.is_valid(raise_exception=False):
+        if not serializer.is_valid(raise_exception=True):
             data = {"info": "validation failed", "failure": "registration failed"}
+            print(serializer.error_messages)
 
             return Response(data, status=status.HTTP_403_FORBIDDEN)
 
