@@ -8,6 +8,7 @@ import SidePanelContext from '../../../Contexts/SidePanel';
 
 import { PANEL_MAX_WIDTH, PANEL_MIN_WIDTH } from '../../../Contexts/SidePanel';
 import Header from './Header';
+import { COLORS } from '../../../../utils/constants';
 
 const useStyles = makeStyles((theme: Theme) => {
     const mixins = theme.mixins as any;
@@ -22,10 +23,15 @@ const useStyles = makeStyles((theme: Theme) => {
             width: '100%',
         },
         drawer: {
-            '&:hover #panelToggler': {
-                visibility: 'visible',
-                opacity: '1'
-            }
+            [theme.breakpoints.up('sm')]: {
+                '&:hover #panelToggler': {
+                    visibility: 'visible',
+                    opacity: '1'
+                }
+            },
+            backgroundColor: COLORS.skin + '!important',
+            boxShadow: 'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;',
+            overflow: 'visible !important'
         },
         drawerPaper: {
             width: '300px',
@@ -68,8 +74,11 @@ export const SidePanel: React.FC = () => {
                 }}
                 sx={{
                     display: { xs: 'block', sm: 'none' },
-                    overflowY: 'visible',
+                    overflow: 'visible',
                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: panelWidth },
+                }}
+                classes={{
+                    paper: classes.drawer
                 }}
             >
                 <Header panelIsOpen={isOpen} toggleCallback={() => handleToggle(true)} />

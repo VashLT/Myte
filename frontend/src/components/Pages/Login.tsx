@@ -20,6 +20,7 @@ import { Redirect } from 'react-router';
 import Myte from '../../static/images/logo.png';
 import { renderAt } from '../../utils/components';
 import { AuthContext } from '../Contexts/Auth';
+import { LoadingButton } from '@mui/lab';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -51,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const Login = () => {
     const [usernameState, setUsernameState] = useState<InputState>("initial");
     const [passwordState, setPasswordState] = useState<InputState>("initial");
+    const [isLoading, setIsLoading] = useState(false);
 
     const { setAuth } = useContext(AuthContext);
 
@@ -58,6 +60,8 @@ export const Login = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+
+        setIsLoading(true);
 
         axios.post('api/user/login/', {
             username: data.get('username'),
@@ -71,8 +75,6 @@ export const Login = () => {
                 if ("success" in data) {
                     console.log("get user", data.user)
                     setAuth(data.user)
-
-                    // window.location.replace("/");
 
                 } else if ("failure" in data) {
                     renderAt(
@@ -92,6 +94,7 @@ export const Login = () => {
             .finally(() => {
                 setUsernameState(false);
                 setPasswordState(false);
+                setIsLoading(false)
             })
 
     };
@@ -143,14 +146,15 @@ export const Login = () => {
                             helperText={passwordState === false ? "check your password" : ""}
                             error={passwordState === false ? true : false}
                         />
-                        <Button
+                        <LoadingButton
+                            loading={isLoading}
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign In
-                        </Button>
+                        </LoadingButton>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">

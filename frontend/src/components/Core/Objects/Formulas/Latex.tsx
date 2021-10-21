@@ -2,8 +2,8 @@ import React from 'react';
 
 import { makeStyles } from '@mui/styles';
 import { Grid, TextField, Theme } from '@mui/material';
-import LatexProvider from '../../Contexts/Latex';
-import LatexMirror from '../Render/LatexMirror';
+import LatexProvider from '../../../Contexts/Latex';
+import LatexMirror from '../../Render/LatexMirror';
 
 const useStyles = makeStyles((theme: Theme) => ({
     mirror: {

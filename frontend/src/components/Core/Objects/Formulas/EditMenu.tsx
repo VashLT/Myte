@@ -14,15 +14,15 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { renderAt } from '../../../utils/components';
-import Alert from '../Alerts/Alert';
+import { renderAt } from '../../../../utils/components';
+import Alert from '../../Alerts/Alert';
 import axios from 'axios';
-import BriefNotification from '../Alerts/BriefNotification';
+import BriefNotification from '../../Alerts/BriefNotification';
 
-import { FORMULA_TITLE_MAX_CHAR } from '../../../utils/constants';
-import LatexMirror from '../Render/LatexMirror';
-import LatexProvider from '../../Contexts/Latex';
-import { TagsMenu } from './Tags';
+import { FORMULA_TITLE_MAX_CHAR } from '../../../../utils/constants';
+import LatexMirror from '../../Render/LatexMirror';
+import LatexProvider from '../../../Contexts/Latex';
+import { TagsMenu } from '../Tags/Tags';
 import CategoriesMenu from './CategoriesMenu';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -155,7 +155,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
                 <Divider />
                 {/* tags */}
                 <TagsMenu handleTagDelete={handleTagDelete} tags={tags} updateTags={setTags} />
-                <Divider /> 
+                <Divider />
                 {/* categories */}
                 <CategoriesMenu category={category} updateCategory={setCategory} />
             </List>

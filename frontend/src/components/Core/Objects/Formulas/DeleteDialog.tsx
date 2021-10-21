@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
 
 import { makeStyles } from '@mui/styles';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Modal, Theme } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Theme } from '@mui/material';
 import { Close, Delete } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
 import { render, unmountComponentAtNode } from 'react-dom';
-import Alert from '../Alerts/Alert';
-import BriefNotification from '../Alerts/BriefNotification';
+import Alert from '../../Alerts/Alert';
+import BriefNotification from '../../Alerts/BriefNotification';
 
 
 const useStyles = makeStyles((theme: Theme) => ({
