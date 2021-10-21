@@ -34,6 +34,7 @@ class UserViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=["post"])
     def login(self, request):
         """User sign in."""
+        print(request.data)
         serializer = UserLoginSerializer(data=request.data)
 
         if not serializer.is_valid(raise_exception=False):
@@ -42,7 +43,7 @@ class UserViewSet(viewsets.GenericViewSet):
                 "failure": "validation failed",
             }
 
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data, status=status.HTTP_403_FORBIDDEN)
 
         user, token = serializer.save()
         data = {
@@ -78,9 +79,7 @@ class UserViewSet(viewsets.GenericViewSet):
         serialized_user = UserModelSerializer(request.user)
 
         if not serialized_user:
-            response = {
-                'error': 'not auth'
-            }
+            response = {"error": "not auth"}
             stat = status.HTTP_403_FORBIDDEN
 
         else:

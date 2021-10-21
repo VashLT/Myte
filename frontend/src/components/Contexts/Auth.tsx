@@ -12,7 +12,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const [auth, setAuth] = useState<Iauth>({} as Iauth);
 
     const getAuth = useCallback(async () => {
-        const auth = await axios.get('api/user/auth')
+        let backendAuth = await axios.get('api/user/auth/')
             .then(res => {
                 console.log({ res })
                 const data = (res as unknown as IresponseAuth).data;
@@ -25,10 +25,15 @@ export const AuthProvider: React.FC = ({ children }) => {
                 console.error(err)
                 return {};
             })
+        if (Object.values(backendAuth).filter(value => value === "").length > 0) {
+            console.log("bad Auth", { backendAuth })
+            backendAuth = {}
+        }
+        console.log("getAuth", { backendAuth })
 
-        setAuth(auth as Iauth);
+        setAuth(backendAuth as Iauth);
         // setAuth({} as Iauth); // disable auth
-        // setAuth(mockAuth)
+        // setAuth(mockAuth) // enable global auth
     }, [setAuth])
 
     useEffect(() => {
