@@ -2,10 +2,15 @@ import { AccountCircle, AddCircle, Category, Label, Logout } from '@mui/icons-ma
 import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { renderAt } from '../../../../utils/components';
 import { AuthContext } from '../../../Contexts/Auth';
+import AddLabel from '../../Dialogs/AddLabel';
 
 export const Items: React.FC<{ panelIsOpen: boolean, inMobile?: boolean }> = ({ panelIsOpen, inMobile }) => {
     const { username } = useContext(AuthContext).auth;
+    const showAddLabelMenu = () => {
+        renderAt(<AddLabel />, "_overlay");
+    }
     return (
         <div>
             <ListItem button>
@@ -20,7 +25,7 @@ export const Items: React.FC<{ panelIsOpen: boolean, inMobile?: boolean }> = ({ 
                 </ListItemIcon>
                 {panelIsOpen ? <ListItemText primary="List Categories" /> : <></>}
             </ListItem>
-            <ListItem button>
+            <ListItem button onClick={showAddLabelMenu}>
                 <ListItemIcon>
                     <Label />
                 </ListItemIcon>

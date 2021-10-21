@@ -1,28 +1,27 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { mockTags } from '../utils/mock';
+import { mockCategories } from '../utils/mock';
 
-
-export const useGetTags = (): [boolean, string[]] => {
+export const useGetCategories = (): [boolean, string[]] => {
     const [data, setData] = useState<[] | string[]>([]);
     const [loading, setLoading] = useState(true);
     if (data.length > 0 || !loading) {
         return [loading, data]
     }
 
-    axios.get("/api/tags")
+    axios.get("/api/categories")
         .then(res => {
-            console.log("useGetTags", { res })
-            const data = (res as unknown as IresponseTags).data;
+            console.log("useGetCategories", { res })
+            const data = (res as unknown as IresponseCategories).data;
             if ("error" in data) {
                 setData([])
             }
-            setData(data.tags as string[]);
+            setData(data.categories as string[]);
             setLoading(false)
         })
         .catch(err => {
             console.error(err)
-            setData(mockTags);
+            setData(mockCategories);
             setLoading(false)
         })
 

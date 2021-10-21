@@ -62,6 +62,12 @@ type TagsMenuProps = IntrinsicProps & {
     updateTags: (tags: string[]) => void;
 }
 
+type CategoriesMenuProps = IntrinsicProps & {
+    category: string;
+    updateCategory: (category: string) => void;
+
+}
+
 // interfaces
 interface Iobject {
     [key: string]: string;
@@ -85,6 +91,7 @@ interface Iformula {
     id: number;
     addedAt: string;
     tags: string[];
+    category: string;
     title: string;
     latexCode: string;
     images: Iimage[];
@@ -140,6 +147,20 @@ interface IresponseTags extends Iresponse {
     data: {
         tags?: string[];
         error?: string;
+    }
+}
+
+interface IresponseCategories extends Iresponse {
+    data: {
+        categories?: string[];
+        error?: string;
+    }
+}
+
+interface IresponseState extends Iresponse {
+    data: {
+        error?: string;
+        success?: string;
     }
 }
 

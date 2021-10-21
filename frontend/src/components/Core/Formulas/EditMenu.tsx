@@ -23,6 +23,7 @@ import { FORMULA_TITLE_MAX_CHAR } from '../../../utils/constants';
 import LatexMirror from '../Render/LatexMirror';
 import LatexProvider from '../../Contexts/Latex';
 import { TagsMenu } from './Tags';
+import CategoriesMenu from './CategoriesMenu';
 
 const useStyles = makeStyles((theme: Theme) => ({
     latexContainer: {
@@ -51,6 +52,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
     const [title, setTitle] = useState(formula.title);
     const [latex, setLatex] = useState(formula.latexCode);
     const [tags, setTags] = useState(formula.tags)
+    const [category, setCategory] = useState(formula.category)
     const [saveLoading, setSaveLoading] = useState(false);
 
     const classes = useStyles();
@@ -71,6 +73,10 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
     }
 
     const handleTagDelete = (targetTag: string) => {
+        setTags(tags.filter(tag => tag !== targetTag))
+    }
+
+    const handleCategoryDelete = (targetTag: string) => {
         setTags(tags.filter(tag => tag !== targetTag))
     }
 
@@ -153,6 +159,9 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
                 <Divider />
                 {/* tags */}
                 <TagsMenu handleTagDelete={handleTagDelete} tags={tags} updateTags={setTags} />
+                <Divider /> 
+                {/* categories */}
+                <CategoriesMenu category={category} updateCategory={setCategory} />
             </List>
         </Dialog>
     );
