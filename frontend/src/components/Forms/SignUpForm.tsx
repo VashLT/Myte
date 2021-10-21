@@ -1,5 +1,5 @@
 import { EMAIL_REGEX, USERNAME_REGEX, PASSWORD_REGEX } from '../../utils/constants';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -14,6 +14,8 @@ import { render, unmountComponentAtNode } from 'react-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import Alert from '../Core/Alerts/Alert';
 import { Redirect } from 'react-router';
+import { AuthContext } from '../Contexts/Auth';
+import { renderAt } from '../../utils/components';
 
 const useStyles = makeStyles((theme: Theme) => ({
     form: {
@@ -29,6 +31,8 @@ export const SignUpForm: React.FC = () => {
     const [usernameState, setUsernameState] = useState<InputState>("initial");
     const [passwordState, setPasswordState] = useState<InputState>("initial");
     const [passwordMatch, setPasswordMatch] = useState<InputState>("initial");
+
+    const { setAuth } = useContext(AuthContext);
 
     const classes = useStyles();
 
@@ -69,7 +73,6 @@ export const SignUpForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-        const alertContainer = document.getElementById("_overlay") as HTMLDivElement;
         // call backend
 
         console.log({
@@ -79,33 +82,29 @@ export const SignUpForm: React.FC = () => {
             password: data.get('password'),
         })
 
-        axios.post('/api/user/username', {
+        axios.post('api/user/register/', {
             username: data.get('username'),
-            name: data.get('name'),
+            first_name: data.get('name'),
             email: data.get('email'),
             password: data.get('password')
         })
             .then(res => {
-                console.log({ res });
-
-                if ("error" in res) {
-                    unmountComponentAtNode(alertContainer)
-                    render(
-                        <Alert type="error" text="El nombre de usuario ya existe" caption="Elige otro!" />,
-                        alertContainer
+                console.log("sign up response", { res });
+                let data = (res as unknown as IresponseLogin).data;
+                if ("failure" in res) {
+                    renderAt(
+                        <Alert type="error" text={data.failure} caption="Elige otro!" />, "_overlay"
                     );
                     return;
                 }
-
-                return <Redirect to="/" />
+                console.log("user", data.user);
+                setAuth(data.user);
 
             })
             .catch(err => {
                 console.error(err)
-                unmountComponentAtNode(alertContainer)
-                render(
-                    <Alert type="error" text="El nombre de usuario ya existe" caption="Elige otro!" />,
-                    alertContainer
+                renderAt(
+                    <Alert type="error" text={String(err)} caption="Elige otro!" />, "_overlay"
                 );
                 return;
             });

@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const Login = () => {
-    const [emailState, setEmailState] = useState<InputState>("initial");
+    const [usernameState, setUsernameState] = useState<InputState>("initial");
     const [passwordState, setPasswordState] = useState<InputState>("initial");
 
     const { setAuth } = useContext(AuthContext);
@@ -59,17 +59,21 @@ export const Login = () => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        axios.post('/api/user/login', {
-            email: data.get('email'),
+        axios.post('api/user/login/', {
+            username: data.get('username'),
             password: data.get('password')
         })
             .then(res => {
-                console.log([res])
+                console.log("login", { res })
                 let data = (res as unknown as IresponseLogin).data
                 if (!data) return;
 
                 if ("success" in data) {
-                    return <Redirect to="/" />;
+                    console.log("get user", data.user)
+                    setAuth(data.user)
+
+                    // window.location.replace("/");
+
                 } else if ("failure" in data) {
                     renderAt(
                         <Alert type="error" text={(data as unknown as IresponseLoginFail).failure} />,
@@ -78,24 +82,18 @@ export const Login = () => {
                 } else {
                     renderAt(<Alert type="error" text="Internal error" />, "_overlay")
                 }
-                setEmailState(false);
-                setPasswordState(false);
 
-                setAuth(data.user)
             })
             .catch(err => {
                 console.error(err);
 
                 renderAt(<Alert type="error" text={String(err)} />, "_overlay")
             })
+            .finally(() => {
+                setUsernameState(false);
+                setPasswordState(false);
+            })
 
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-
-        setEmailState(false);
-        setPasswordState(false);
     };
 
     return (
@@ -125,13 +123,13 @@ export const Login = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email or Username"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
-                            helperText={emailState === false ? "check your username" : ""}
-                            error={emailState === false ? true : false}
+                            helperText={usernameState === false ? "check your username" : ""}
+                            error={usernameState === false ? true : false}
                         />
                         <TextField
                             margin="normal"

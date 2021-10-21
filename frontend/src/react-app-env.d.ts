@@ -150,6 +150,7 @@ interface IresponseLogin extends Iresponse {
         info: string;
         user: Iauth;
         success: string;
+        failure: string;
     }
 }
 
