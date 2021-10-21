@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+
+from rest_framework import routers
+
 import users.views
 import maths.views
+
+router = routers.DefaultRouter()
+router.register(r'images', maths.views.ImageView, 'Image')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -29,4 +35,5 @@ urlpatterns = [
     path('api/user/register/', users.views.RegisterUser.as_view()),
     path('api/user/login/', users.views.LoginUser.as_view()),
     path('example/', maths.views.CreateFormula.as_view()),
+    path('rest/', include(router.urls)),
 ]
