@@ -19,14 +19,15 @@ export const AuthProvider: React.FC = ({ children }) => {
     const getAuth = useCallback(async () => {
         const auth = await axios.get('/api/auth')
             .then(res => {
+                console.log({ res })
                 if ("error" in res) {
                     return {}
                 }
-                return res.data;
+                return (res as unknown as IresponseAuth).data.data;
             })
             .catch(err => console.error(err))
 
-        setAuth({} as Iauth);
+        setAuth(auth as Iauth);
         // setAuth(mockAuth)
     }, [setAuth])
 

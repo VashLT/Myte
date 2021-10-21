@@ -59,6 +59,7 @@ type LatexMirrorProps = IntrinsicProps & {
 type TagsMenuProps = IntrinsicProps & {
     tags: string[];
     handleTagDelete: (tag: string) => void;
+    updateTags: (tags: string[]) => void;
 }
 
 // interfaces
@@ -97,6 +98,11 @@ interface Iimage {
     title: string;
 }
 
+// types
+type InputState = "initial" | boolean;
+
+// responses
+
 interface IformulaResponse {
     data?: {
         formulas: Iformula[]
@@ -104,11 +110,37 @@ interface IformulaResponse {
     error?: string;
 }
 
-interface IformulaPartial {
-    id: string;
-    title: string;
-    latexCode: string;
-    tags: string[];
+interface Iresponse {
+    data: {
+        [key: string]: string;
+    },
+    status: number;
+    [key: string]: string;
+}
+
+interface IresponseAuth {
+    data: {
+        data: Iauth;
+    }
+}
+
+interface IresponseLogin extends Iresponse {
+    data: {
+        info: string;
+        user: Iauth;
+        success: string;
+    }
+}
+
+interface IresponseLoginFail {
+    failure: string;
+}
+
+interface IresponseTags extends Iresponse {
+    data: {
+        tags?: string[];
+        error?: string;
+    }
 }
 
 interface IformulaContext {
@@ -121,12 +153,10 @@ interface IfullFormulaContext {
     setFormula: (formula: Iformula | {}) => void;
 }
 
-// types
-type InputState = "initial" | boolean;
-
 // storage
 interface IcookiesStorage {
     getItem: (item: string) => string | undefined;
     setItem: (item: string, value: string, days?: number | undefined) => void;
     deleteItem: (item: string) => void;
 }
+

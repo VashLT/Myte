@@ -77,8 +77,8 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
     const saveChanges = useCallback(async () => {
         setSaveLoading(true)
         await axios.post("/api/formulas/edit", {
-                ...formula, title, latex, tags
-            })
+            ...formula, title, latex, tags
+        })
             .then(res => {
                 console.log("/api/formulas/edit", { res })
                 if ("error" in res) {
@@ -152,7 +152,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
                 </ListItem>
                 <Divider />
                 {/* tags */}
-                <TagsMenu handleTagDelete={handleTagDelete} tags={tags} />
+                <TagsMenu handleTagDelete={handleTagDelete} tags={tags} updateTags={setTags} />
             </List>
         </Dialog>
     );

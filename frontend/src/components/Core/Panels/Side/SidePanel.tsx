@@ -1,5 +1,5 @@
-import React, { useCallback, useContext} from 'react';
-import { Box, Divider, Drawer} from '@mui/material';
+import React, { useCallback, useContext } from 'react';
+import { Box, Divider, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/system';
 import Items from './Items';
@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme: Theme) => {
             width: '100%',
         },
         drawer: {
-            overflowY: 'visible',
             '&:hover #panelToggler': {
                 visibility: 'visible',
                 opacity: '1'
@@ -55,9 +54,8 @@ export const SidePanel: React.FC = () => {
     return (
         <Box
             component="nav"
-            // width: {sm: panelWidth}
             sx={{ width: panelWidth, flexShrink: { sm: 0 } }}
-            aria-label="mailbox folders"
+            aria-label="side panel"
         >
             {/* Side panel for mobiles */}
             <Drawer
@@ -70,6 +68,7 @@ export const SidePanel: React.FC = () => {
                 }}
                 sx={{
                     display: { xs: 'block', sm: 'none' },
+                    overflowY: 'visible',
                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: panelWidth },
                 }}
             >
