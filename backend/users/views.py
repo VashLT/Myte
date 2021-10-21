@@ -82,7 +82,11 @@ class LoginUser(View):
         return JsonResponse(self.login_user(request, username, password))
 
     def options(self, request):
-        return HttpResponse(status=200)
+        print('He sido opcionado!')
+        response = HttpResponse(status=200)
+        response['Access-Control-Allow-Origin'] = '*'
+
+        return response
 
     def login_user(self, request, username, password):
         user = authenticate(request, username=username, password=password)
