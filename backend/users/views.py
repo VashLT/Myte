@@ -69,3 +69,22 @@ class UserViewSet(viewsets.GenericViewSet):
         }
 
         return Response(data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['get'])
+    def auth(self, request):
+        """User sign up."""
+        serialized_user = UserModelSerializer(request.user)
+
+        if not serialized_user:
+            response = {
+                'error': 'not auth'
+            }
+            stat = status.HTTP_200_OK
+
+        else:
+            response = {
+                'data' : serialized_user.data,
+            }
+            stat = status.HTTP_403_FORBIDDEN
+
+        return Response(serialized_user, status=stat)
