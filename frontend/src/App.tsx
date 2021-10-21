@@ -13,6 +13,7 @@ import MyteThemeProvider from './components/Core/Theme/Theme';
 
 import { Redirect } from 'react-router';
 import LatexProvider from './components/Contexts/Latex';
+import Loading from './components/Pages/Loading';
 
 const App: React.FC = () => {
   return (
@@ -27,8 +28,11 @@ const App: React.FC = () => {
 }
 
 const AppRouter: React.FC = () => {
-  const { isAuth, auth } = useContext(AuthContext);
+  const { isAuth, auth, isLoading } = useContext(AuthContext);
   console.log("AppRouter", { isAuth, auth })
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <Router>
       <Switch>

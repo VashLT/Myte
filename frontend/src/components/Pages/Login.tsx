@@ -15,7 +15,6 @@ import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 import Alert from '../Core/Alerts/Alert';
-import { Redirect } from 'react-router';
 
 import Myte from '../../static/images/logo.png';
 import { renderAt } from '../../utils/components';
@@ -40,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     iconContainer: {
         position: 'relative',
         margin: '0px',
+        cursor: 'pointer'
     },
     avatar: {
         position: 'absolute',
@@ -110,13 +110,14 @@ export const Login = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <div className={classes.iconContainer}>
+                    <div className={classes.iconContainer} onClick={() => document.getElementById("toHomePage")!.click()}>
                         <img src={Myte} alt="myte" style={{ height: '100px' }} />
                         <Avatar className={classes.avatar} sx={{
                             position: 'absolute'
                         }}>
                             <LockOutlinedIcon />
                         </Avatar>
+                        <RouterLink to="/" id="toHomePage" />
                     </div>
                     <Typography component="h1" variant="h5">
                         Sign in
@@ -162,11 +163,9 @@ export const Login = () => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <RouterLink to="/signup">
-                                    <Link href="#" variant="body2">
-                                        {"Don't have an account?"}
-                                    </Link>
-                                </RouterLink>
+                                <Link to="/signup" variant="body2" component={RouterLink}>
+                                    {"Don't have an account?"}
+                                </Link>
                             </Grid>
                         </Grid>
                     </Box>
@@ -182,7 +181,7 @@ const Copyright = (props: any) => {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="/">
+            <Link color="inherit" to="/" component={RouterLink}>
                 Myte
             </Link>{' '}
             {new Date().getFullYear()}

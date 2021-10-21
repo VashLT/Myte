@@ -13,7 +13,6 @@ import { FormulaWrapper as Formula } from './Formula';
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
         backgroundColor: 'darkred',
-        width: '100vw',
         [theme.breakpoints.up('md')]: {
             paddingLeft: '50px',
             paddingRight: '30px'

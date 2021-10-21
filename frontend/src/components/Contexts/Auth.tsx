@@ -1,17 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { mockAuth } from "../../utils/mock";
+// import { mockAuth } from "../../utils/mock";
 import axios from 'axios';
 
 export const AuthContext = React.createContext({
     auth: {} as Iauth,
     isAuth: false,
-    setAuth: (auth: Iauth) => { }
+    setAuth: (auth: Iauth) => { },
+    isLoading: false,
+    setIsLoading: (state: boolean) => { }
 })
 
 export const AuthProvider: React.FC = ({ children }) => {
     const [auth, setAuth] = useState<Iauth>({} as Iauth);
+    const [isLoading, setIsLoading] = useState(false);
 
     const getAuth = useCallback(async () => {
+        setIsLoading(true);
         let backendAuth = await axios.get('api/user/auth/')
             .then(res => {
                 console.log({ res })
@@ -25,7 +29,9 @@ export const AuthProvider: React.FC = ({ children }) => {
                 console.error(err)
                 return {};
             })
-        if (Object.values(backendAuth).filter(value => value === "").length > 0) {
+            .finally(() => setIsLoading(false));
+
+        if (Object.values(backendAuth).filter(value => value === "").length === 0) {
             console.log("bad Auth", { backendAuth })
             backendAuth = {}
         }
@@ -44,7 +50,9 @@ export const AuthProvider: React.FC = ({ children }) => {
         <AuthContext.Provider value={{
             auth,
             isAuth: Object.keys(auth).length > 0,
-            setAuth
+            setAuth,
+            isLoading,
+            setIsLoading
         }}>
             {children}
         </AuthContext.Provider>

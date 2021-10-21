@@ -16,16 +16,6 @@ import { LoadingButton } from '@mui/lab';
 import EditLatex from '../Objects/Formulas/Latex';
 
 const useStyles = makeStyles((theme: Theme) => ({
-    closeButton: {
-        outlineColor: grey[500],
-        color: grey[500],
-        '& svg': {
-            fill: grey[500]
-        },
-        '&:focus': {
-            outlineColor: grey[700]
-        }
-    },
     noClickBackdrop: {
         pointerEvents: "none"
     },
@@ -69,7 +59,7 @@ export const AddFormula: React.FC = memo(() => {
 
             })
             .finally(() => {
-                setOpen(false);
+                // setOpen(false);
                 setIsLoading(false);
             })
     }, [setIsLoading]);
@@ -143,15 +133,19 @@ const CloseDialog: React.FC<{ show: boolean; callback: (close: boolean) => void,
     return (
         <Dialog
             open={show}
-        // onClose={() => setOpen(false)}
-        // onBackdropClick={() => false}
         >
             <DialogTitle>{"Formula Creation in Process ..."}</DialogTitle>
             <DialogContent>
                 <DialogContentText>The formula won't be created, click <strong>Continue</strong> to continue creating.</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button className={classes.closeButton} variant="outlined" startIcon={<Delete />} onClick={handleClose}>Close</Button>
+                <Button
+                    variant="outlined"
+                    startIcon={< Delete />}
+                    onClick={handleClose}
+                >
+                    Close
+                </Button>
                 <Button variant="contained" startIcon={<Edit />} onClick={() => close(false)}>Continue</Button>
             </DialogActions>
         </Dialog>

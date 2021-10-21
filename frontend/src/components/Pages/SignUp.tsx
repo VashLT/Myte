@@ -10,6 +10,7 @@ import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
 
 import Myte from '../../static/images/logo.png';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
     content: {
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     iconContainer: {
         position: 'relative',
         margin: '0px',
+        cursor: 'pointer'
     },
     avatar: {
         position: 'absolute',
@@ -46,13 +48,14 @@ export const SignUp: React.FC = () => {
             <Container className={classes.container} component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.content}>
-                    <div className={classes.iconContainer}>
+                    <div className={classes.iconContainer} onClick={() => document.getElementById("toHomePage")!.click()}>
                         <img src={Myte} alt="myte" style={{ height: '100px' }} />
                         <Avatar className={classes.avatar} sx={{
                             position: 'absolute'
                         }}>
                             <LockOutlinedIcon />
                         </Avatar>
+                        <Link to="/" id="toHomePage" />
                     </div>
                     <Typography component="h1" variant="h5" sx={{ marginBottom: '20px' }}>
                         Sign up
