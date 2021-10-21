@@ -42,7 +42,7 @@ class UserViewSet(viewsets.GenericViewSet):
                 "failure": "validation failed",
             }
 
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data, status=status.HTTP_403_FORBIDDEN)
 
         user, token = serializer.save()
         data = {
@@ -61,7 +61,7 @@ class UserViewSet(viewsets.GenericViewSet):
         if not serializer.is_valid(raise_exception=False):
             data = {"info": "validation failed", "failure": "registration failed"}
 
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data, status=status.HTTP_403_FORBIDDEN)
 
         user = serializer.save()
         data = {
@@ -77,7 +77,7 @@ class UserViewSet(viewsets.GenericViewSet):
         """User sign up."""
         serialized_user = UserModelSerializer(request.user)
 
-        if not serialized_user or serialized_user['username'] == '':
+        if not serialized_user or serialized_user.data['username'] == '':
             response = {
                 'error': 'not auth'
             }
