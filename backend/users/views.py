@@ -87,4 +87,4 @@ class UserViewSet(viewsets.GenericViewSet):
             }
             stat = status.HTTP_403_FORBIDDEN
 
-        return Response(serialized_user, status=stat)
+        return Response(response, status=stat)
