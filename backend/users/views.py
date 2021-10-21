@@ -79,12 +79,12 @@ class UserViewSet(viewsets.GenericViewSet):
             response = {
                 'error': 'not auth'
             }
-            stat = status.HTTP_200_OK
+            stat = status.HTTP_403_FORBIDDEN
 
         else:
             response = {
                 'data' : serialized_user.data,
             }
-            stat = status.HTTP_403_FORBIDDEN
+            stat = status.HTTP_200_OK
 
         return Response(response, status=stat)
