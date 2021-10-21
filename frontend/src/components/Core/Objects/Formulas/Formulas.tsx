@@ -4,9 +4,9 @@ import { Box, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
 import Skeleton from '../Formulas/Skeleton';
-import { mockFormulas } from '../../../utils/mock';
+import { mockFormulas } from '../../../../utils/mock';
 import { render } from 'react-dom';
-import { FormulaWrapper as Formula } from '../Formulas/Formula';
+import { FormulaWrapper as Formula } from './Formula';
 // import axios from 'axios';
 // import BriefNotification from '../Alerts/BriefNotification';
 
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export const WorkArea: React.FC = () => {
+export const Formulas: React.FC = () => {
     // const { panelWidth } = useContext(SidePanelContext)
     const classes = useStyles();
 
@@ -124,4 +124,4 @@ const fetchFormulas = async (className: string) => {
     }, 500)
 };
 
-export default WorkArea;
+export default Formulas;

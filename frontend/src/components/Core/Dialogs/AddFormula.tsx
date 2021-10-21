@@ -7,13 +7,13 @@ import { renderAt } from '../../../utils/components';
 import BriefNotification from '../Alerts/BriefNotification';
 import { FORMULA_TITLE_MAX_CHAR } from '../../../utils/constants';
 import Alert from '../Alerts/Alert';
-import { TagsMenu } from '../Formulas/Tags';
-import CategoriesMenu from '../Formulas/CategoriesMenu';
+import { TagsMenu } from '../Objects/Tags/Tags';
+import CategoriesMenu from '../Objects/Formulas/CategoriesMenu';
 import { Add, Delete, Edit } from '@mui/icons-material';
 
 import { grey } from '@mui/material/colors';
 import { LoadingButton } from '@mui/lab';
-import { EditLatex } from '../Formulas/Latex';
+import EditLatex from '../Objects/Formulas/Latex';
 
 const useStyles = makeStyles((theme: Theme) => ({
     closeButton: {

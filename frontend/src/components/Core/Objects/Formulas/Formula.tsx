@@ -3,12 +3,12 @@ import React, { useContext } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Card, CardActions, CardContent, CardHeader, IconButton, Menu, MenuItem, Theme } from '@mui/material';
 import { Delete, Edit, MoreVert } from '@mui/icons-material';
-import LatexProvider from '../../Contexts/Latex';
-import Tags from './Tags';
-import FormulaContext, { FormulaProvider } from '../../Contexts/Formula';
-import { renderAt } from '../../../utils/components';
+import LatexProvider from '../../../Contexts/Latex';
+import { TagsList } from '../Tags/Tags';
+import FormulaContext, { FormulaProvider } from '../../../Contexts/Formula';
+import { renderAt } from '../../../../utils/components';
 import EditMenu from './EditMenu';
-import LatexRender from '../Render/LatexRender';
+import LatexRender from '../../Render/LatexRender';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -74,7 +74,7 @@ export const Formula: React.FC = () => {
                 </CardContent>
                 <CardActions disableSpacing>
                     {
-                        tags.length > 0 ? <Tags tags={tags} />
+                        tags.length > 0 ? <TagsList tags={tags} />
                             : <></>
                     }
                 </CardActions>

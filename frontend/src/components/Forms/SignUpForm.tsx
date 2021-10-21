@@ -16,6 +16,7 @@ import Alert from '../Core/Alerts/Alert';
 import { Redirect } from 'react-router';
 import { AuthContext } from '../Contexts/Auth';
 import { renderAt } from '../../utils/components';
+import { LoadingButton } from '@mui/lab';
 
 const useStyles = makeStyles((theme: Theme) => ({
     form: {
@@ -31,6 +32,7 @@ export const SignUpForm: React.FC = () => {
     const [usernameState, setUsernameState] = useState<InputState>("initial");
     const [passwordState, setPasswordState] = useState<InputState>("initial");
     const [passwordMatch, setPasswordMatch] = useState<InputState>("initial");
+    const [isLoading, setIsLoading] = useState(false);
 
     const { setAuth } = useContext(AuthContext);
 
@@ -82,6 +84,8 @@ export const SignUpForm: React.FC = () => {
             password: data.get('password'),
         })
 
+        setIsLoading(true);
+
         axios.post('api/user/register/', {
             username: data.get('username'),
             first_name: data.get('name'),
@@ -107,7 +111,8 @@ export const SignUpForm: React.FC = () => {
                     <Alert type="error" text={String(err)} caption="Elige otro!" />, "_overlay"
                 );
                 return;
-            });
+            })
+            .finally(() => setIsLoading(false));
     }
 
     return (
@@ -182,7 +187,8 @@ export const SignUpForm: React.FC = () => {
                         />
                     </Grid>
                 </Grid>
-                <Button
+                <LoadingButton
+                    loading={isLoading}
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -190,7 +196,7 @@ export const SignUpForm: React.FC = () => {
                     className={classes.submit}
                 >
                     Sign Up
-                </Button>
+                </LoadingButton>
                 <Grid container>
                     <Grid item style={{ margin: '0 auto 0 auto' }}>
                         <RouterLink to="/login">

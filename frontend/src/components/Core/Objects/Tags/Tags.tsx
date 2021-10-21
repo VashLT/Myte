@@ -1,15 +1,13 @@
+import React, { memo, useState } from 'react';
 import { Chip, CircularProgress, IconButton, ListItem, Menu, MenuItem } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { memo, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
 import { Error, Tag as TagIcon } from '@mui/icons-material';
-import { useGetTags } from '../../../hooks/useGetTags';
-
-const TAGS_MENU_MAX_HEIGHT = 50;
+import { useGetTags } from '../../../../hooks/useGetTags';
 
 const useStyles = makeStyles((theme: Theme) => ({
-    tags: {
+    tagsList: {
         display: 'flex',
         flexWrap: 'wrap',
     },
@@ -30,10 +28,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export const Tags: React.FC<{ tags: string[] }> = ({ tags }) => {
+export const TagsContainer: React.FC = () => {
     const classes = useStyles();
     return (
-        <Box className={classes.tags}>
+        <div className="">
+
+        </div>
+    );
+}
+
+const TAGS_MENU_MAX_HEIGHT = 50;
+
+export const TagsList: React.FC<{ tags: string[] }> = ({ tags }) => {
+    const classes = useStyles();
+    return (
+        <Box className={classes.tagsList}>
             {tags.map(tag => <Tag name={tag} className={classes.tag} />)}
         </Box>
     );
@@ -52,7 +61,7 @@ export const Tag: React.FC<TagProps> = ({ name, className }) => {
 
 
 export const TagsMenu: React.FC<TagsMenuProps> = memo(({ tags, handleTagDelete, updateTags }) => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
     const [isLoading, allTags] = useGetTags();
@@ -120,5 +129,4 @@ const TagSelect: React.FC<{ tags: string[], usedTags: string[], onClick: any }> 
     )
 }
 
-export default Tags;
-
+export default Tag;

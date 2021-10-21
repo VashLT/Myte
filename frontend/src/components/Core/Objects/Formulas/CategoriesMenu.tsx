@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles';
 import { Chip, CircularProgress, IconButton, ListItem, Menu, MenuItem, Theme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Category as CategoryIcon, Error, Functions } from '@mui/icons-material';
-import { useGetCategories } from '../../../hooks/useGetCategories';
+import { useGetCategories } from '../../../../hooks/useGetCategories';
 
 const MAX_HEIGHT = 50;
 

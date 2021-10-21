@@ -17,8 +17,13 @@ const MyteThemeProvider: React.FC = ({ children }) => {
             palette: {
                 mode: themeMode,
                 primary: {
-                    main: COLORS.blue
-                }
+                    main: COLORS.blue,
+                },
+                secondary: {
+                    main: COLORS.orange,
+                    light: COLORS.lightSkin,
+                    dark: COLORS.orange_b,
+                },
             }
 
         })
