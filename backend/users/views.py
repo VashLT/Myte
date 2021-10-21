@@ -81,6 +81,9 @@ class LoginUser(View):
         
         return JsonResponse(self.login_user(request, username, password))
 
+    def options(self, request):
+        return HttpResponse(status=200)
+
     def login_user(self, request, username, password):
         user = authenticate(request, username=username, password=password)
 
