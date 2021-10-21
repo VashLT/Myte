@@ -79,13 +79,12 @@ export const SignUpForm: React.FC = () => {
             password: data.get('password'),
         })
 
-        axios
-            .post('/api/user/username', {
-                username: data.get('username'),
-                name: data.get('name'),
-                email: data.get('email'),
-                password: data.get('password')
-            })
+        axios.post('/api/user/username', {
+            username: data.get('username'),
+            name: data.get('name'),
+            email: data.get('email'),
+            password: data.get('password')
+        })
             .then(res => {
                 console.log({ res });
 

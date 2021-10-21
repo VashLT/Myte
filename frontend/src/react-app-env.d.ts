@@ -59,6 +59,13 @@ type LatexMirrorProps = IntrinsicProps & {
 type TagsMenuProps = IntrinsicProps & {
     tags: string[];
     handleTagDelete: (tag: string) => void;
+    updateTags: (tags: string[]) => void;
+}
+
+type CategoriesMenuProps = IntrinsicProps & {
+    category: string;
+    updateCategory: (category: string) => void;
+
 }
 
 // interfaces
@@ -84,6 +91,7 @@ interface Iformula {
     id: number;
     addedAt: string;
     tags: string[];
+    category: string;
     title: string;
     latexCode: string;
     images: Iimage[];
@@ -97,6 +105,11 @@ interface Iimage {
     title: string;
 }
 
+// types
+type InputState = "initial" | boolean;
+
+// responses
+
 interface IformulaResponse {
     data?: {
         formulas: Iformula[]
@@ -104,11 +117,51 @@ interface IformulaResponse {
     error?: string;
 }
 
-interface IformulaPartial {
-    id: string;
-    title: string;
-    latexCode: string;
-    tags: string[];
+interface Iresponse {
+    data: {
+        [key: string]: string;
+    },
+    status: number;
+    [key: string]: string;
+}
+
+interface IresponseAuth {
+    data: {
+        data: Iauth;
+    }
+}
+
+interface IresponseLogin extends Iresponse {
+    data: {
+        info: string;
+        user: Iauth;
+        success: string;
+    }
+}
+
+interface IresponseLoginFail {
+    failure: string;
+}
+
+interface IresponseTags extends Iresponse {
+    data: {
+        tags?: string[];
+        error?: string;
+    }
+}
+
+interface IresponseCategories extends Iresponse {
+    data: {
+        categories?: string[];
+        error?: string;
+    }
+}
+
+interface IresponseState extends Iresponse {
+    data: {
+        error?: string;
+        success?: string;
+    }
 }
 
 interface IformulaContext {
@@ -121,12 +174,10 @@ interface IfullFormulaContext {
     setFormula: (formula: Iformula | {}) => void;
 }
 
-// types
-type InputState = "initial" | boolean;
-
 // storage
 interface IcookiesStorage {
     getItem: (item: string) => string | undefined;
     setItem: (item: string, value: string, days?: number | undefined) => void;
     deleteItem: (item: string) => void;
 }
+

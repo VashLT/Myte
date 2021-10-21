@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -19,6 +19,7 @@ import { Redirect } from 'react-router';
 
 import Myte from '../../static/images/logo.png';
 import { renderAt } from '../../utils/components';
+import { AuthContext } from '../Contexts/Auth';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -51,23 +52,27 @@ export const Login = () => {
     const [emailState, setEmailState] = useState<InputState>("initial");
     const [passwordState, setPasswordState] = useState<InputState>("initial");
 
+    const { setAuth } = useContext(AuthContext);
+
     const classes = useStyles();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        axios.post('http://localhost:8000/api/user/login', {
+        axios.post('/api/user/login', {
             email: data.get('email'),
             password: data.get('password')
         })
             .then(res => {
-                console.log(res)
+                console.log([res])
+                let data = (res as unknown as IresponseLogin).data
+                if (!data) return;
 
-                if ("success" in res) {
+                if ("success" in data) {
                     return <Redirect to="/" />;
-                } else if ("failure" in res) {
+                } else if ("failure" in data) {
                     renderAt(
-                        <Alert type="error" text="Username or password are not valid" />,
+                        <Alert type="error" text={(data as unknown as IresponseLoginFail).failure} />,
                         "_overlay"
                     )
                 } else {
@@ -75,6 +80,8 @@ export const Login = () => {
                 }
                 setEmailState(false);
                 setPasswordState(false);
+
+                setAuth(data.user)
             })
             .catch(err => {
                 console.error(err);

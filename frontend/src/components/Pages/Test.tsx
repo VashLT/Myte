@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles';
 import { Box, TextField, Theme } from '@mui/material';
 import LatexMirror from '../Core/Render/LatexMirror';
 import LatexProvider from '../Contexts/Latex';
+import AddLabel from '../Core/Dialogs/AddLabel';
 // import DeleteDialog from '../Core/Formulas/DeleteDialog';
 // import BriefNotification from '../Core/Alerts/BriefNotification';
 
@@ -37,15 +38,7 @@ export const Test: React.FC = () => {
     return (
         <LatexProvider>
             <Box className={classes.root}>
-                <TextField
-                    id="outlined-multiline-static"
-                    label="LaTeX code"
-                    multiline
-                    rows={5}
-                    defaultValue={latex || "\\sin{x}"}
-                    onChange={(e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => setLatex(e.currentTarget.value)}
-                />
-                <LatexMirror rawLatex={latex} className={classes.mirror} />
+                {/* <AddLabel /> */}
                 <div id="_overlay"></div>
             </Box>
         </LatexProvider>

@@ -11,21 +11,15 @@ const useStyles = makeStyles((theme: Theme) => ({
         position: 'relative',
     },
     toggler: {
-        backgroundColor: 'blue',
-        position: 'absolute',
         top: '50%',
         right: '0',
         transform: 'translate(50%, -50%)',
         height: '30px',
         width: '30px',
-        zIndex: 500,
         visibility: 'hidden',
         opacity: '0',
         transition: 'opacity 0.2s ease',
         cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: 'darkblue'
-        }
     },
     logoContainer: {
         padding: '10px 0px',
@@ -64,6 +58,14 @@ export const Header: React.FC<SidePanelHeaderProps> = ({ panelIsOpen, toggleCall
                     color='primary'
                     id="panelToggler"
                     onClick={toggleCallback}
+                    sx={{
+                        position: 'absolute',
+                        zIndex: 500,
+                        backgroundColor: 'blue',
+                        '&:hover': {
+                            backgroundColor: 'darkblue'
+                        }
+                    }}
                 >
                     <ChevronLeft style={{ color: 'white' }} />
                 </IconButton>

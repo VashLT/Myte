@@ -1,9 +1,12 @@
-import { Chip, IconButton, ListItem } from '@mui/material';
+import { Chip, CircularProgress, IconButton, ListItem, Menu, MenuItem } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { memo, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
-import { Tag as TagIcon } from '@mui/icons-material';
+import { Error, Tag as TagIcon } from '@mui/icons-material';
+import { useGetTags } from '../../../hooks/useGetTags';
+
+const TAGS_MENU_MAX_HEIGHT = 50;
 
 const useStyles = makeStyles((theme: Theme) => ({
     tags: {
@@ -46,11 +49,30 @@ export const Tag: React.FC<TagProps> = ({ name, className }) => {
     )
 }
 
-export const TagsMenu: React.FC<TagsMenuProps> = ({ tags, handleTagDelete }) => {
+
+
+export const TagsMenu: React.FC<TagsMenuProps> = memo(({ tags, handleTagDelete, updateTags }) => {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+
+    const [isLoading, allTags] = useGetTags();
+
+
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const addTag = (newTag: string) => {
+        console.log("addTag", [...tags, newTag])
+        updateTags([...tags, newTag])
+        // close menu
+        setAnchorEl(null);
+    }
+
     const classes = useStyles();
     return (
         <ListItem component={Box} className={classes.tagsContainer}>
-            <IconButton sx={{ pl: '0' }}>
+            <IconButton sx={{ pl: '0' }} onClick={handleClick}>
                 <TagIcon />
             </IconButton>
             <Box className={classes.tagsMenu}>
@@ -62,7 +84,39 @@ export const TagsMenu: React.FC<TagsMenuProps> = ({ tags, handleTagDelete }) => 
                     onDelete={() => handleTagDelete(tag)}
                 />)}
             </Box>
+            <Menu
+                id="long-menu"
+                MenuListProps={{
+                    'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+                PaperProps={{
+                    style: {
+                        maxHeight: TAGS_MENU_MAX_HEIGHT * 4.5,
+                        width: '20ch',
+                    },
+                }}
+            >
+                {isLoading ? <MenuItem><CircularProgress color='primary' /></MenuItem>
+                    : ""
+                }
+                {
+                    allTags.length > 0 ? <TagSelect tags={allTags} usedTags={tags} onClick={addTag} />
+                        : <MenuItem><Error style={{ color: 'red' }} /></MenuItem>
+                }
+            </Menu>
         </ListItem>
+    )
+});
+
+const TagSelect: React.FC<{ tags: string[], usedTags: string[], onClick: any }> = ({ tags, usedTags, onClick }) => {
+    return (
+        <>{tags.map((tag, index) => <MenuItem key={index} disabled={(usedTags.filter(usedTag => tag === usedTag)).length > 0} onClick={() => onClick(tag)}>
+            {tag}
+        </MenuItem>)}
+        </>
     )
 }
 
