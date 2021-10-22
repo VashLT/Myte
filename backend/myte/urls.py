@@ -23,6 +23,7 @@ import maths.views
 
 router = routers.DefaultRouter()
 router.register(r'images', maths.views.ImageView, 'image')
+router.register(r'formulas', maths.views.FormulaView, 'formula')
 router.register(r'user', users.views.UserViewSet, 'user')
 
 # Wire up our API using automatic URL routing.
