@@ -99,7 +99,7 @@ class UserViewSet(viewsets.GenericViewSet):
 
         return Response(response, status=stat)
 
-    @action(detail=False, methods=["post"])
+    @action(detail=False, methods=["get", "post"])
     def logout(self, request):
         
         logout(request)
