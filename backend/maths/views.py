@@ -1,11 +1,13 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse, JsonResponse
+from rest_framework.response import Response
 from maths import models
 
 from rest_framework.views import APIView
 from rest_framework.decorators import action
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from .serializers import ImageSerializer, FormulaSerializer
 from .models import Formula, Image
 
@@ -32,7 +34,7 @@ class ImageView(viewsets.ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
     # lookup_field = 'id_image'
-    lookup_field = 'id'
+    # lookup_field = 'id'
 
 class FormulaView(viewsets.ModelViewSet):
 
@@ -40,9 +42,46 @@ class FormulaView(viewsets.ModelViewSet):
     serializer_class = FormulaSerializer
     # lookup_field = 'id_formula'
 
-    # @action(detail=True)
-    # def search(self, request):
-    #     pass
+    @action(detail=False, methods=["post"])
+    def search(self, request):
+        print(request.data)
+
+        if not request.data:
+            print('request vacia!')
+            data = Formula.objects.all()
+        
+        else:
+            criterion = request.data['data']
+            keys = [
+                'title',
+                'added_at',
+                'category',
+            ]
+
+            data = {'formulas' : []}
+            found = False
+            for key in keys:
+                if found:
+                    break
+                
+                filter = {key: criterion}
+                print(filter)
+                try:
+                    result = Formula.objects.filter(**filter)
+
+                except ValidationError as e:
+                    print(e)
+                    continue
+
+                print(result)
+                if result:
+                    found = True
+                    
+                    for formula in result:
+                        data['formulas'].append(FormulaSerializer(formula).data)
+
+        
+        return Response(data, status=status.HTTP_200_OK)
 
 # class UserViewSet(viewsets.GenericViewSet):
 

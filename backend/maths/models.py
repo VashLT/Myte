@@ -4,8 +4,6 @@ from django import forms
 
 class Image(models.Model):
     _id = models.ObjectIdField()
-    id_image = models.IntegerField()
-    ejeplo = models.SmallIntegerField()
     date = models.DateTimeField()
     url = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
@@ -19,7 +17,7 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = (
-            'id_image', 
+            # 'id_image', 
             'date', 
             'url', 
             'title'
@@ -40,15 +38,14 @@ class StringObjectForm(forms.ModelForm):
         )
 
 class Formula(models.Model):
-    # _id = models.ObjectIdField()
-    # id = models.AutoField(primary_key=True)
-    id_formula = models.IntegerField()
+    _id = models.ObjectIdField()
     added_at = models.DateTimeField()
     # tags = ArrayField(
     #     model_container=StringObject, #type:ignore
     #     model_form_class=StringObjectForm, #type:ignore
     # )
     tags = models.CharField(max_length=200)
+    category = models.CharField(max_length=200)
     title = models.TextField()
     latex_code = models.CharField(max_length=200)
     images = ArrayField(
@@ -56,4 +53,3 @@ class Formula(models.Model):
         model_form_class=ImageForm
     )
     is_deleted = models.BooleanField()
-    # category = models.CharField(max_length=200)
