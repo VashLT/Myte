@@ -47,7 +47,7 @@ class Formula(models.Model):
     #     model_form_class=StringObjectForm, #type:ignore
     # )
     tags = models.TextField(max_length=200)
-    category = models.TextField(max_length=200)
+    category = models.TextField(max_length=200, blank=True)
     title = models.TextField()
     latex_code = models.TextField(max_length=200)
     images = models.TextField(max_length=200)
