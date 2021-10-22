@@ -22,7 +22,7 @@ from users.serializers import (
 from django.contrib.auth.models import User
 from users import utils
 
-
+# Cada funcion es una url (por ejemplo, login es users/login/, register es users/register)
 class UserViewSet(viewsets.GenericViewSet):
 
     queryset = User.objects.filter(is_active=True)
