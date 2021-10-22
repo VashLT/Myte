@@ -34,6 +34,7 @@ urlpatterns = [
     # path('', admin.site.urls),
 
     # REST
-    path('api/logout/', users.views.basic_logout),
+    path('api/tags/', maths.views.TagsView.as_view()),
+    path('api/logout/', users.views.LogoutView.as_view()),
     path('api/', include(router.urls)),
 ]

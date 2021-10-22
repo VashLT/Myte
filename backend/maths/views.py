@@ -1,17 +1,14 @@
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponse, JsonResponse
-from rest_framework.response import Response
-from maths import models
+from django.http import JsonResponse
 
-from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status, viewsets
 from .serializers import FormulaSerializer, MathUserSerializer
 from .models import Formula, MathUser
 
-import datetime
+import json
 
 class FormulaView(viewsets.ModelViewSet):
 
@@ -79,15 +76,22 @@ class FormulaView(viewsets.ModelViewSet):
     def add(self, request):
         formula = FormulaSerializer(request.data).create(request.data)
         math_user = MathUser.objects.get(username=request.user.username)
+        tags = formula.tags
+
+        math_user_tags = set()
+        if math_user.tags:
+            math_user_tags.update(json.loads(math_user.tags.replace("'", "\"")))
+
+        math_user_tags.update(tags)
         
+        math_user.tags = str(list(math_user_tags))
+
         if math_user.formulas == "[]":
             math_user.formulas = f'[{formula.id_formula}]'
         
         else:
             math_user.formulas = f'{math_user.formulas[:-1]}, {formula.id_formula}]'
         
-        print(math_user.formulas)
-
         math_user.save()
         return Response(FormulaSerializer(formula).data, status=status.HTTP_200_OK)
 
@@ -121,81 +125,28 @@ class MathUserView(viewsets.ModelViewSet):
     serializer_class = MathUserSerializer
     lookup_field = 'username'
 
+class TagsView(View):
 
-# class UserViewSet(viewsets.GenericViewSet):
-
-#     queryset = User.objects.filter(is_active=True)
-#     serializer_class = UserModelSerializer
-
-#     # Detail define si es una petición de detalle o no, en methods añadimos el método permitido, en nuestro caso solo vamos a permitir post
-#     @action(detail=False, methods=["post"])
-#     def login(self, request):
-#         """User sign in."""
-#         print(request.data)
-#         # First clear everything before login
-#         logout(request)
-#         serializer = UserLoginSerializer(data=request.data)
-
-#         if not serializer.is_valid(raise_exception=False):
-#             data = {
-#                 "info": "password or username are not valid",
-#                 "failure": "validation failed",
-#             }
-
-#             return Response(data, status=status.HTTP_403_FORBIDDEN)
-
-#         user, token = serializer.save()
+    def get(self, request):
+        result = MathUser.objects.filter(username=request.user.username)
+        if not result:
+            return JsonResponse({'error': 'user not found'}, status=status.HTTP_403_FORBIDDEN)
         
-#         data = {
-#             "info": "success validation",
-#             "success": "user validated",
-#             "user": UserModelSerializer(user).data,
-#             "access_token": token,
-#         }
+        user_tags = []
+        for math_user in result:
+            if math_user.tags:
+                user_tags = json.loads(math_user.tags.replace("'", "\""))  
 
-#         response = Response(data, status=status.HTTP_201_CREATED)
-
-#         # Use default django authentication
-#         login(request, user)
-
-#         return response
-
-#     @action(detail=False, methods=["post"])
-#     def register(self, request):
-#         """User sign up."""
-#         serializer = UserSignUpSerializer(data=request.data)
-
-#         if not serializer.is_valid(raise_exception=True):
-#             data = {"info": "validation failed", "failure": "registration failed"}
-#             print(serializer.error_messages)
-
-#             return Response(data, status=status.HTTP_403_FORBIDDEN)
-
-#         user = serializer.save()
-#         data = {
-#             "info": "success validation",
-#             "success": "user validated",
-#             "user": UserModelSerializer(user).data,
-#         }
-
-#         return Response(data, status=status.HTTP_201_CREATED)
-
-#     @action(detail=False, methods=["get"])
-#     def auth(self, request):
+        total_tags = set(user_tags)
+        result = Formula.objects.filter(is_created__in=[False])
+        for formula in result:
+            formula_tags = json.loads(formula.tags.replace("'", "\""))
+            total_tags.update(formula_tags)
         
-#         serialized_user = UserModelSerializer(request.user)
-#         print(dict(serialized_user.data))
+        normalized_tags = [string.lower() for string in total_tags]
 
-#         if not serialized_user or serialized_user.data['username'] == '':
-#             response = {
-#                 'error': 'not auth'
-#             }
-#             stat = status.HTTP_403_FORBIDDEN
+        data = {
+            'tags': normalized_tags
+        }
 
-#         else:
-#             response = {
-#                 "data": serialized_user.data,
-#             }
-#             stat = status.HTTP_200_OK
-
-#         return Response(response, status=stat)
+        return JsonResponse(data, status=status.HTTP_200_OK)

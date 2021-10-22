@@ -63,7 +63,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
     def create(self, data):
         user = User.objects.create_user(**data) #type: ignore
-        mathuser = MathUser.objects.create(username=data['username'], formulas="[]")
+        mathuser = MathUser.objects.create(username=data['username'], formulas="[]", tags="[]")
         mathuser.save()
 
         return user

@@ -1,4 +1,5 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
+from django.views import View
 from django.http import JsonResponse
 
 # Django REST Framework
@@ -147,13 +148,16 @@ class UserViewSet(viewsets.GenericViewSet):
 
         return Response(data, status=status.HTTP_200_OK)
 
-def basic_logout(request):
-    logout(request)
 
-    data = {
-            "info": "success logout",
-            "success": "user logged out",
-        }
+class LogoutView(View):
 
-    return JsonResponse(data, status=status.HTTP_200_OK)
+    def get(self, request):
+        logout(request)
+
+        data = {
+                "info": "success logout",
+                "success": "user logged out",
+            }
+
+        return JsonResponse(data, status=status.HTTP_200_OK)
    

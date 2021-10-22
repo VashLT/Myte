@@ -17,9 +17,10 @@ class Formula(models.Model):
     latex_code = models.TextField(max_length=200)
     images = models.TextField(max_length=200)
     is_deleted = models.BooleanField(default=False, blank=True)
-    is_created = models.BooleanField(default=False, blank=True)
+    is_created = models.BooleanField(default=True, blank=True)
 
 class MathUser(models.Model):
     _id = models.ObjectIdField()
     username = models.TextField(max_length=200, unique=True)
     formulas = models.TextField(max_length=200)
+    tags = models.TextField(max_length=200)
