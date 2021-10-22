@@ -20,6 +20,7 @@ import Myte from '../../static/images/logo.png';
 import { renderAt } from '../../utils/components';
 import { AuthContext } from '../Contexts/Auth';
 import { LoadingButton } from '@mui/lab';
+import { cookieStorage } from '../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -66,7 +67,7 @@ export const Login = () => {
         axios.post('api/user/login/', {
             username: data.get('username'),
             password: data.get('password')
-        })
+        }, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
             .then(res => {
                 console.log("login", { res })
                 let data = (res as unknown as IresponseLogin).data

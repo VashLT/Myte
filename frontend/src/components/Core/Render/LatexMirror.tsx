@@ -17,7 +17,7 @@ export const LatexMirror: React.FC<LatexMirrorProps> = ({ rawLatex, className })
     const classes = useStyles();
 
     return (
-        <Paper variant="outlined" className={classes.mirrorContainer}>
+        <Paper variant="outlined" className={classes.mirrorContainer + " latex__mirror"}>
             <LatexRender className={className ? className : ""} dynamic={true}>
                 {rawLatex}
             </LatexRender>

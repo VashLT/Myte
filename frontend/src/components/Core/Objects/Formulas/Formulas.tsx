@@ -9,6 +9,7 @@ import { FormulaWrapper as Formula } from './Formula';
 import axios from 'axios';
 import BriefNotification from '../../Alerts/BriefNotification';
 import { renderAt } from '../../../../utils/components';
+import { cookieStorage } from '../../../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -23,10 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginLeft: '0px !important',
         marginBottom: '20px',
         gridTemplateColumns: 'repeat(auto-fit, 300px)',
-        gridGap: '10px',
+        gridGap: '20px',
         [theme.breakpoints.up('md')]: {
             justifyContent: 'left',
-            gridTemplateRows: 'repeat(auto-fit, 300px)',
+            // gridTemplateRows: 'repeat(auto-fit, 300px)',
         },
         [theme.breakpoints.down('sm')]: {
             width: '100vw !important'
@@ -52,7 +53,7 @@ export const Formulas: React.FC = () => {
 
     useEffect(() => {
         if (didFetch) return;
-        fetchFormulas(classes.gridItem, () => setDidFetch(true))
+        fetchFormulas(() => setDidFetch(true))
     });
 
     return (
@@ -82,11 +83,15 @@ export const Formulas: React.FC = () => {
     );
 }
 
-const fetchFormulas = async (className: string, callback: () => void) => {
-    let formulas: [] | IunfmtFormula[] = await axios.post("api/formulas/search/", {})
+export const fetchFormulas = async (callback?: () => void) => {
+    let formulas: [] | IunfmtFormula[] = await axios.post("api/formulas/search/",
+        { data: "" },
+        {
+            headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" }
+        })
         .then(res => {
             console.log({ res });
-            const data = (res as unknown as IresponseFormulas)
+            const data = (res as unknown as IresponseFormulas).data
 
             if (!("formulas" in data)) {
                 return []
@@ -106,6 +111,8 @@ const fetchFormulas = async (className: string, callback: () => void) => {
             return []
         }) as IunfmtFormula[] | []
 
+    console.log({ formulas })
+
     // temporary
     if (formulas.length === 0) {
         formulas = mockFormulas;
@@ -113,7 +120,9 @@ const fetchFormulas = async (className: string, callback: () => void) => {
 
     insertFormulas(formulas);
 
-    callback();
+    if (callback) {
+        callback();
+    }
 };
 
 export const insertFormulas = (formulas: IunfmtFormula[]) => {
@@ -133,6 +142,7 @@ export const insertFormulas = (formulas: IunfmtFormula[]) => {
                             category={formula.category}
                             isDeleted={formula.is_deleted}
                             title={formula.title}
+                            isCreated={formula.is_created}
                         />
                     </Grid>
                 );

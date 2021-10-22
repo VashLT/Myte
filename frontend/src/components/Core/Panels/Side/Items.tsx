@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles';
 import React, { memo, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { renderAt } from '../../../../utils/components';
+import { logout } from '../../../../utils/funcs';
 import { AuthContext } from '../../../Contexts/Auth';
 import AddFormula from '../../Dialogs/AddFormula';
 
@@ -74,8 +75,7 @@ export const Items: React.FC<{ panelIsOpen: boolean, inMobile?: boolean }> = ({ 
                     <ListItem
                         button
                         sx={{ mt: 'auto' }}
-                        component={Link}
-                        to='/logout'
+                        onClick={logout}
                     >
                         <ListItemIcon>
                             <Logout />

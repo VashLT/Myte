@@ -14,6 +14,7 @@ import { Add, Delete, Edit } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
 import { LoadingButton } from '@mui/lab';
 import EditLatex from '../Objects/Formulas/Latex';
+import { cookieStorage } from '../../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     noClickBackdrop: {
@@ -43,14 +44,30 @@ export const AddFormula: React.FC = memo(() => {
     const classes = useStyles();
 
     const saveFormula = useCallback(async () => {
-        await axios.post("/api/formulas/add")
+        await axios.post("api/formulas/add/",
+            {
+
+                title: title,
+                tags: tags,
+                latex_code: latex,
+                category: category,
+                images: [],
+                is_deleted: false,
+                is_created: true
+            },
+            {
+                headers: {
+                    'X-CSRFToken': cookieStorage.getItem('csrftoken') || ""
+                }
+            }
+        )
             .then(res => {
                 console.log("saveFormula", { res });
                 const data = (res as unknown as IresponseState).data;
                 if ("error" in data) {
                     renderAt(<BriefNotification text={data.error!} type="main" severity='error' />, "_overlay")
                 } else {
-                    renderAt(<BriefNotification text={data.success!} type="main" severity='success' />, "_overlay")
+                    renderAt(<BriefNotification text="Formula has been successfully created" type="secondary" severity='success' />, "_overlay")
                 }
             })
             .catch(err => {
@@ -62,7 +79,7 @@ export const AddFormula: React.FC = memo(() => {
                 // setOpen(false);
                 setIsLoading(false);
             })
-    }, [setIsLoading]);
+    }, [setIsLoading, title, tags, latex, category]);
 
     const handleClose = () => {
         setIsLoading(true)
@@ -112,7 +129,7 @@ export const AddFormula: React.FC = memo(() => {
                     onClick={handleClose}
                     variant="contained"
                     color="success"
-                    disabled={title === "" && latex === ""}
+                    disabled={(title === "" || title === null) && latex === ""}
                     endIcon={<Add />}
                 >
                     Create

@@ -8,18 +8,18 @@ export const Skeleton: React.FC = () => {
         <div>
             <MUISkeleton variant="text" sx={{
                 width: '280px',
-                height: '80px',
+                height: '100px',
                 [theme.breakpoints.up('sm')]: {
                     width: '300px',
-                    height: '80px'
+                    height: '100px'
                 },
             }} />
             <MUISkeleton variant="rectangular" sx={{
                 width: '280px',
-                height: '300px',
+                height: '200px',
                 [theme.breakpoints.up('sm')]: {
-                    width: '320px',
-                    height: '350px'
+                    width: '300px',
+                    height: '220px'
                 },
             }} />
         </div>

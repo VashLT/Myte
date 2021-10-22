@@ -97,10 +97,13 @@ export const Container: React.FC = memo(() => {
 
 const TAGS_MENU_MAX_HEIGHT = 50;
 
-export const TagsList: React.FC<{ tags: string[], className?: string }> = ({ tags, className }) => {
+export const TagsList: React.FC<{ tags: string[], className?: string, sx?: { [key: string]: string } }> = ({ tags, className, sx }) => {
     const classes = useStyles();
+    if (!sx) {
+        sx = {}
+    }
     return (
-        <Box className={classes.tagsList}>
+        <Box className={classes.tagsList} sx={sx}>
             {tags.map(tag => <Tag name={tag} className={className || classes.tag} />)}
         </Box>
     );

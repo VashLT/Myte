@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 
 import { makeStyles } from '@mui/styles';
-import { Box, Dialog, TextField, Theme } from '@mui/material';
+import { Box, CircularProgress, Dialog, TextField, Theme } from '@mui/material';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import ListItem from '@mui/material/ListItem';
@@ -24,6 +24,8 @@ import LatexMirror from '../../Render/LatexMirror';
 import LatexProvider from '../../../Contexts/Latex';
 import { TagsMenu } from '../Tags/Tags';
 import CategoriesMenu from './CategoriesMenu';
+import { cookieStorage } from '../../../../utils/storage';
+import { fetchFormulas } from './Formulas';
 
 const useStyles = makeStyles((theme: Theme) => ({
     latexContainer: {
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) => {
+export const EditMenu: React.FC<{ context: IformulaContext }> = memo(({ context }) => {
     const { formula } = context as IfullFormulaContext;
 
     const [open, setOpen] = useState(true);
@@ -56,8 +58,6 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
     const [saveLoading, setSaveLoading] = useState(false);
 
     const classes = useStyles();
-
-    console.log({ formula })
 
     const handleTitleChange = (e: React.FormEvent) => {
         const element = e.currentTarget as HTMLElement;
@@ -77,14 +77,25 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
     }
 
     const saveChanges = useCallback(async () => {
+        console.log("saveChanges", { title, latex, tags })
         setSaveLoading(true)
-        await axios.post("/api/formulas/edit", {
-            ...formula, title, latex, tags
-        })
+        await axios.put(`api/formulas/${formula.idFormula}/`,
+            {
+                ...formula, title, latex_code: latex, tags
+            },
+            {
+                headers: {
+                    'X-CSRFToken': cookieStorage.getItem('csrftoken') || ""
+                }
+            }
+        )
             .then(res => {
-                console.log("/api/formulas/edit", { res })
-                if ("error" in res) {
+                console.log("api/formulas/", { res })
+                const data = (res as unknown as IresponseState).data;
+                if ("error" in data) {
                     renderAt(<BriefNotification type='main' severity='error' text="Formula could not be saved, internal error" />, "_overlay")
+                } else {
+                    renderAt(<BriefNotification text="Formula successfully updated" type="secondary" severity="success" />, "_overlay");
                 }
             })
             .catch(err => {
@@ -92,6 +103,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
                 renderAt(<BriefNotification type='main' severity='error' text={String(err)} />, "_overlay")
             })
 
+        await fetchFormulas()
         setSaveLoading(false)
         setTimeout(() => setOpen(false), 500)
 
@@ -129,6 +141,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
                         loading={saveLoading}
                         autoFocus
                         color="inherit"
+                        loadingIndicator={<CircularProgress sx={{ color: "white", fill: "white" }} size={16} />}
                         onClick={saveChanges}>
                         save
                     </LoadingButton>
@@ -161,7 +174,7 @@ export const EditMenu: React.FC<{ context: IformulaContext }> = ({ context }) =>
             </List>
         </Dialog>
     );
-}
+})
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {

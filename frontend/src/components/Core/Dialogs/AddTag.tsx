@@ -8,6 +8,7 @@ import { LoadingButton } from '@mui/lab';
 import { renderAt } from '../../../utils/components';
 import BriefNotification from '../Alerts/BriefNotification';
 import TagContext from '../../Contexts/Tag';
+import { cookieStorage } from '../../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {}
@@ -22,7 +23,11 @@ export const AddTag: React.FC<{ open: boolean; setOpen: (state: boolean) => void
     const classes = useStyles();
 
     const saveTag = useCallback(async () => {
-        await axios.post("api/tag/add/", { label: tag })
+        await axios.post(
+            "api/tags/add/",
+            { tag: tag },
+            { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } }
+        )
             .then(res => {
                 console.log("saveLabel", { res })
                 const data = (res as unknown as IresponseState).data;
@@ -49,8 +54,8 @@ export const AddTag: React.FC<{ open: boolean; setOpen: (state: boolean) => void
     }
 
     return (
-        <Dialog open={open} onClose={handleClose} keepMounted={true}>
-            <DialogTitle>Create Label</DialogTitle>
+        <Dialog open={open} onClose={() => setOpen(false)} keepMounted={true}>
+            <DialogTitle>Create Tag</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus

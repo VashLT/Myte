@@ -48,7 +48,7 @@ const AppRouter: React.FC = () => {
         <Route exact path='/test' component={Test} />
         <Route
           path='/:username([A-Za-z0-9]+)'
-          render={({ match }) => match.params.username ? <Profile /> : <NotFound />}
+          render={({ match }) => match.params.username ? <Profile username={match.params.username} /> : <NotFound />}
         />
         <Route path='/' component={NotFound} />
       </Switch>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@mui/styles';
-import { AppBar, IconButton, Theme, Toolbar } from '@mui/material';
+import { AppBar, IconButton, Theme, Toolbar, Tooltip } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { Menu } from '@mui/icons-material';
@@ -11,7 +11,13 @@ import { Toggle as ThemeToggle } from '../../Theme/Toggle';
 import ProfileMenu from './ProfileMenu';
 
 const useStyles = makeStyles((theme: Theme) => ({
-    container: {}
+    container: {},
+    themeToggle: {
+        marginLeft: 'auto !important',
+        '@media (min-width: 600px)': {
+            marginRight: '10px !important'
+        }
+    }
 }));
 
 export const TopPanel: React.FC = () => {
@@ -43,7 +49,9 @@ export const TopPanel: React.FC = () => {
                         <Menu />
                     </IconButton>
                     <SearchBar />
-                    <ThemeToggle />
+                    <Tooltip title="toggle theme" placement='bottom'>
+                        <ThemeToggle className={classes.themeToggle} />
+                    </Tooltip>
                     <ProfileMenu />
                 </Toolbar>
             </AppBar>

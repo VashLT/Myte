@@ -16,6 +16,7 @@ import { AuthContext } from '../Contexts/Auth';
 import { renderAt } from '../../utils/components';
 import { LoadingButton } from '@mui/lab';
 import { AvatarGenerator } from 'random-avatar-generator';
+import { cookieStorage } from '../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     form: {
@@ -91,7 +92,7 @@ export const SignUpForm: React.FC = () => {
             first_name: data.get('name'),
             email: data.get('email'),
             password: data.get('password')
-        })
+        }, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
             .then(res => {
                 console.log("sign up response", { res });
                 let data = (res as unknown as IresponseLogin).data;

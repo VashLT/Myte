@@ -17,14 +17,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export const Logo: React.FC<IntrinsicProps> = ({ className }) => {
+export const Logo: React.FC<IntrinsicProps & { sx?: { [key: string]: string } }> = ({ className, sx }) => {
     const classes = useStyles();
+    if (!sx) {
+        sx = {}
+    }
     return (
         <Container component={Link} to="/"
             sx={{
                 '@media (min-width: 600px)': {
                     pl: 0, pr: 0
-                }
+                }, ...sx
             }}
         >
             <img src={Myte} className={className || classes.logo} alt="Myte" />

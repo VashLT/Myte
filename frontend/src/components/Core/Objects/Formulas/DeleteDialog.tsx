@@ -8,6 +8,8 @@ import axios from 'axios';
 import Alert from '../../Alerts/Alert';
 import BriefNotification from '../../Alerts/BriefNotification';
 import { renderAt } from '../../../../utils/components';
+import { cookieStorage } from '../../../../utils/storage';
+import { fetchFormulas } from './Formulas';
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -28,7 +30,44 @@ export const DeleteDialog: React.FC<{ context: IformulaContext }> = ({ context }
         await axios
             .post("api/formulas/delete/", {
                 id_formula: formula.idFormula
+            }, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
+            .then(res => {
+                console.log({ res })
+                const data = (res as unknown as IresponseState).data;
+                if (data === "") {
+                    context.setFormula({})
+                    renderAt(
+                        <BriefNotification type="secondary" severity='success' text="Formula deleted successfully" />,
+                        "_overlay"
+                    )
+                } else {
+                    renderAt(
+                        <Alert type="error" text="Internal error, formula can not be deleted" />,
+                        "_overlay"
+                    );
+                    setIsDisabled(true);
+                    return;
+                }
             })
+            .catch(err => {
+                console.error(err);
+                renderAt(
+                    <Alert type="error" text={String(err)} />,
+                    "_overlay"
+                )
+                setIsDisabled(true);
+            })
+
+        await fetchFormulas();
+        setOpen(false);
+        setLoading(false)
+
+    }, [setLoading, formula, context])
+
+    const deleteFormulaPermanent = useCallback(async () => {
+        setLoading(true);
+        await axios
+            .delete(`api/formulas/${formula.idFormula}/`, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
             .then(res => {
                 console.log({ res })
                 const data = (res as unknown as IresponseState).data;
@@ -41,7 +80,6 @@ export const DeleteDialog: React.FC<{ context: IformulaContext }> = ({ context }
                     return;
                 }
                 context.setFormula({})
-                setOpen(false)
                 renderAt(
                     <BriefNotification type="secondary" severity='success' text="Formula deleted successfully" />,
                     "_overlay"
@@ -55,14 +93,16 @@ export const DeleteDialog: React.FC<{ context: IformulaContext }> = ({ context }
                 )
                 setIsDisabled(true);
             })
-            .finally(() => setLoading(false))
 
-    }, [setLoading, formula, context])
+        await fetchFormulas();
+        setOpen(false);
+        setLoading(false)
+    }, [setOpen, setLoading, context, formula]);
 
-    const handleClick = useCallback(() => {
+    const handleClick = useCallback((permanent = false) => {
         setLoading(true);
-        deleteFormula()
-    }, [deleteFormula, setLoading]);
+        permanent ? deleteFormulaPermanent() : deleteFormula()
+    }, [deleteFormula, setLoading, deleteFormulaPermanent]);
 
     return (
         <Dialog
@@ -70,6 +110,7 @@ export const DeleteDialog: React.FC<{ context: IformulaContext }> = ({ context }
             onClose={() => setOpen(false)}
             aria-labelledby="delete-formula"
             aria-describedby="delete-formula"
+            className="delete__dialog"
         >
             <DialogTitle>
                 {"Delete Formula"}
@@ -92,6 +133,16 @@ export const DeleteDialog: React.FC<{ context: IformulaContext }> = ({ context }
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
+                <LoadingButton
+                    color='error'
+                    variant="outlined"
+                    startIcon={<Delete />}
+                    loadingPosition="start"
+                    onClick={() => handleClick(true)}
+                    disabled={isDisabled}
+                >
+                    Delete perma
+                </LoadingButton>
                 <LoadingButton
                     color='error'
                     variant="contained"

@@ -28,18 +28,17 @@ const useStyles = makeStyles((theme: Theme) => ({
             fill: 'white !important'
         },
         // '@media (max-width: 600px)': {
-        [theme.breakpoints.down('sm')]: {
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        }
+        // [theme.breakpoints.down('sm')]: {
+        //     marginLeft: 'auto',
+        //     marginRight: 'auto',
+        // }
     },
     logo: {
-        height: '60px'
+        height: '60px',
     },
     typoVersion: {
         fontSize: '12px',
-        fontWeight: 'bold',
-        marginLeft: '10px'
+        marginLeft: '10px !important'
     }
 }));
 
@@ -71,7 +70,7 @@ export const Header: React.FC<SidePanelHeaderProps> = ({ panelIsOpen, toggleCall
                     disableFocusListener={panelIsOpen}
                     title={`v${MYTE_VERSION}`}
                 >
-                    <Logo className={classes.logo} />
+                    <Logo className={classes.logo} sx={{ padding: '0 !important' }} />
                 </Tooltip>
 
                 {

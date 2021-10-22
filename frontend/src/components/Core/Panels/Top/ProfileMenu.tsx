@@ -6,10 +6,13 @@ import { AuthContext } from '../../../Contexts/Auth';
 import { DEFAULT_AVATAR_URL } from '../../../../utils/constants';
 import { Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { logout } from '../../../../utils/funcs';
 
 const useStyles = makeStyles((theme: Theme) => ({
     profileMenu: {
-        marginLeft: 'auto'
+        '@media (max-width: 600px)': {
+            display: 'none'
+        }
     }
 }));
 
@@ -68,11 +71,11 @@ export const ProfileMenu: React.FC = () => {
                 <MenuItem>
                     {auth.username}
                 </MenuItem>
-                <MenuItem LinkComponent={Link}>
+                <MenuItem LinkComponent={Link} href={`/${auth.username}`}>
                     <Avatar /> Profile
                 </MenuItem>
                 <Divider />
-                <MenuItem>
+                <MenuItem onClick={logout}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>

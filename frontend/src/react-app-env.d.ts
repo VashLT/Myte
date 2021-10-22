@@ -77,13 +77,23 @@ interface EditLatexProps extends IntrinsicProps {
 interface Iobject {
     [key: string]: string;
 }
+
 interface Iuser {
+    id_user: number;
+    username: string;
+    first_name: string;
+    email: string;
+    registered_at: string;
+    created_formulas: IunfmtFormula[];
+}
+
+interface IunfmtUser {
     idUser: number;
     username: string;
     name: string;
     email: string;
-    avatarUrl: string;
     registeredAt: string;
+    createdFormulas: Iformula[];
 }
 
 interface Iauth {
@@ -101,6 +111,7 @@ interface Iformula {
     latexCode: string;
     images: Iimage[];
     isDeleted: boolean;
+    isCreated: boolean;
 }
 
 interface IunfmtFormula {
@@ -113,6 +124,7 @@ interface IunfmtFormula {
     tags: string[];
     images: string[];
     is_deleted: boolean;
+    is_created: boolean;
 }
 
 type Iimage = string;
@@ -168,6 +180,13 @@ interface IresponseLoginFail {
 interface IresponseTags extends Iresponse {
     data: {
         tags?: string[];
+        error?: string;
+    }
+}
+
+interface IresponseUser extends Iresponse {
+    data: {
+        user?: Iuser;
         error?: string;
     }
 }

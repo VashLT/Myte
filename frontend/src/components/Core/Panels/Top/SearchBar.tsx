@@ -7,6 +7,7 @@ import axios from 'axios';
 import { renderAt } from '../../../../utils/components';
 import BriefNotification from '../../Alerts/BriefNotification';
 import { insertFormulas } from '../../Objects/Formulas/Formulas';
+import { cookieStorage } from '../../../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -34,7 +35,7 @@ export const SearchBar: React.FC = () => {
         setSearch(input.value)
         setIsLoading(true)
 
-        axios.post("api/formulas/search/", { data: input.value })
+        axios.post("api/formulas/search/", { data: input.value }, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
             .then(res => {
                 console.log("searchFormulas", { res });
                 const data = (res as unknown as IresponseFormulas).data;
@@ -46,6 +47,8 @@ export const SearchBar: React.FC = () => {
                 insertFormulas(data.formulas)
                 const length = data.formulas.length
 
+                if (input.value === "") return;
+
                 let text: string;
                 if (length === 0) {
                     text = "No formulas matched your search"
@@ -56,7 +59,7 @@ export const SearchBar: React.FC = () => {
                 }
 
                 setTimeout(() => {
-                    renderAt(<BriefNotification text={text} type="main" severity="error" />, "_overlay")
+                    renderAt(<BriefNotification text={text} type="main" severity="success" />, "_overlay")
                 }, 500)
             })
             .catch(err => {
