@@ -145,3 +145,14 @@ class UserViewSet(viewsets.GenericViewSet):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+
+def basic_logout(request):
+    logout(request)
+
+    data = {
+            "info": "success logout",
+            "success": "user logged out",
+        }
+
+    return Response(data, status=status.HTTP_200_OK)
+   

@@ -21,6 +21,7 @@ from rest_framework import routers
 import users.views
 import maths.views
 
+# REST router
 router = routers.DefaultRouter()
 router.register(r'formulas', maths.views.FormulaView, 'formula')
 router.register(r'mathusers', maths.views.MathUserView, 'users')
@@ -33,8 +34,6 @@ urlpatterns = [
     # path('', admin.site.urls),
 
     # REST
-    # path('api/auth', users.views.CheckAuth.as_view()),
-    # path('api/user/register/', users.views.RegisterUser.as_view()),
-    # path('api/user/login/', users.views.LoginUser.as_view()),
+    path('api/logout', users.views.basic_logout),
     path('api/', include(router.urls)),
 ]
