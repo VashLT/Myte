@@ -50,8 +50,5 @@ class Formula(models.Model):
     category = models.TextField(max_length=200)
     title = models.TextField()
     latex_code = models.TextField(max_length=200)
-    images = ArrayField(
-        model_container=Image,
-        model_form_class=ImageForm
-    )
+    images = models.TextField(max_length=200)
     is_deleted = models.BooleanField()
