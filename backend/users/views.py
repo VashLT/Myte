@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 
 # Django REST Framework
 from rest_framework import status, viewsets
@@ -154,5 +155,5 @@ def basic_logout(request):
             "success": "user logged out",
         }
 
-    return Response(data, status=status.HTTP_200_OK)
+    return JsonResponse(data, status=status.HTTP_200_OK)
    
