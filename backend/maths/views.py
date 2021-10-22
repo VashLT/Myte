@@ -190,3 +190,30 @@ class CategoriesView(View):
         }
 
         return JsonResponse(data, status=status.HTTP_200_OK)
+
+class AddTagsView(View):
+
+    def post(self, request):
+        result = MathUser.objects.filter(username=request.user.username)
+        if not result:
+            return JsonResponse({'error': 'user not found'}, status=status.HTTP_403_FORBIDDEN)
+        
+        user_tags = []
+        for math_user in result:
+            if math_user.tags:
+                user_tags = json.loads(math_user.tags.replace("'", "\""))  
+
+        total_tags = set(user_tags)
+        request_data = json.loads(request.body)
+        total_tags.add(request_data['tag'].lower())
+
+        math_user = MathUser.objects.get(username=request.user.username)
+        math_user.tags = str(list(total_tags))
+        math_user.save()
+        
+
+        data = {
+            'success': 'tag added successfully'
+        }
+
+        return JsonResponse(data, status=status.HTTP_200_OK)
