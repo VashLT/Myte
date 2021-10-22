@@ -12,14 +12,23 @@ class ImageSerializer(serializers.ModelSerializer):
             'url', 
             'title',
         )
+
     def create(self, validated_data):
-        obj_count = len(Image.objects.all())
+        clss = self.Meta.model
+        obj_count = len(clss.objects.all())
         print(obj_count)
 
-        return super().create(validated_data)
+        validated_data['title'] = validated_data['title'].upper()
+
+        obj = clss.objects.create(**validated_data, id_image=obj_count)
+        obj.save()
+
+        return obj
 
 class FormulaSerializer(serializers.ModelSerializer):
     id_formula = serializers.ReadOnlyField()
+    tags = serializers.ListField()
+    images = serializers.ListField()
     class Meta:
         model = Formula
         fields = (
@@ -34,7 +43,11 @@ class FormulaSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        obj_count = len(Formula.objects.all())
+        clss = self.Meta.model
+        obj_count = len(clss.objects.all())
         print(obj_count)
 
-        return super().create(validated_data)
+        obj = clss.objects.create(**validated_data, id_formula=obj_count)
+        obj.save()
+
+        return obj

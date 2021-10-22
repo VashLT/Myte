@@ -46,10 +46,10 @@ class Formula(models.Model):
     #     model_container=StringObject, #type:ignore
     #     model_form_class=StringObjectForm, #type:ignore
     # )
-    tags = models.CharField(max_length=200)
-    category = models.CharField(max_length=200)
+    tags = models.TextField(max_length=200)
+    category = models.TextField(max_length=200)
     title = models.TextField()
-    latex_code = models.CharField(max_length=200)
+    latex_code = models.TextField(max_length=200)
     images = ArrayField(
         model_container=Image,
         model_form_class=ImageForm
