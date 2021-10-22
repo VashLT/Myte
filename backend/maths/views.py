@@ -33,20 +33,25 @@ class FormulaView(viewsets.ModelViewSet):
             data = {'formulas' : formulas}
             return Response(data, status=status.HTTP_200_OK)
         
-        formulas = set()
+        formulas = []
+        used_ids = set()
         criterion = request.data['data']
         # title id date tag cat 
 
         # Busqueda por title
         query = {"title__icontains": criterion, }
         if result := active_formulas.filter(**query):
-            formulas.update([FormulaSerializer(formula).data for formula in result])
+            formula_list = [FormulaSerializer(formula).data for formula in result]
+            formulas.extend([formula for formula in formula_list if formula['id_formula'] not in used_ids])
+            used_ids.update([formula['id_formula'] for formula in formula_list])
 
         # Busqueda por id
         try:
             query = {"id_formula": int(criterion)}
             if result := active_formulas.filter(**query):
-                formulas.update([FormulaSerializer(formula).data for formula in result])
+                formula_list = [FormulaSerializer(formula).data for formula in result]
+                formulas.extend([formula for formula in formula_list if formula['id_formula'] not in used_ids])
+                used_ids.update([formula['id_formula'] for formula in formula_list])
         except ValueError:
             pass
 
@@ -54,7 +59,9 @@ class FormulaView(viewsets.ModelViewSet):
         query = {"added_at": criterion}
         try:
             if result := active_formulas.filter(**query):
-                formulas.update([FormulaSerializer(formula).data for formula in result])
+                formula_list = [FormulaSerializer(formula).data for formula in result]
+                formulas.extend([formula for formula in formula_list if formula['id_formula'] not in used_ids])
+                used_ids.update([formula['id_formula'] for formula in formula_list])
             
         except ValidationError as e:
             pass
@@ -62,13 +69,16 @@ class FormulaView(viewsets.ModelViewSet):
         # Busqueda por categoria
         query = {"category__icontains": criterion}
         if result := active_formulas.filter(**query):
-                formulas.update([FormulaSerializer(formula).data for formula in result])
-        
+            formula_list = [FormulaSerializer(formula).data for formula in result]
+            formulas.extend([formula for formula in formula_list if formula['id_formula'] not in used_ids])
+            used_ids.update([formula['id_formula'] for formula in formula_list])
         # Busqueda por tags
         query = {"tags__icontains": criterion}
         if result := active_formulas.filter(**query):
-                formulas.update([FormulaSerializer(formula).data for formula in result])
-
+            formula_list = [FormulaSerializer(formula).data for formula in result]
+            formulas.extend([formula for formula in formula_list if formula['id_formula'] not in used_ids])
+            used_ids.update([formula['id_formula'] for formula in formula_list])
+            
         data = {'formulas' : list(formulas)}
         return Response(data, status=status.HTTP_200_OK)
     
