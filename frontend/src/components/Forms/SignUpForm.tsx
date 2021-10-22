@@ -15,6 +15,7 @@ import Alert from '../Core/Alerts/Alert';
 import { AuthContext } from '../Contexts/Auth';
 import { renderAt } from '../../utils/components';
 import { LoadingButton } from '@mui/lab';
+import { AvatarGenerator } from 'random-avatar-generator';
 
 const useStyles = makeStyles((theme: Theme) => ({
     form: {

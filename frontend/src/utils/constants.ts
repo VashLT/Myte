@@ -31,3 +31,5 @@ export const COLORS = {
     skin: "#eedad1",
     lightSkin: "#eee4df"
 }
+
+export const DEFAULT_AVATAR_URL = 'https://i.imgur.com/nRIHLu0.png'

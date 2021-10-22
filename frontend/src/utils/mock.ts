@@ -4,36 +4,36 @@ export const mockAuth = {
     email: "vashlt@gmail.com"
 }
 
-export const mockFormulas = [
+export const mockFormulas: IunfmtFormula[] = [
     {
-        idFormula: 0,
-        addedAt: "10/19/2021",
+        id_formula: 0,
+        added_at: "2021-10-18T22:04:00Z",
         tags: ["calculo"],
         category: "Matematicas",
         title: "Aproximación de seno",
-        latexCode: "\\sin{x} \\approx x",
+        latex_code: "\\sin{x} \\approx x",
         images: [],
-        isDeleted: false
+        is_deleted: false
     },
     {
-        idFormula: 1,
-        addedAt: "10/19/2021",
+        id_formula: 1,
+        added_at: "2021-10-18T22:04:00Z",
         tags: ["calculo"],
         category: "Quimica",
         title: "Aproximación de seno",
-        latexCode: "\\text{write some LaTeX: } e^{2\\pi\\theta} + 1 = 0  \\\\ \\sin{x} \\approx x",
+        latex_code: "\\text{write some LaTeX: } e^{2\\pi\\theta} + 1 = 0  \\\\ \\sin{x} \\approx x",
         images: [],
-        isDeleted: false
+        is_deleted: false
     },
     {
-        idFormula: 2,
-        addedAt: "10/19/2021",
+        id_formula: 2,
+        added_at: "2021-10-18T22:04:00Z",
         tags: ["calculo", "ec. diferenciales", "quimica", "ingles", "frances"],
         category: "Matematicas",
         title: "Aproximación de seno",
-        latexCode: "\\sin{x} \\approx x",
+        latex_code: "\\sin{x} \\approx x",
         images: [],
-        isDeleted: false
+        is_deleted: false
     },
 ]
 

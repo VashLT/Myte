@@ -103,12 +103,19 @@ interface Iformula {
     isDeleted: boolean;
 }
 
-interface Iimage {
-    idImage: number;
-    date: string;
-    url: string;
+interface IunfmtFormula {
+    id_formula: number;
+    added_at: string;
     title: string;
+    latex_code: string;
+    images: string[];
+    category: string;
+    tags: string[];
+    images: string[];
+    is_deleted: boolean;
 }
+
+type Iimage = string;
 
 interface IaddFormula {
     title: string;
@@ -126,7 +133,7 @@ type MInputEvent = React.FormEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 interface IresponseFormulas extends Iresponse {
     data: {
-        formulas: Iformula[];
+        formulas: IunfmtFormula[];
         error: string;
     };
 }

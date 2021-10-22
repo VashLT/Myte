@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         }
     },
     gridItem: {
-        backgroundColor: 'blue',
-        border: 'solid 1px white',
+        // backgroundColor: 'blue',
+        // border: 'solid 1px white',
     },
     title: {
         fontSize: '4rem !important',
@@ -83,7 +83,7 @@ export const Formulas: React.FC = () => {
 }
 
 const fetchFormulas = async (className: string, callback: () => void) => {
-    let formulas: [] | Iformula[] = await axios.post("api/formulas/search/", {})
+    let formulas: [] | IunfmtFormula[] = await axios.post("api/formulas/search/", {})
         .then(res => {
             console.log({ res });
             const data = (res as unknown as IresponseFormulas)
@@ -104,7 +104,7 @@ const fetchFormulas = async (className: string, callback: () => void) => {
                 "_overlay"
             )
             return []
-        }) as Iformula[] | []
+        }) as IunfmtFormula[] | []
 
     // temporary
     if (formulas.length === 0) {
@@ -116,14 +116,24 @@ const fetchFormulas = async (className: string, callback: () => void) => {
     callback();
 };
 
-export const insertFormulas = (formulas: Iformula[]) => {
+export const insertFormulas = (formulas: IunfmtFormula[]) => {
+    console.log("insertFormulas", { formulas })
     if (formulas.length === 0) return;
     renderAt(
         <>
             {formulas.map(formula => {
                 return (
                     <Grid item justifyContent={'center'}>
-                        <Formula {...formula} />
+                        <Formula
+                            idFormula={formula.id_formula}
+                            addedAt={formula.added_at}
+                            latexCode={formula.latex_code}
+                            tags={formula.tags}
+                            images={formula.images}
+                            category={formula.category}
+                            isDeleted={formula.is_deleted}
+                            title={formula.title}
+                        />
                     </Grid>
                 );
             })}

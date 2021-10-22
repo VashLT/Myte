@@ -8,6 +8,7 @@ import { Menu } from '@mui/icons-material';
 import SearchBar from './SearchBar';
 import SidePanelContext from '../../../Contexts/SidePanel';
 import { Toggle as ThemeToggle } from '../../Theme/Toggle';
+import ProfileMenu from './ProfileMenu';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {}
@@ -43,6 +44,7 @@ export const TopPanel: React.FC = () => {
                     </IconButton>
                     <SearchBar />
                     <ThemeToggle />
+                    <ProfileMenu />
                 </Toolbar>
             </AppBar>
         </Box>

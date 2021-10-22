@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // import { ReactComponent as Myte } from '../../../static/images/logo.svg';
-import Myte from '../../../static/images/logo.png';
+import Myte from '../../../static/images/logo.svg';
 
 const useStyles = makeStyles((theme: Theme) => ({
     text: {

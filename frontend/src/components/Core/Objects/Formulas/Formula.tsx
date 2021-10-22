@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme: Theme) => ({
         bottom: '10px',
         right: '5px'
     },
+    dateText: {
+        fontSize: '12px',
+        margin: '0'
+    }
 }));
 
 export const FormulaWrapper: React.FC<FormulaProps> = (props) => {
@@ -69,7 +73,7 @@ export const Formula: React.FC = () => {
                         </>
                     }
                     title={title}
-                    subheader={addedAt} />
+                    subheader={<p className={classes.dateText}>{addedAt.split("T")[0]} </p>} />
                 <CardContent className={classes.formulaBody} style={{ backgroundColor: 'white' }}>
                     <LatexRender>{latexCode}</LatexRender>
                 </CardContent>

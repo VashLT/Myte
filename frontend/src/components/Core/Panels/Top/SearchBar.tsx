@@ -42,6 +42,7 @@ export const SearchBar: React.FC = () => {
                     renderAt(<BriefNotification text={data.error!} type="main" severity="error" />, "_overlay")
                     return;
                 }
+                // console.log({ json })
                 insertFormulas(data.formulas)
                 const length = data.formulas.length
 
