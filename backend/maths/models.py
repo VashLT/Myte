@@ -23,4 +23,5 @@ class MathUser(models.Model):
     _id = models.ObjectIdField()
     username = models.TextField(max_length=200, unique=True)
     formulas = models.TextField(max_length=200)
+    categories = models.TextField(max_length=200)
     tags = models.TextField(max_length=200)

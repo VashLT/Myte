@@ -78,7 +78,7 @@ class FormulaView(viewsets.ModelViewSet):
             formula_list = [FormulaSerializer(formula).data for formula in result]
             formulas.extend([formula for formula in formula_list if formula['id_formula'] not in used_ids])
             used_ids.update([formula['id_formula'] for formula in formula_list])
-            
+
         data = {'formulas' : list(formulas)}
         return Response(data, status=status.HTTP_200_OK)
     
@@ -87,14 +87,18 @@ class FormulaView(viewsets.ModelViewSet):
         formula = FormulaSerializer(request.data).create(request.data)
         math_user = MathUser.objects.get(username=request.user.username)
         tags = formula.tags
+        category = formula.category
 
-        math_user_tags = set()
+        math_user_tags = set(tags)
         if math_user.tags:
             math_user_tags.update(json.loads(math_user.tags.replace("'", "\"")))
 
-        math_user_tags.update(tags)
-        
+        math_user_cats = set([category])
+        if math_user.categories:
+            math_user_cats.update(json.loads(math_user.categories.replace("'", "\"")))
+
         math_user.tags = str(list(math_user_tags))
+        math_user.categories = str(list(math_user_cats))
 
         if math_user.formulas == "[]":
             math_user.formulas = f'[{formula.id_formula}]'
@@ -153,10 +157,36 @@ class TagsView(View):
             formula_tags = json.loads(formula.tags.replace("'", "\""))
             total_tags.update(formula_tags)
         
-        normalized_tags = [string.lower() for string in total_tags]
+        normalized_tags = list(set([string.lower() for string in total_tags]))
 
         data = {
             'tags': normalized_tags
+        }
+
+        return JsonResponse(data, status=status.HTTP_200_OK)
+
+class CategoriesView(View):
+
+    def get(self, request):
+        result = MathUser.objects.filter(username=request.user.username)
+        if not result:
+            return JsonResponse({'error': 'user not found'}, status=status.HTTP_403_FORBIDDEN)
+        
+        user_cats = []
+        for math_user in result:
+            if math_user.categories:
+                user_cats = json.loads(math_user.categories.replace("'", "\""))  
+
+        total_cats = set(user_cats)
+        result = Formula.objects.filter(is_created__in=[False])
+        for formula in result:
+            formula_category = formula.category
+            total_cats.add(formula_category)
+        
+        normalized_tags = list(set([string.lower() for string in total_cats]))
+
+        data = {
+            'categories': normalized_tags
         }
 
         return JsonResponse(data, status=status.HTTP_200_OK)

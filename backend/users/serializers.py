@@ -40,7 +40,7 @@ class UserLoginSerializer(serializers.Serializer):
         return data
 
     def create(self, data):
-        """Generar o recuperar token."""
+        '''Generar o recuperar token.'''
         token, created = Token.objects.get_or_create(user=self.context['user'])
         return self.context['user'], token.key
 
@@ -63,7 +63,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
     def create(self, data):
         user = User.objects.create_user(**data) #type: ignore
-        mathuser = MathUser.objects.create(username=data['username'], formulas="[]", tags="[]")
+        mathuser = MathUser.objects.create(username=data['username'], formulas='[]', tags='[]', categories='[]')
         mathuser.save()
 
         return user

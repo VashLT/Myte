@@ -60,13 +60,15 @@ class FormulaSerializer(serializers.ModelSerializer):
 
 
 class MathUserSerializer(serializers.ModelSerializer):
-    # username = serializers.ReadOnlyField()
     formulas = StringListField()
     tags = StringListField()
+    categories = StringListField()
+
     class Meta:
         model = MathUser
         fields = (
             'username', 
             'formulas', 
             'tags',
+            'categories',
         )
