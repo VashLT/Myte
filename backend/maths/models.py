@@ -1,46 +1,11 @@
 from djongo import models
 from djongo.models.fields import ArrayField
 from django import forms
-
-class Image(models.Model):
-    _id = models.ObjectIdField()
-    id_image = models.PositiveIntegerField()
-    date = models.DateTimeField()
-    url = models.CharField(max_length=200)
-    title = models.CharField(max_length=200)
-
-    objects = models.DjongoManager()
-    def _str_(self):
-        return self.url
-
-class ImageForm(forms.ModelForm):
-
-    class Meta:
-        model = Image
-        fields = (
-            # 'id_image', 
-            'date', 
-            'url', 
-            'title'
-        )
-
-class StringObject(models.Model):
-    content = models.CharField(max_length=50)
-
-    class Meta:
-        abstract = True
-
-class StringObjectForm(forms.ModelForm):
-
-    class Meta:
-        model = StringObject
-        fields = (
-            'content',
-        )
+from django.contrib.auth.models import User
 
 class Formula(models.Model):
     _id = models.ObjectIdField()
-    id_formula = models.PositiveIntegerField()
+    id_formula = models.PositiveIntegerField(unique=True)
     added_at = models.DateTimeField()
     # tags = ArrayField(
     #     model_container=StringObject, #type:ignore
@@ -51,4 +16,10 @@ class Formula(models.Model):
     title = models.TextField()
     latex_code = models.TextField(max_length=200)
     images = models.TextField(max_length=200)
-    is_deleted = models.BooleanField()
+    is_deleted = models.BooleanField(default=False, blank=True)
+    is_created = models.BooleanField(default=False, blank=True)
+
+class MathUser(models.Model):
+    _id = models.ObjectIdField()
+    username = models.TextField(max_length=200, unique=True)
+    formulas = models.TextField(max_length=200)

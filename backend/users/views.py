@@ -5,6 +5,10 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from maths.models import Formula, MathUser
+from maths.serializers import FormulaSerializer
+
+import json
 # Serializers
 from users.serializers import (
     UserLoginSerializer,
@@ -104,5 +108,37 @@ class UserViewSet(viewsets.GenericViewSet):
             "info": "success logout",
             "success": "user logged out",
         }
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["post"])
+    def search(self, request):
+        try:
+            user = User.objects.get(username=request.data['username'])
+        except Exception:
+            return Response({'error': 'user not found'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        iauth = {
+            'username': user.username,
+            'avatar_url': '',
+            'email': user.email
+        }
+
+        raw_formula_ids = MathUser.objects.get(username=user.username).formulas
+        formula_ids = [int(fid) for fid in json.loads(raw_formula_ids)]
+        print(formula_ids)
+        formulas = []
+
+        for fid in formula_ids:
+            result = Formula.objects.filter(id_formula=fid)
+
+            for formula in result:
+                formulas.append(FormulaSerializer(formula).data)
+
+        data = {
+            'user': iauth,
+            'formulas': formulas
+        }
+
 
         return Response(data, status=status.HTTP_200_OK)

@@ -8,33 +8,10 @@ from maths import models
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework import status, viewsets
-from .serializers import ImageSerializer, FormulaSerializer
-from .models import Formula, Image
+from .serializers import FormulaSerializer, MathUserSerializer
+from .models import Formula, MathUser
 
 import datetime
-
-class CreateFormula(View):
-
-    def get(self, request):
-        coso = models.Image.objects.create(
-            id_image = 1,
-            added_at = datetime.datetime.now(),
-            url = 'ejemplo,com',
-            title = 'exampletitle',
-        )
-        
-        response = {
-            'result': 'success'
-        }
-
-        return JsonResponse(response)
-
-class ImageView(viewsets.ModelViewSet):
-
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
-    lookup_field = 'id_image'
-    # lookup_field = 'id'
 
 class FormulaView(viewsets.ModelViewSet):
 
@@ -64,7 +41,7 @@ class FormulaView(viewsets.ModelViewSet):
                 if found:
                     break
                 
-                filter = {key: criterion}
+                filter = {key.upper(): criterion}
                 print(filter)
                 try:
                     result = Formula.objects.filter(**filter)
@@ -80,8 +57,30 @@ class FormulaView(viewsets.ModelViewSet):
                     for formula in result:
                         data['formulas'].append(FormulaSerializer(formula).data)
 
-        
         return Response(data, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=["post"])
+    def add(self, request):
+        formula = FormulaSerializer(request.data).create(request.data)
+        math_user = MathUser.objects.get(username=request.user.username)
+        
+        if math_user.formulas == "[]":
+            math_user.formulas = f'[{formula.id_formula}]'
+        
+        else:
+            math_user.formulas = f'{math_user.formulas[:-1]}, {formula.id_formula}]'
+        
+        print(math_user.formulas)
+
+        math_user.save()
+        return Response(FormulaSerializer(formula).data, status=status.HTTP_200_OK)
+
+class MathUserView(viewsets.ModelViewSet):
+
+    queryset = MathUser.objects.all()
+    serializer_class = MathUserSerializer
+    lookup_field = 'username'
+
 
 # class UserViewSet(viewsets.GenericViewSet):
 

@@ -8,6 +8,7 @@ from rest_framework.validators import UniqueValidator
 
 # Models
 from django.contrib.auth.models import User
+from maths.models import MathUser
 
 class UserModelSerializer(serializers.ModelSerializer):
 
@@ -62,4 +63,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
     def create(self, data):
         user = User.objects.create_user(**data) #type: ignore
+        mathuser = MathUser.objects.create(username=data['username'], formulas="[]")
+        mathuser.save()
+
         return user
