@@ -160,4 +160,14 @@ class LogoutView(View):
             }
 
         return JsonResponse(data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        logout(request)
+
+        data = {
+                "info": "success logout",
+                "success": "user logged out",
+            }
+
+        return JsonResponse(data, status=status.HTTP_200_OK)
    
