@@ -5,9 +5,9 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, I
 import { Close, Delete } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
-import { render, unmountComponentAtNode } from 'react-dom';
 import Alert from '../../Alerts/Alert';
 import BriefNotification from '../../Alerts/BriefNotification';
+import { renderAt } from '../../../../utils/components';
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,41 +24,39 @@ export const DeleteDialog: React.FC<{ context: IformulaContext }> = ({ context }
     const formula = context.formula as Iformula;
 
     const deleteFormula = useCallback(async () => {
-        const container = document.getElementById('_overlay') as HTMLElement;
-
-        unmountComponentAtNode(container);
-
+        setLoading(true);
         await axios
-            .post("api/formulas/delete", {
-                id: formula.id
+            .post("api/formulas/delete/", {
+                id_formula: formula.idFormula
             })
             .then(res => {
                 console.log({ res })
-                if ("error" in res) {
-                    render(
+                const data = (res as unknown as IresponseState).data;
+                if ("error" in data) {
+                    renderAt(
                         <Alert type="error" text="Internal error, formula can not be deleted" />,
-                        container
+                        "_overlay"
                     );
                     setIsDisabled(true);
                     return;
                 }
                 context.setFormula({})
                 setOpen(false)
-                render(
+                renderAt(
                     <BriefNotification type="secondary" severity='success' text="Formula deleted successfully" />,
-                    container
+                    "_overlay"
                 )
             })
             .catch(err => {
                 console.error(err);
-                render(
+                renderAt(
                     <Alert type="error" text={String(err)} />,
-                    container
+                    "_overlay"
                 )
                 setIsDisabled(true);
             })
+            .finally(() => setLoading(false))
 
-        setLoading(false);
     }, [setLoading, formula, context])
 
     const handleClick = useCallback(() => {
@@ -90,7 +88,7 @@ export const DeleteDialog: React.FC<{ context: IformulaContext }> = ({ context }
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    You are about to delete '{formula.title}', are you sure?
+                    You are about to delete "{formula.title}", are you sure?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

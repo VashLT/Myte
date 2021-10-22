@@ -4,7 +4,7 @@ import SidePanel from '../Core/Panels/Side/SidePanel';
 import SidePanelContext, { SidePanelProvider } from '../Contexts/SidePanel';
 import TopPanel from '../Core/Panels/Top/TopPanel';
 import Formulas from '../Core/Objects/Formulas/Formulas';
-import { TagsContainer as Tags } from '../Core/Objects/Tags/Tags';
+import { TagsWrapper as Tags } from '../Core/Objects/Tags/Tags';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // import { makeStyles } from '@mui/styles';

@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles';
 import { Box, TextField, Theme } from '@mui/material';
 import LatexMirror from '../Core/Render/LatexMirror';
 import LatexProvider from '../Contexts/Latex';
-import AddLabel from '../Core/Dialogs/AddLabel';
+import AddTag from '../Core/Dialogs/AddTag';
 // import DeleteDialog from '../Core/Formulas/DeleteDialog';
 // import BriefNotification from '../Core/Alerts/BriefNotification';
 

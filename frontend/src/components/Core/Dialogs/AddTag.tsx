@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 
 import { makeStyles } from '@mui/styles';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Theme } from '@mui/material';
@@ -7,19 +7,22 @@ import axios from 'axios';
 import { LoadingButton } from '@mui/lab';
 import { renderAt } from '../../../utils/components';
 import BriefNotification from '../Alerts/BriefNotification';
+import TagContext from '../../Contexts/Tag';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {}
 }));
 
-export const AddLabel: React.FC = () => {
-    const [open, setOpen] = useState(true);
-    const [label, setLabel] = useState("");
+export const AddTag: React.FC<{ open: boolean; setOpen: (state: boolean) => void; }> = ({ open, setOpen }) => {
+    const [tag, setTag] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const { addTag } = useContext(TagContext);
+
     const classes = useStyles();
 
-    const saveLabel = useCallback(async () => {
-        await axios.post("/api/label/add", { label })
+    const saveTag = useCallback(async () => {
+        await axios.post("api/tag/add/", { label: tag })
             .then(res => {
                 console.log("saveLabel", { res })
                 const data = (res as unknown as IresponseState).data;
@@ -28,44 +31,46 @@ export const AddLabel: React.FC = () => {
                 } else {
                     renderAt(<BriefNotification type="main" severity='success' text={data.success!} />, "_overlay")
                     setOpen(false);
-                }
 
+                    addTag(tag)
+                }
             })
             .catch(err => {
                 console.error(err)
                 renderAt(<BriefNotification type="main" severity="error" text={String(err)} />, "_overlay");
+                addTag(tag)
             })
             .finally(() => setLoading(false))
-    }, [setLoading, setOpen, label])
+    }, [setLoading, setOpen, tag, addTag])
 
     const handleClose = () => {
         setLoading(true)
-        saveLabel()
+        saveTag()
     }
 
     return (
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} keepMounted={true}>
             <DialogTitle>Create Label</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
-                    id="label"
-                    label="Label name"
+                    id="tag"
+                    label="Tag name"
                     type="text"
                     fullWidth
-                    defaultValue={label}
+                    defaultValue={tag}
                     variant="standard"
-                    onChange={(e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.currentTarget.value)}
+                    onChange={(e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => setTag(e.currentTarget.value)}
                 />
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <LoadingButton loading={loading} disabled={label === ""} variant="contained" color="success" endIcon={<Add />} onClick={handleClose}>Create</LoadingButton>
+                <LoadingButton loading={loading} disabled={tag === ""} variant="contained" color="success" endIcon={<Add />} onClick={handleClose}>Create</LoadingButton>
             </DialogActions>
         </Dialog>
     );
 }
 
 
-export default AddLabel;
+export default AddTag;

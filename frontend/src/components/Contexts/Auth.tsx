@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-// import { mockAuth } from "../../utils/mock";
+import { mockAuth } from "../../utils/mock";
 import axios from 'axios';
 
 export const AuthContext = React.createContext({
@@ -12,10 +12,9 @@ export const AuthContext = React.createContext({
 
 export const AuthProvider: React.FC = ({ children }) => {
     const [auth, setAuth] = useState<Iauth>({} as Iauth);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const getAuth = useCallback(async () => {
-        setIsLoading(true);
         let backendAuth = await axios.get('api/user/auth/')
             .then(res => {
                 console.log({ res })
@@ -37,9 +36,9 @@ export const AuthProvider: React.FC = ({ children }) => {
         }
         console.log("getAuth", { backendAuth })
 
-        setAuth(backendAuth as Iauth);
+        // setAuth(backendAuth as Iauth);
         // setAuth({} as Iauth); // disable auth
-        // setAuth(mockAuth) // enable global auth
+        setAuth(mockAuth) // enable global auth
     }, [setAuth])
 
     useEffect(() => {

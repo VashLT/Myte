@@ -15,7 +15,7 @@ export const useGetTags = (): [boolean, string[]] => {
             console.log("useGetTags", { res })
             const data = (res as unknown as IresponseTags).data;
             if ("error" in data) {
-                setData([])
+                setData(mockTags)
             }
             setData(data.tags as string[]);
             setLoading(false)

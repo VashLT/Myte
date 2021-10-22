@@ -6,15 +6,10 @@ import { Link } from 'react-router-dom';
 import { renderAt } from '../../../../utils/components';
 import { AuthContext } from '../../../Contexts/Auth';
 import AddFormula from '../../Dialogs/AddFormula';
-import AddLabel from '../../Dialogs/AddLabel';
 
 const showAddFormulaMenu = () => {
     console.log("showing up add formula menu ...")
     renderAt(<AddFormula />, "_overlay");
-}
-
-const showAddLabelMenu = () => {
-    renderAt(<AddLabel />, "_overlay");
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -36,25 +31,37 @@ export const Items: React.FC<{ panelIsOpen: boolean, inMobile?: boolean }> = ({ 
     const classes = useStyles();
     const { username } = useContext(AuthContext).auth;
 
+    let itemStyles = {}
+    if (!panelIsOpen) {
+        itemStyles = {
+            justifyContent: 'center !important',
+            transition: 'all 0.15s ease',
+            '.MuiListItemIcon-root': {
+                minWidth: '0 !important'
+            }
+        }
+    }
+
     return (
         <div className={classes.itemsContainer}>
-            <ListItem button onClick={showAddFormulaMenu}>
+            <ListItem button onClick={showAddFormulaMenu} sx={itemStyles}>
                 <ListItemIcon>
                     <AddCircle />
                 </ListItemIcon>
                 {panelIsOpen ? <ListItemText primary="Add Formula" /> : <></>}
             </ListItem>
-            <ListItem button>
+            <ListItem button sx={itemStyles}>
                 <ListItemIcon>
                     <Category />
                 </ListItemIcon>
                 {panelIsOpen ? <ListItemText primary="List Categories" /> : <></>}
             </ListItem>
-            <ListItem button onClick={showAddLabelMenu}>
+            <ListItem button onClick={() => document.getElementById("goTags")!.click()} sx={itemStyles}>
                 <ListItemIcon>
                     <Label />
                 </ListItemIcon>
-                {panelIsOpen ? <ListItemText primary="Add Label" /> : <></>}
+                {panelIsOpen ? <ListItemText primary="Tags" /> : <></>}
+                <Link to="/tags" id="goTags" />
             </ListItem>
             {
                 inMobile ? <>
