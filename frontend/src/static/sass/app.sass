@@ -15,6 +15,43 @@ body
     min-width: 100vw
     min-height: 100vh
 
+    &.Dark
+        background-color: #111
+        & .MuiTypography-root,
+        & .latex__render,
+        & .MuiChip-label,
+        & .MuiButton-root.MuiButton-contained,
+        & textarea.MuiOutlinedInput-input,
+        & label.MuiInputLabel-root,
+        & svg.MuiSvgIcon-root,
+        & input[type="text"]
+            color: white !important
+        & .MuiChip-root.MuiChip-filled
+            background-color: rgba(0, 0, 0, 0.28) !important
+        & .MuiPaper-elevation.css-aqqxug-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper,
+        & .delete__dialog,
+        & .MuiPaper-elevation,
+        & .latex__mirror
+            background-color: #121212
+
+        & .MuiMenuItem-root.MuiMenuItem-gutters *,
+        & .MuiMenuItem-root.MuiMenuItem-gutters::before,
+        & .MuiMenuItem-root.MuiMenuItem-gutters
+            color: white
+            fill: white
+
+        & .formula-body__part
+            background-color: #2d3136 !important
+
+        & .MuiOutlinedInput-root
+            background-color: #171717 !important
+
+        & .sidepanel
+            background-color: #171c2f !important
+
+html
+    overflow-x: hidden
+
 #root
     min-width: 100vw
     min-height: 100vh

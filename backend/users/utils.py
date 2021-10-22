@@ -1,3 +1,4 @@
+from rest_framework.authentication import TokenAuthentication
 from django.contrib.auth.models import User
 
 def username_exists(username):

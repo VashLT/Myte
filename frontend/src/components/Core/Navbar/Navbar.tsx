@@ -12,6 +12,7 @@ import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Logo from '../Myte/Logo';
 import { Link } from 'react-router-dom';
+import { COLORS } from '../../../utils/constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
     hamburger: {
@@ -28,23 +29,16 @@ export const Navbar: React.FC = () => {
     const classes = useStyles();
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="fixed">
+            <AppBar position="fixed" sx={{ backgroundColor: COLORS.brown }}>
                 <Toolbar>
                     <Logo />
                     <Button>
                         <Link to="/login" className={classes.itemBtn}>Login</Link>
                     </Button>
+                    <Button>
+                        <Link to="/signup" className={classes.itemBtn}>Sign Up</Link>
+                    </Button>
                     <ThemeToggle />
-
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <SortIcon className={classes.hamburger} />
-                    </IconButton>
                 </Toolbar>
             </AppBar>
 

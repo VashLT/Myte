@@ -1,30 +1,46 @@
 import React, { useContext } from 'react';
 
 import { makeStyles } from '@mui/styles';
-import { Card, CardActions, CardContent, CardHeader, IconButton, Menu, MenuItem, Theme } from '@mui/material';
-import { MathJax } from 'better-react-mathjax';
+import { Card, CardActions, CardContent, CardHeader, Divider, IconButton, Menu, MenuItem, Theme } from '@mui/material';
 import { Delete, Edit, MoreVert } from '@mui/icons-material';
-import LatexProvider from '../../Contexts/Latex';
-import Tags from './Tags';
-import FormulaContext, { FormulaProvider } from '../../Contexts/Formula';
-import { renderAt } from '../../../utils/components';
+import LatexProvider from '../../../Contexts/Latex';
+import { TagsList } from '../Tags/Tags';
+import FormulaContext, { FormulaProvider } from '../../../Contexts/Formula';
+import { renderAt } from '../../../../utils/components';
 import EditMenu from './EditMenu';
+import LatexRender from '../../Render/LatexRender';
+import DeleteDialog from './DeleteDialog';
+import { COLORS } from '../../../../utils/constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
+        backgroundColor: 'transparent !important',
         position: 'relative',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important'
     },
     formulaBody: {
-        width: '280px',
-        alignSelf: 'center'
+        width: '100%',
+        alignSelf: 'center',
+        display: 'flex !important',
+        alignItems: 'center !important',
+        justifyContent: 'center !important',
+        backgroundColor: 'white !important'
     },
     options: {
         position: 'absolute',
         bottom: '10px',
         right: '5px'
     },
+    dateText: {
+        fontSize: '12px',
+        margin: '0',
+        color: 'lightgray'
+    },
+    tagsContainer: {
+        backgroundColor: 'white !important'
+    }
 }));
 
 export const FormulaWrapper: React.FC<FormulaProps> = (props) => {
@@ -43,7 +59,7 @@ export const Formula: React.FC = () => {
     if (Object.keys(formula).length === 0) {
         return <></>
     }
-    const { id, title, latexCode, addedAt, tags } = formula as Iformula;
+    const { idFormula, title, latexCode, addedAt, tags, isCreated } = formula as Iformula;
 
     const open = Boolean(anchorEl);
     const handleMoreClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -55,40 +71,42 @@ export const Formula: React.FC = () => {
         <LatexProvider>
             <Card
                 className={classes.container}
-                sx={{ maxWidth: 345 }}
-                id={String(id)}
+                sx={{ maxWidth: 345, height: '100%', '& .MuiCardHeader-action': { alignSelf: 'center !important' } }}
+                id={String(idFormula)}
             >
                 <CardHeader
-                    action={
+                    action={isCreated ?
                         <>
                             <IconButton aria-label="settings" onClick={handleMoreClick}>
-                                <MoreVert />
+                                <MoreVert style={{ color: 'white' }} />
                             </IconButton>
                             <FormulaMenu anchorEl={anchorEl} open={open} handleClose={handleClose} />
                         </>
+                        : <></>
                     }
                     title={title}
-                    subheader={addedAt} />
-                <CardContent className={classes.formulaBody} style={{ backgroundColor: 'white' }}>
-                    <MathJax>
-                        {`$$${latexCode}$$`}
-                    </MathJax>
+                    subheader={<p className={classes.dateText}>{addedAt.split("T")[0]} </p>}
+                    sx={{ height: '20%', backgroundColor: COLORS.blue, color: 'white !important' }}
+                />
+                <Divider />
+                <CardContent className={classes.formulaBody + " formula-body__part"} sx={{ height: '60%' }}>
+                    <LatexRender>{latexCode}</LatexRender>
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions disableSpacing sx={{ height: '20%' }} className={classes.tagsContainer + " formula-body__part"}>
                     {
-                        tags.length > 0 ? <Tags tags={tags} />
+                        tags.length > 0 ? <TagsList tags={tags} />
                             : <></>
                     }
                 </CardActions>
             </Card>
-            <div id={"_fO" + id}></div>
+            <div id={"_fO" + idFormula}></div>
         </LatexProvider>
     );
 }
 
 const FormulaMenu: React.FC<FormulaMenuProps> = ({ anchorEl, open, handleClose }) => {
     const context = useContext(FormulaContext);
-    const containerId = "_fO" + (context.formula as Iformula).id;
+    const containerId = "_fO" + (context.formula as Iformula).idFormula;
     const showEditMenu = () => {
         if (Object.keys(context.formula).length === 0) return;
 
@@ -96,7 +114,7 @@ const FormulaMenu: React.FC<FormulaMenuProps> = ({ anchorEl, open, handleClose }
     }
     const showDeleteMenu = () => {
         if (Object.keys(context.formula).length === 0) return;
-        renderAt(<EditMenu context={context} />, containerId)
+        renderAt(<DeleteDialog context={context} />, containerId)
     }
     return (
         <Menu

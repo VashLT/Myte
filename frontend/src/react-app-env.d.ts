@@ -59,19 +59,41 @@ type LatexMirrorProps = IntrinsicProps & {
 type TagsMenuProps = IntrinsicProps & {
     tags: string[];
     handleTagDelete: (tag: string) => void;
+    updateTags: (tags: string[]) => void;
+}
+
+type CategoriesMenuProps = IntrinsicProps & {
+    category: string;
+    updateCategory: (category: string) => void;
+
+}
+
+interface EditLatexProps extends IntrinsicProps {
+    latex: string;
+    updateLatex: (latex: string) => void;
 }
 
 // interfaces
 interface Iobject {
     [key: string]: string;
 }
+
 interface Iuser {
-    id: number;
+    id_user: number;
+    username: string;
+    first_name: string;
+    email: string;
+    registered_at: string;
+    created_formulas: IunfmtFormula[];
+}
+
+interface IunfmtUser {
+    idUser: number;
     username: string;
     name: string;
     email: string;
-    avatarUrl: string;
     registeredAt: string;
+    createdFormulas: Iformula[];
 }
 
 interface Iauth {
@@ -81,34 +103,106 @@ interface Iauth {
 }
 
 interface Iformula {
-    id: number;
+    idFormula: number;
     addedAt: string;
     tags: string[];
+    category: string;
     title: string;
     latexCode: string;
     images: Iimage[];
     isDeleted: boolean;
+    isCreated: boolean;
 }
 
-interface Iimage {
-    id: number;
-    date: string;
-    url: string;
+interface IunfmtFormula {
+    id_formula: number;
+    added_at: string;
     title: string;
+    latex_code: string;
+    images: string[];
+    category: string;
+    tags: string[];
+    images: string[];
+    is_deleted: boolean;
+    is_created: boolean;
 }
 
-interface IformulaResponse {
-    data?: {
-        formulas: Iformula[]
-    };
-    error?: string;
-}
+type Iimage = string;
 
-interface IformulaPartial {
-    id: string;
+interface IaddFormula {
     title: string;
     latexCode: string;
-    tags: string[];
+    category: string;
+    images: Iimage[];
+}
+
+// types
+type InputState = "initial" | boolean;
+
+type MInputEvent = React.FormEvent<HTMLInputElement | HTMLTextAreaElement>;
+
+// responses
+
+interface IresponseFormulas extends Iresponse {
+    data: {
+        formulas: IunfmtFormula[];
+        error: string;
+    };
+}
+
+interface Iresponse {
+    data: {
+        [key: string]: string;
+    },
+    status: number;
+    [key: string]: string;
+}
+
+interface IresponseAuth {
+    data: {
+        data: Iauth;
+    }
+}
+
+interface IresponseLogin extends Iresponse {
+    data: {
+        info: string;
+        user: Iauth;
+        success: string;
+        failure: string;
+    }
+}
+
+interface IresponseLoginFail {
+    failure: string;
+}
+
+interface IresponseTags extends Iresponse {
+    data: {
+        tags?: string[];
+        error?: string;
+    }
+}
+
+interface IresponseUser extends Iresponse {
+    data: {
+        user?: Iuser;
+        error?: string;
+    }
+}
+
+interface IresponseCategories extends Iresponse {
+    data: {
+        categories?: string[];
+        error?: string;
+    }
+}
+
+interface IresponseState extends Iresponse {
+    data: {
+        error?: string;
+        success?: string;
+    }
 }
 
 interface IformulaContext {
@@ -121,12 +215,10 @@ interface IfullFormulaContext {
     setFormula: (formula: Iformula | {}) => void;
 }
 
-// types
-type InputState = "initial" | boolean;
-
 // storage
 interface IcookiesStorage {
     getItem: (item: string) => string | undefined;
     setItem: (item: string, value: string, days?: number | undefined) => void;
     deleteItem: (item: string) => void;
 }
+

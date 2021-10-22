@@ -1,34 +1,48 @@
 import React, { useCallback, useEffect, useState } from "react";
-// import axios from 'axios';
+import { mockAuth } from "../../utils/mock";
+import axios from 'axios';
+import { AvatarGenerator } from "random-avatar-generator";
+import { avatarGen } from "../../utils/constants";
 
 export const AuthContext = React.createContext({
     auth: {} as Iauth,
     isAuth: false,
-    setAuth: (auth: Iauth) => { }
+    setAuth: (auth: Iauth) => { },
+    isLoading: false,
+    setIsLoading: (state: boolean) => { }
 })
-
-const mockAuth = {
-    username: "VashLT",
-    avatarUrl: "https://i.imgur.com/S3ZqOsu.png",
-    email: "vashlt@gmail.com"
-}
 
 export const AuthProvider: React.FC = ({ children }) => {
     const [auth, setAuth] = useState<Iauth>({} as Iauth);
+    const [isLoading, setIsLoading] = useState(true);
 
     const getAuth = useCallback(async () => {
-        // const auth = await axios
-        //     .get('/api/auth')
-        //     .then(res => {
-        //         if ("error" in res) {
-        //             return {}
-        //         }
-        //         return res.data;
-        //     })
-        //     .catch(err => console.error(err))
+        let backendAuth: Iauth = await axios.get('api/user/auth/')
+            .then(res => {
+                console.log({ res })
+                const data = (res as unknown as IresponseAuth).data;
+                if ("error" in data) {
+                    return {} as Iauth;
+                }
+                return data.data;
+            })
+            .catch(err => {
+                console.error(err)
+                return {} as Iauth;
+            })
+            .finally(() => setIsLoading(false));
 
-        // setAuth(auth as Iauth);
-        setAuth(mockAuth)
+        if (Object.values(backendAuth).filter(value => value !== "").length === 0) {
+            console.log("bad Auth", { backendAuth })
+            backendAuth = {} as Iauth
+        } else {
+
+            backendAuth.avatarUrl = avatarGen.generateRandomAvatar((backendAuth as Iauth).username);
+            console.log("getAuth", { backendAuth })
+        }
+        // setAuth(backendAuth as Iauth);
+        setAuth({} as Iauth); // disable auth
+        // setAuth(mockAuth) // enable global auth
     }, [setAuth])
 
     useEffect(() => {
@@ -38,8 +52,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     return (
         <AuthContext.Provider value={{
             auth,
-            isAuth: false ? Object.keys(auth).length === 0 : true,
-            setAuth
+            isAuth: Object.keys(auth).length > 0,
+            setAuth,
+            isLoading,
+            setIsLoading
         }}>
             {children}
         </AuthContext.Provider>

@@ -1,5 +1,5 @@
 import { EMAIL_REGEX, USERNAME_REGEX, PASSWORD_REGEX } from '../../utils/constants';
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useContext, useState } from 'react';
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -10,10 +10,13 @@ import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
 
 import axios from 'axios';
-import { render, unmountComponentAtNode } from 'react-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import Alert from '../Core/Alerts/Alert';
-import { Redirect } from 'react-router';
+import { AuthContext } from '../Contexts/Auth';
+import { renderAt } from '../../utils/components';
+import { LoadingButton } from '@mui/lab';
+import { AvatarGenerator } from 'random-avatar-generator';
+import { cookieStorage } from '../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     form: {
@@ -25,10 +28,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const SignUpForm: React.FC = () => {
+    const [nameState, setNameState] = useState<InputState>("initial");
     const [emailState, setEmailState] = useState<InputState>("initial");
     const [usernameState, setUsernameState] = useState<InputState>("initial");
     const [passwordState, setPasswordState] = useState<InputState>("initial");
     const [passwordMatch, setPasswordMatch] = useState<InputState>("initial");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { setAuth } = useContext(AuthContext);
 
     const classes = useStyles();
 
@@ -66,10 +73,9 @@ export const SignUpForm: React.FC = () => {
 
     }, [setPasswordMatch]);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-        const alertContainer = document.getElementById("_overlay") as HTMLDivElement;
         // call backend
 
         console.log({
@@ -79,38 +85,36 @@ export const SignUpForm: React.FC = () => {
             password: data.get('password'),
         })
 
-        axios
-            .post('/api/user/username', {
-                username: data.get('username'),
-                name: data.get('name'),
-                email: data.get('email'),
-                password: data.get('password')
-            })
-            .then(res => {
-                console.log({ res });
+        setIsLoading(true);
 
-                if ("error" in res) {
-                    unmountComponentAtNode(alertContainer)
-                    render(
-                        <Alert type="error" text="El nombre de usuario ya existe" caption="Elige otro!" />,
-                        alertContainer
+        axios.post('api/user/register/', {
+            username: data.get('username'),
+            first_name: data.get('name'),
+            email: data.get('email'),
+            password: data.get('password')
+        }, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
+            .then(res => {
+                console.log("sign up response", { res });
+                let data = (res as unknown as IresponseLogin).data;
+                if ("failure" in res) {
+                    renderAt(
+                        <Alert type="error" text={data.failure} />, "_overlay"
                     );
                     return;
                 }
-
-                return <Redirect to="/" />
+                console.log("user", data.user);
+                setAuth(data.user);
 
             })
             .catch(err => {
                 console.error(err)
-                unmountComponentAtNode(alertContainer)
-                render(
-                    <Alert type="error" text="El nombre de usuario ya existe" caption="Elige otro!" />,
-                    alertContainer
+                renderAt(
+                    <Alert type="error" text={String(err)} />, "_overlay"
                 );
                 return;
-            });
-    }
+            })
+            .finally(() => setIsLoading(false));
+    }, [setAuth, setIsLoading])
 
     return (
         <>
@@ -120,30 +124,33 @@ export const SignUpForm: React.FC = () => {
                         <TextField
                             name="name"
                             variant="outlined"
-                            // required
+                            required
                             fullWidth
                             id="name"
                             label="Full Name"
                             autoFocus
+                            helperText={!nameState ? "Name can not be empty." : ""}
+                            error={!nameState}
+                            onBlur={(e: MInputEvent) => setNameState(e.currentTarget.value !== "")}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                             name="username"
                             variant="outlined"
-                            // required
+                            required
                             fullWidth
                             id="username"
                             label="Username"
                             helperText={usernameState === false ? "Username must have only" : ""}
-                            error={usernameState === false ? true : false}
+                            error={!usernameState}
                             onBlur={checkUsername}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                             variant="outlined"
-                            // required
+                            required
                             fullWidth
                             id="email"
                             label="Email Address"
@@ -157,7 +164,7 @@ export const SignUpForm: React.FC = () => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             variant="outlined"
-                            // required
+                            required
                             fullWidth
                             name="password"
                             label="Password"
@@ -165,41 +172,41 @@ export const SignUpForm: React.FC = () => {
                             id="password"
                             autoComplete="current-password"
                             helperText={passwordState === false ? "Password must be at least 8-character long and contain special characters." : ""}
-                            error={passwordState === false || passwordMatch === false}
+                            error={!passwordState}
                             onBlur={checkPassword}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
                             variant="outlined"
-                            // required
+                            required
                             fullWidth
                             name="confirmPassword"
                             label="Confirm Password"
                             type="password"
                             id="confirmPassword"
                             helperText={passwordMatch === false ? "Passwords don't match" : ""}
-                            error={passwordMatch === false ? true : false}
+                            error={!passwordMatch}
                             onBlur={checkPasswordsMatch}
                         />
                     </Grid>
                 </Grid>
-                <Button
+                <LoadingButton
+                    loading={isLoading}
                     type="submit"
                     fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
+                    disabled={!(passwordMatch && passwordState === true && emailState && usernameState && nameState)}
                 >
                     Sign Up
-                </Button>
+                </LoadingButton>
                 <Grid container>
                     <Grid item style={{ margin: '0 auto 0 auto' }}>
-                        <RouterLink to="/login">
-                            <Link href="/login" variant="body2">
-                                Already have an account?
-                            </Link>
-                        </RouterLink>
+                        <Link to="/login" variant="body2" component={RouterLink}>
+                            Already have an account?
+                        </Link>
                     </Grid>
                 </Grid>
             </form>
@@ -207,4 +214,4 @@ export const SignUpForm: React.FC = () => {
     );
 }
 
-export default SignUpForm;
+export default memo(SignUpForm);

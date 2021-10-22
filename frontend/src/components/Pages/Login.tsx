@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -15,10 +15,12 @@ import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 import Alert from '../Core/Alerts/Alert';
-import { Redirect } from 'react-router';
 
 import Myte from '../../static/images/logo.png';
 import { renderAt } from '../../utils/components';
+import { AuthContext } from '../Contexts/Auth';
+import { LoadingButton } from '@mui/lab';
+import { cookieStorage } from '../../utils/storage';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -38,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     iconContainer: {
         position: 'relative',
         margin: '0px',
+        cursor: 'pointer'
     },
     avatar: {
         position: 'absolute',
@@ -48,48 +51,53 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const Login = () => {
-    const [emailState, setEmailState] = useState<InputState>("initial");
+    const [usernameState, setUsernameState] = useState<InputState>("initial");
     const [passwordState, setPasswordState] = useState<InputState>("initial");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { setAuth } = useContext(AuthContext);
 
     const classes = useStyles();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        axios
-            .post('/api/login', {
-                email: data.get('email'),
-                password: data.get('password')
-            })
-            .then(res => {
-                console.log(res)
+        setIsLoading(true);
 
-                if ("success" in res) {
-                    return <Redirect to="/" />;
-                } else if ("failure" in res) {
+        axios.post('api/user/login/', {
+            username: data.get('username'),
+            password: data.get('password')
+        }, { headers: { 'X-CSRFToken': cookieStorage.getItem('csrftoken') || "" } })
+            .then(res => {
+                console.log("login", { res })
+                let data = (res as unknown as IresponseLogin).data
+                if (!data) return;
+
+                if ("success" in data) {
+                    console.log("get user", data.user)
+                    setAuth(data.user)
+
+                } else if ("failure" in data) {
                     renderAt(
-                        <Alert type="error" text="Username or password are not valid" />,
+                        <Alert type="error" text={(data as unknown as IresponseLoginFail).failure} />,
                         "_overlay"
                     )
                 } else {
                     renderAt(<Alert type="error" text="Internal error" />, "_overlay")
                 }
-                setEmailState(false);
-                setPasswordState(false);
+
             })
             .catch(err => {
                 console.error(err);
 
                 renderAt(<Alert type="error" text={String(err)} />, "_overlay")
             })
+            .finally(() => {
+                setUsernameState(false);
+                setPasswordState(false);
+                setIsLoading(false)
+            })
 
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-
-        setEmailState(false);
-        setPasswordState(false);
     };
 
     return (
@@ -103,13 +111,14 @@ export const Login = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <div className={classes.iconContainer}>
+                    <div className={classes.iconContainer} onClick={() => document.getElementById("toHomePage")!.click()}>
                         <img src={Myte} alt="myte" style={{ height: '100px' }} />
                         <Avatar className={classes.avatar} sx={{
                             position: 'absolute'
                         }}>
                             <LockOutlinedIcon />
                         </Avatar>
+                        <RouterLink to="/" id="toHomePage" />
                     </div>
                     <Typography component="h1" variant="h5">
                         Sign in
@@ -119,13 +128,13 @@ export const Login = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email or Username"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
-                            helperText={emailState === false ? "check your username" : ""}
-                            error={emailState === false ? true : false}
+                            helperText={usernameState === false ? "check your username" : ""}
+                            error={usernameState === false ? true : false}
                         />
                         <TextField
                             margin="normal"
@@ -139,14 +148,15 @@ export const Login = () => {
                             helperText={passwordState === false ? "check your password" : ""}
                             error={passwordState === false ? true : false}
                         />
-                        <Button
+                        <LoadingButton
+                            loading={isLoading}
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign In
-                        </Button>
+                        </LoadingButton>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
@@ -154,11 +164,9 @@ export const Login = () => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <RouterLink to="/signup">
-                                    <Link href="#" variant="body2">
-                                        {"Don't have an account?"}
-                                    </Link>
-                                </RouterLink>
+                                <Link to="/signup" variant="body2" component={RouterLink}>
+                                    {"Don't have an account?"}
+                                </Link>
                             </Grid>
                         </Grid>
                     </Box>
@@ -174,7 +182,7 @@ const Copyright = (props: any) => {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
+            <Link color="inherit" to="/" component={RouterLink}>
                 Myte
             </Link>{' '}
             {new Date().getFullYear()}

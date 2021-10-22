@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material';
 import { ThemeContext } from './Theme';
 import { storeTheme } from '../../../utils/storage';
 
-export const Toggle: React.FC = () => {
+export const Toggle: React.FC<IntrinsicProps> = ({className}) => {
     const theme = useTheme();
     const { isDark, setIsDark } = useContext(ThemeContext);
 
@@ -17,7 +17,7 @@ export const Toggle: React.FC = () => {
     }
 
     return (
-        <IconButton onClick={toggleTheme}>
+        <IconButton onClick={toggleTheme} className={className || ""}>
             {
                 theme.palette.mode === "light" ? <Brightness7Icon style={{ color: 'white' }} />
                     : <Brightness4Icon />

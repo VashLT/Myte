@@ -7,8 +7,6 @@ export const FormulaContext = React.createContext({
 
 export const FormulaProvider: React.FC<FormulaProviderProps> = ({ formula, children }) => {
     const [currentFormula, setFormula] = useState<Iformula | {}>(formula);
-    console.log("FormulaProvider", { formula, currentFormula });
-
     return (
         <FormulaContext.Provider value={{ formula: currentFormula, setFormula }}>
             {children}

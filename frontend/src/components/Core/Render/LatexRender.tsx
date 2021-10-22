@@ -1,11 +1,11 @@
 import React from 'react';
-import { MathJax } from 'better-react-mathjax';
+import { MathJax, MathJaxProps } from 'better-react-mathjax';
 
-export const LatexRender: React.FC = ({ children, ...props }) => {
-    console.log(children)
+export const LatexRender: React.FC<MathJaxProps & IntrinsicProps> = ({ children, ...props }) => {
+    // gather allows making newlines with '\\'
     return (
-        <MathJax {...props}>
-            {`${children}`}
+        <MathJax {...props} className="latex__render">
+            {`$$\\begin{gather}${children}\\end{gather}$$`}
         </MathJax>
     );
 }

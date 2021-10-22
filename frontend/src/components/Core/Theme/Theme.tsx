@@ -12,13 +12,24 @@ const MyteThemeProvider: React.FC = ({ children }) => {
     const themeMode = getTheme();
     const [isDark, setIsDark] = useState(themeMode === "dark");
 
+    if (isDark) {
+        document.body.classList.add('Dark')
+    } else {
+        document.body.classList.remove('Dark')
+    }
+
     const theme = useMemo(() => {
         return createTheme({
             palette: {
                 mode: themeMode,
                 primary: {
-                    main: COLORS.blue
-                }
+                    main: COLORS.blue,
+                },
+                secondary: {
+                    main: COLORS.orange,
+                    light: COLORS.lightSkin,
+                    dark: COLORS.orange_b,
+                },
             }
 
         })

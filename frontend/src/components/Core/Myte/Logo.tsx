@@ -1,9 +1,10 @@
 import { Container, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // import { ReactComponent as Myte } from '../../../static/images/logo.svg';
-import Myte from '../../../static/images/logo.png';
+import Myte from '../../../static/images/logo.svg';
 
 const useStyles = makeStyles((theme: Theme) => ({
     text: {
@@ -16,11 +17,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export const Logo: React.FC = () => {
+export const Logo: React.FC<IntrinsicProps & { sx?: { [key: string]: string } }> = ({ className, sx }) => {
     const classes = useStyles();
+    if (!sx) {
+        sx = {}
+    }
     return (
-        <Container>
-            <img src={Myte} className={classes.logo} alt="Myte" />
+        <Container component={Link} to="/"
+            sx={{
+                '@media (min-width: 600px)': {
+                    pl: 0, pr: 0
+                }, ...sx
+            }}
+        >
+            <img src={Myte} className={className || classes.logo} alt="Myte" />
         </Container>
     );
 }

@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         top: '0px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '100%',
+        minWidth: '250px',
+        maxWidth: '500px',
         zIndex: 9999
     }
 }));

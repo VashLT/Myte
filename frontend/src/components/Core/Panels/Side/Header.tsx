@@ -3,101 +3,99 @@ import React from 'react';
 import { makeStyles } from '@mui/styles';
 import { Box, Theme, Typography, Toolbar, IconButton, Tooltip } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { MYTE_VERSION } from '../../../../utils/constants';
+import { COLORS, MYTE_VERSION } from '../../../../utils/constants';
 import Myte from '../../../../static/images/logo_opt.svg';
+import Logo from '../../Myte/Logo';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
         position: 'relative',
     },
     toggler: {
-        backgroundColor: 'blue',
-        position: 'absolute',
         top: '50%',
         right: '0',
         transform: 'translate(50%, -50%)',
         height: '30px',
         width: '30px',
-        zIndex: 500,
         visibility: 'hidden',
         opacity: '0',
         transition: 'opacity 0.2s ease',
         cursor: 'pointer',
-        '&:hover': {
-            backgroundColor: 'darkblue'
-        }
     },
     logoContainer: {
         padding: '10px 0px',
-        '&:hover': {
-            backgroundColor: 'red'
-        },
         '& svg': {
             fill: 'white !important'
-        }
+        },
+        // '@media (max-width: 600px)': {
+        // [theme.breakpoints.down('sm')]: {
+        //     marginLeft: 'auto',
+        //     marginRight: 'auto',
+        // }
     },
     logo: {
-        height: '60px'
+        height: '60px',
     },
     typoVersion: {
         fontSize: '12px',
-        fontWeight: 'bold',
-        marginLeft: '10px'
+        marginLeft: '10px !important'
     }
 }));
 
 export const Header: React.FC<SidePanelHeaderProps> = ({ panelIsOpen, toggleCallback }) => {
     const classes = useStyles();
+    let logoStyle: { [key: string]: any } = {};
+    let containerStyle: { [key: string]: any } = {};
+    if (!panelIsOpen) {
+        logoStyle = {
+            marginLeft: 'auto',
+            marginRight: 'auto'
+        }
 
-    if (panelIsOpen === true) {
-        return (
-            <Toolbar className={classes.container}>
-                <Box className={classes.logoContainer}>
-                    <img src={Myte} alt="myte" className={classes.logo} />
-
-                    <Typography className={classes.typoVersion}>
-                        v{MYTE_VERSION}
-                    </Typography>
-                </Box>
-                <IconButton
-                    className={classes.toggler}
-                    color='primary'
-                    id="panelToggler"
-                    onClick={toggleCallback}
-                >
-                    <ChevronLeft style={{ color: 'white' }} />
-                </IconButton>
-            </Toolbar>
-        )
+        containerStyle = {
+            padding: '0 !important'
+        }
     }
 
+    const IconComponent = panelIsOpen ? ChevronLeft : ChevronRight;
+
     return (
-        <Toolbar
-            className={classes.container}
-            sx={{
-                padding: '0px !important',
-                margin: '10px auto 10px auto',
-                width: '100%'
-            }}
-        >
-            <Box className={classes.logoContainer} sx={{
-                ml: 'auto',
-                mr: 'auto'
-            }}>
-                <Tooltip title={`v${MYTE_VERSION}`}>
-                    <img src={Myte} alt="myte" className={classes.logo} />
+        <Toolbar className={classes.container} sx={containerStyle}>
+            <Box
+                className={classes.logoContainer}
+                sx={logoStyle}
+            >
+                <Tooltip
+                    disableHoverListener={panelIsOpen}
+                    disableFocusListener={panelIsOpen}
+                    title={`v${MYTE_VERSION}`}
+                >
+                    <Logo className={classes.logo} sx={{ padding: '0 !important' }} />
                 </Tooltip>
+
+                {
+                    panelIsOpen ? <Typography className={classes.typoVersion}>v{MYTE_VERSION}</Typography>
+                        : <></>
+                }
             </Box>
             <IconButton
                 className={classes.toggler}
                 color='primary'
                 id="panelToggler"
                 onClick={toggleCallback}
+                sx={{
+                    position: 'absolute',
+                    zIndex: 500,
+                    backgroundColor: COLORS.orange,
+                    '&:hover': {
+                        backgroundColor: COLORS.orange_b
+                    }
+                }}
             >
-                <ChevronRight style={{ color: 'white' }} />
+                <IconComponent style={{ color: 'white' }} />
             </IconButton>
         </Toolbar>
-    );
+    )
 }
 
 
