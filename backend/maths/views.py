@@ -28,49 +28,51 @@ class FormulaView(viewsets.ModelViewSet):
     @action(detail=False, methods=["post"])
     def search(self, request):
 
+        active_formulas = Formula.objects.filter(is_deleted__in=[False])
+
         if not request.data or request.data['data'] == '':
-            result = Formula.objects.all()
+            result = active_formulas
             formulas = [FormulaSerializer(formula).data for formula in result]
             data = {'formulas' : formulas}
             return Response(data, status=status.HTTP_200_OK)
         
-        formulas = []
+        formulas = set()
         criterion = request.data['data']
         # title id date tag cat 
 
         # Busqueda por title
-        query = {"title__icontains": criterion}
-        if result := Formula.objects.filter(**query):
-            formulas.extend([FormulaSerializer(formula).data for formula in result])
+        query = {"title__icontains": criterion, }
+        if result := active_formulas.filter(**query):
+            formulas.update([FormulaSerializer(formula).data for formula in result])
 
         # Busqueda por id
         try:
             query = {"id_formula": int(criterion)}
-            if result := Formula.objects.filter(**query):
-                formulas.extend([FormulaSerializer(formula).data for formula in result])
+            if result := active_formulas.filter(**query):
+                formulas.update([FormulaSerializer(formula).data for formula in result])
         except ValueError:
             pass
 
         # Busqueda por date
         query = {"added_at": criterion}
         try:
-            if result := Formula.objects.filter(**query):
-                formulas.extend([FormulaSerializer(formula).data for formula in result])
+            if result := active_formulas.filter(**query):
+                formulas.update([FormulaSerializer(formula).data for formula in result])
             
         except ValidationError as e:
             pass
         
         # Busqueda por categoria
         query = {"category__icontains": criterion}
-        if result := Formula.objects.filter(**query):
-                formulas.extend([FormulaSerializer(formula).data for formula in result])
+        if result := active_formulas.filter(**query):
+                formulas.update([FormulaSerializer(formula).data for formula in result])
         
         # Busqueda por tags
         query = {"tags__icontains": criterion}
-        if result := Formula.objects.filter(**query):
-                formulas.extend([FormulaSerializer(formula).data for formula in result])
+        if result := active_formulas.filter(**query):
+                formulas.update([FormulaSerializer(formula).data for formula in result])
 
-        data = {'formulas' : formulas}
+        data = {'formulas' : list(formulas)}
         return Response(data, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=["post"])
@@ -88,6 +90,30 @@ class FormulaView(viewsets.ModelViewSet):
 
         math_user.save()
         return Response(FormulaSerializer(formula).data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["post"])
+    def delete(self, request):
+
+        try:
+            fid = int(request.data['id_formula'])
+
+        except ValueError:
+            data = {'error': 'id is not numeric'}
+            return Response(data, status=status.HTTP_403_FORBIDDEN)
+
+
+        if not (result := Formula.objects.filter(id_formula=fid)):
+            data = {'error': 'formula not found'}
+            return Response(data, status=status.HTTP_403_FORBIDDEN)
+
+        # This will iterate only once
+        for formula in result:
+            formula.is_deleted = True
+            formula.save()
+
+        data = {'info': 'formula marked as deleted'}
+        return Response(data, status=status.HTTP_200_OK)
+        
 
 class MathUserView(viewsets.ModelViewSet):
 

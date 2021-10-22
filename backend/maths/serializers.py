@@ -58,11 +58,6 @@ class FormulaSerializer(serializers.ModelSerializer):
 
         return obj
 
-# class MathUser(models.Model):
-#     _id = models.ObjectIdField()
-#     username = models.TextField(max_length=200, unique=True)
-#     image_url = models.TextField(max_length=200)
-#     formulas = models.TextField(max_length=200)
 
 class MathUserSerializer(serializers.ModelSerializer):
     # username = serializers.ReadOnlyField()
@@ -73,20 +68,3 @@ class MathUserSerializer(serializers.ModelSerializer):
             'username', 
             'formulas', 
         )
-
-    # def create(self, validated_data):
-    #     clss = self.Meta.model
-    #     obj_count = len(clss.objects.all())
-
-    #     # Check if id is not duplicated
-    #     while clss.objects.get(id_formula=obj_count):
-    #         obj_count += 1
-
-    #     validated_data['title'] = validated_data['title'].upper()
-    #     validated_data['category'] = validated_data['category'].upper()
-    #     validated_data['tags'] = [string.upper() for string in validated_data['tags']]
-
-    #     obj = clss.objects.create(**validated_data, id_formula=obj_count, added_at=datetime.datetime.utcnow())
-    #     obj.save()
-
-    #     return obj
