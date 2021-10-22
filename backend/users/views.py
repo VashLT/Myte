@@ -118,11 +118,7 @@ class UserViewSet(viewsets.GenericViewSet):
         except Exception:
             return Response({'error': 'user not found'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-        iauth = {
-            'username': user.username,
-            'avatar_url': '',
-            'email': user.email
-        }
+        
 
         raw_formula_ids = MathUser.objects.get(username=user.username).formulas
         formula_ids = [int(fid) for fid in json.loads(raw_formula_ids)]
@@ -135,10 +131,17 @@ class UserViewSet(viewsets.GenericViewSet):
             for formula in result:
                 formulas.append(FormulaSerializer(formula).data)
 
-        data = {
-            'user': iauth,
-            'formulas': formulas
+        iuser = {
+            'id_user': user.id,
+            'username': user.username,
+            'first_name': user.first_name,
+            'email': user.email,
+            'registered_at': user.date_joined,
+            'created_formulas': formulas #Esto es el array de formulas
         }
 
+        data = {
+            'user': iuser,
+        }
 
         return Response(data, status=status.HTTP_200_OK)
