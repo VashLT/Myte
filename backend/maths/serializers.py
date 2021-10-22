@@ -49,9 +49,9 @@ class FormulaSerializer(serializers.ModelSerializer):
         while clss.objects.filter(id_formula=obj_count):
             obj_count += 1
 
-        validated_data['title'] = validated_data['title'].upper()
-        validated_data['category'] = validated_data['category'].upper()
-        validated_data['tags'] = [string.upper() for string in validated_data['tags']]
+        # validated_data['title'] = validated_data['title'].upper()
+        # validated_data['category'] = validated_data['category'].upper()
+        # validated_data['tags'] = [string.upper() for string in validated_data['tags']]
 
         obj = clss.objects.create(**validated_data, id_formula=obj_count, added_at=datetime.datetime.utcnow())
         obj.save()

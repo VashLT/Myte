@@ -19,44 +19,58 @@ class FormulaView(viewsets.ModelViewSet):
     serializer_class = FormulaSerializer
     lookup_field = 'id_formula'
 
+    def formulas_to_response(self, result):
+        formulas = [FormulaSerializer(formula).data for formula in result]
+        # data = {'formulas' : formulas}
+        # return Response(data, status=status.HTTP_200_OK)
+
+
     @action(detail=False, methods=["post"])
     def search(self, request):
-        data = {'formulas' : []}
 
         if not request.data or request.data['data'] == '':
             result = Formula.objects.all()
-            for formula in result:
-                data['formulas'].append(FormulaSerializer(formula).data)
+            formulas = [FormulaSerializer(formula).data for formula in result]
+            data = {'formulas' : formulas}
+            return Response(data, status=status.HTTP_200_OK)
         
-        else:
-            criterion = request.data['data']
-            keys = [
-                'title',
-                'added_at',
-                'category',
-            ]
+        formulas = []
+        criterion = request.data['data']
+        # title id date tag cat 
 
-            found = False
-            for key in keys:
-                if found:
-                    break
-                
-                filter = {key.upper(): criterion}
-                print(filter)
-                try:
-                    result = Formula.objects.filter(**filter)
+        # Busqueda por title
+        query = {"title__icontains": criterion}
+        if result := Formula.objects.filter(**query):
+            formulas.extend([FormulaSerializer(formula).data for formula in result])
 
-                except ValidationError as e:
-                    print(e)
-                    continue
+        # Busqueda por id
+        try:
+            query = {"id_formula": int(criterion)}
+            if result := Formula.objects.filter(**query):
+                formulas.extend([FormulaSerializer(formula).data for formula in result])
+        except ValueError:
+            pass
 
-                print(result)
-                if result:
-                    found = True
-                    
-                    for formula in result:
-                        data['formulas'].append(FormulaSerializer(formula).data)
+        # Busqueda por date
+        query = {"added_at": criterion}
+        try:
+            if result := Formula.objects.filter(**query):
+                formulas.extend([FormulaSerializer(formula).data for formula in result])
+            
+        except ValidationError as e:
+            pass
+        
+        # Busqueda por categoria
+        query = {"category__icontains": criterion}
+        if result := Formula.objects.filter(**query):
+                formulas.extend([FormulaSerializer(formula).data for formula in result])
+        
+        # Busqueda por tags
+        query = {"tags__icontains": criterion}
+        if result := Formula.objects.filter(**query):
+                formulas.extend([FormulaSerializer(formula).data for formula in result])
 
+        data = {'formulas' : formulas}
         return Response(data, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=["post"])
