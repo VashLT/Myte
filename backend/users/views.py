@@ -94,3 +94,15 @@ class UserViewSet(viewsets.GenericViewSet):
             stat = status.HTTP_200_OK
 
         return Response(response, status=stat)
+
+    @action(detail=False, methods=["post"])
+    def logout(self, request):
+        
+        logout(request)
+
+        data = {
+            "info": "success logout",
+            "success": "user logget out",
+        }
+
+        return Response(data, status=status.HTTP_200_OK)

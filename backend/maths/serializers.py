@@ -7,11 +7,13 @@ class StringListField(serializers.ListField):
         """
         List of object instances -> List of dicts of primitive datatypes.
         """
-        raw_data = data.replace("'", "")[1:-1]
-        raw_list = raw_data.split(',')
-        return [string.strip() for string in raw_list]
-        # return [self.child.to_representation(item) if item is not None else None for item in data]
-        # return ['pene']
+        try:
+            raw_data = data.replace("'", "")[1:-1]
+            raw_list = raw_data.split(',')
+            return [string.strip() for string in raw_list]
+        
+        except AttributeError:
+            return super().to_representation(data)
 
 class ImageSerializer(serializers.ModelSerializer):
     id_image = serializers.ReadOnlyField()
