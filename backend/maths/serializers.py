@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from maths.models import Image, Formula
 
+import datetime
+
 class StringListField(serializers.ListField):
 
     def to_representation(self, data):
@@ -41,7 +43,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class FormulaSerializer(serializers.ModelSerializer):
     id_formula = serializers.ReadOnlyField()
-    # tags = serializers.ListField()
+    added_at = serializers.ReadOnlyField()
     tags = StringListField()
     images = StringListField()
     class Meta:
@@ -63,7 +65,7 @@ class FormulaSerializer(serializers.ModelSerializer):
         obj_count = len(clss.objects.all())
         print(obj_count)
 
-        obj = clss.objects.create(**validated_data, id_formula=obj_count)
+        obj = clss.objects.create(**validated_data, id_formula=obj_count, added_at=datetime.datetime.utcnow())
         obj.save()
 
         return obj

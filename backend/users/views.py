@@ -102,7 +102,7 @@ class UserViewSet(viewsets.GenericViewSet):
 
         data = {
             "info": "success logout",
-            "success": "user logget out",
+            "success": "user logged out",
         }
 
         return Response(data, status=status.HTTP_200_OK)
