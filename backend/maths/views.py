@@ -33,22 +33,23 @@ class ImageView(viewsets.ModelViewSet):
 
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    # lookup_field = 'id_image'
+    lookup_field = 'id_image'
     # lookup_field = 'id'
 
 class FormulaView(viewsets.ModelViewSet):
 
     queryset = Formula.objects.all()
     serializer_class = FormulaSerializer
-    # lookup_field = 'id_formula'
+    lookup_field = 'id_formula'
 
     @action(detail=False, methods=["post"])
     def search(self, request):
-        print(request.data)
+        data = {'formulas' : []}
 
-        if not request.data:
-            print('request vacia!')
-            data = Formula.objects.all()
+        if not request.data or request.data['data'] == '':
+            result = Formula.objects.all()
+            for formula in result:
+                data['formulas'].append(FormulaSerializer(formula).data)
         
         else:
             criterion = request.data['data']
@@ -58,7 +59,6 @@ class FormulaView(viewsets.ModelViewSet):
                 'category',
             ]
 
-            data = {'formulas' : []}
             found = False
             for key in keys:
                 if found:

@@ -4,6 +4,7 @@ from django import forms
 
 class Image(models.Model):
     _id = models.ObjectIdField()
+    id_image = models.PositiveIntegerField()
     date = models.DateTimeField()
     url = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
@@ -39,6 +40,7 @@ class StringObjectForm(forms.ModelForm):
 
 class Formula(models.Model):
     _id = models.ObjectIdField()
+    id_formula = models.PositiveIntegerField()
     added_at = models.DateTimeField()
     # tags = ArrayField(
     #     model_container=StringObject, #type:ignore
