@@ -31,13 +31,25 @@ const useStyles = makeStyles((theme: Theme) => {
             },
             backgroundColor: COLORS.skin + '!important',
             boxShadow: 'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;',
-            overflow: 'visible !important'
+            overflow: 'visible !important',
+            transition: 'width 0.15s ease-out !important'
+        },
+        drawerMobile: {
+            [theme.breakpoints.up('sm')]: {
+                '&:hover #panelToggler': {
+                    visibility: 'visible',
+                    opacity: '1'
+                }
+            },
+            backgroundColor: COLORS.skin + '!important',
+            boxShadow: 'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;',
+            overflow: 'visible !important',
         },
         drawerPaper: {
             width: '300px',
             [theme.breakpoints.up('md')]: {
                 position: 'relative',
-            },
+            }
         },
         toolbar: mixins!.toolbar!,
     })
@@ -78,7 +90,7 @@ export const SidePanel: React.FC = () => {
                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: panelWidth },
                 }}
                 classes={{
-                    paper: classes.drawer
+                    paper: classes.drawerMobile
                 }}
             >
                 <Header panelIsOpen={isOpen} toggleCallback={() => handleToggle(true)} />

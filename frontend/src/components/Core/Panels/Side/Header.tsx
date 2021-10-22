@@ -5,6 +5,7 @@ import { Box, Theme, Typography, Toolbar, IconButton, Tooltip } from '@mui/mater
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { COLORS, MYTE_VERSION } from '../../../../utils/constants';
 import Myte from '../../../../static/images/logo_opt.svg';
+import Logo from '../../Myte/Logo';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -23,9 +24,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     logoContainer: {
         padding: '10px 0px',
-        '&:hover': {
-            backgroundColor: 'red'
-        },
         '& svg': {
             fill: 'white !important'
         },
@@ -47,23 +45,39 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const Header: React.FC<SidePanelHeaderProps> = ({ panelIsOpen, toggleCallback }) => {
     const classes = useStyles();
+    let logoStyle: { [key: string]: any } = {};
+    let containerStyle: { [key: string]: any } = {};
+    if (!panelIsOpen) {
+        logoStyle = {
+            marginLeft: 'auto',
+            marginRight: 'auto'
+        }
+
+        containerStyle = {
+            padding: '0 !important'
+        }
+    }
 
     const IconComponent = panelIsOpen ? ChevronLeft : ChevronRight;
 
     return (
-        <Toolbar className={classes.container}>
-            <Box className={classes.logoContainer}>
+        <Toolbar className={classes.container} sx={containerStyle}>
+            <Box
+                className={classes.logoContainer}
+                sx={logoStyle}
+            >
                 <Tooltip
                     disableHoverListener={panelIsOpen}
                     disableFocusListener={panelIsOpen}
                     title={`v${MYTE_VERSION}`}
                 >
-                    <img src={Myte} alt="myte" className={classes.logo} />
+                    <Logo className={classes.logo} />
                 </Tooltip>
 
-                <Typography className={classes.typoVersion}>
-                    v{MYTE_VERSION}
-                </Typography>
+                {
+                    panelIsOpen ? <Typography className={classes.typoVersion}>v{MYTE_VERSION}</Typography>
+                        : <></>
+                }
             </Box>
             <IconButton
                 className={classes.toggler}

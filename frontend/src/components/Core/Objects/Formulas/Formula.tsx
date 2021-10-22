@@ -9,6 +9,7 @@ import FormulaContext, { FormulaProvider } from '../../../Contexts/Formula';
 import { renderAt } from '../../../../utils/components';
 import EditMenu from './EditMenu';
 import LatexRender from '../../Render/LatexRender';
+import DeleteDialog from './DeleteDialog';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -43,7 +44,7 @@ export const Formula: React.FC = () => {
     if (Object.keys(formula).length === 0) {
         return <></>
     }
-    const { id, title, latexCode, addedAt, tags } = formula as Iformula;
+    const { idFormula, title, latexCode, addedAt, tags } = formula as Iformula;
 
     const open = Boolean(anchorEl);
     const handleMoreClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -56,7 +57,7 @@ export const Formula: React.FC = () => {
             <Card
                 className={classes.container}
                 sx={{ maxWidth: 345 }}
-                id={String(id)}
+                id={String(idFormula)}
             >
                 <CardHeader
                     action={
@@ -79,14 +80,14 @@ export const Formula: React.FC = () => {
                     }
                 </CardActions>
             </Card>
-            <div id={"_fO" + id}></div>
+            <div id={"_fO" + idFormula}></div>
         </LatexProvider>
     );
 }
 
 const FormulaMenu: React.FC<FormulaMenuProps> = ({ anchorEl, open, handleClose }) => {
     const context = useContext(FormulaContext);
-    const containerId = "_fO" + (context.formula as Iformula).id;
+    const containerId = "_fO" + (context.formula as Iformula).idFormula;
     const showEditMenu = () => {
         if (Object.keys(context.formula).length === 0) return;
 
@@ -94,7 +95,7 @@ const FormulaMenu: React.FC<FormulaMenuProps> = ({ anchorEl, open, handleClose }
     }
     const showDeleteMenu = () => {
         if (Object.keys(context.formula).length === 0) return;
-        renderAt(<EditMenu context={context} />, containerId)
+        renderAt(<DeleteDialog context={context} />, containerId)
     }
     return (
         <Menu

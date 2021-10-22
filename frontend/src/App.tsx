@@ -39,6 +39,9 @@ const AppRouter: React.FC = () => {
         <Route exact path='/' render={() => {
           return isAuth ? <Dashboard /> : <Home />
         }} />
+        <Route exact path='/tags' render={() => {
+          return isAuth ? <Dashboard /> : <Login />
+        }} />
         <Route exact path='/login' render={() => isAuth ? <Redirect to="/" /> : <Login />} />
         <Route exact path='/register' render={() => <Redirect to="/signup" />} />
         <Route exact path='/signup' render={() => isAuth ? <Redirect to="/" /> : <SignUp />} />

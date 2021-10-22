@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
-import { Box, Grid } from '@mui/material';
+import { Box, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
 import Skeleton from '../Formulas/Skeleton';
 import { mockFormulas } from '../../../../utils/mock';
-import { render } from 'react-dom';
 import { FormulaWrapper as Formula } from './Formula';
-// import axios from 'axios';
-// import BriefNotification from '../Alerts/BriefNotification';
+import axios from 'axios';
+import BriefNotification from '../../Alerts/BriefNotification';
+import { renderAt } from '../../../../utils/components';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
-        backgroundColor: 'darkred',
         [theme.breakpoints.up('md')]: {
             paddingLeft: '50px',
             paddingRight: '30px'
@@ -30,21 +29,30 @@ const useStyles = makeStyles((theme: Theme) => ({
             gridTemplateRows: 'repeat(auto-fit, 300px)',
         },
         [theme.breakpoints.down('sm')]: {
-            width: '100vw'
+            width: '100vw !important'
         }
     },
     gridItem: {
         backgroundColor: 'blue',
         border: 'solid 1px white',
+    },
+    title: {
+        fontSize: '4rem !important',
+        margin: '5px 0 10px 0 !important',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '2.5rem !important',
+            marginLeft: '10px !important'
+        }
     }
 }));
 
 export const Formulas: React.FC = () => {
-    // const { panelWidth } = useContext(SidePanelContext)
     const classes = useStyles();
+    const [didFetch, setDidFetch] = useState(false);
 
     useEffect(() => {
-        fetchFormulas(classes.gridItem)
+        if (didFetch) return;
+        fetchFormulas(classes.gridItem, () => setDidFetch(true))
     });
 
     return (
@@ -58,6 +66,10 @@ export const Formulas: React.FC = () => {
                 overflowX: 'hidden',
             }}
         >
+            <Typography className={classes.title} variant="h1" component="div" gutterBottom>
+                Formulas
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
             <Grid
                 id="formulasGrid"
                 container
@@ -70,57 +82,54 @@ export const Formulas: React.FC = () => {
     );
 }
 
-const fetchFormulas = async (className: string) => {
-    // await axios
-    //     .post("api/formulas/search", {})
-    //     .then(res => {
-    //         console.log({ res });
-    //         let response = res as IformulaResponse;
+const fetchFormulas = async (className: string, callback: () => void) => {
+    let formulas: [] | Iformula[] = await axios.post("api/formulas/search/", {})
+        .then(res => {
+            console.log({ res });
+            const data = (res as unknown as IresponseFormulas)
 
-    //         if (!("formulas" in response.data!)) {
-    //             return []
-    //         }
-    //         const formulas = response.data!.formulas;
-    //         render(
-    //             <>
-    //                 {formulas.map(formula => {
-    //                     return (
-    //                         <Grid item justifyContent={'center'} className={className}>
-    //                             <Formula {...formula} />
-    //                         </Grid>
-    //                     );
-    //                 })}
-    //             </>,
-    //             document.getElementById("formulasGrid")
-    //         )
-    //     })
-    //     .catch(err => {
-    //         console.error(err)
-    //         render(
-    //             <BriefNotification
-    //                 type="main"
-    //                 severity="error"
-    //                 text="Internal error"
-    //             />,
-    //             document.getElementById("_overlay")
-    //         )
-    //     })
+            if (!("formulas" in data)) {
+                return []
+            }
+            return data.formulas;
+        })
+        .catch(err => {
+            console.error(err)
+            renderAt(
+                <BriefNotification
+                    type="main"
+                    severity="error"
+                    text="Internal error"
+                />,
+                "_overlay"
+            )
+            return []
+        }) as Iformula[] | []
 
-    await setTimeout(() => {
-        const formulas = mockFormulas;
-        render(
-            <>
-                {formulas.map(formula => {
-                    return (
-                        <Grid item justifyContent={'center'} className={className}>
-                            <Formula {...formula} />
-                        </Grid>
-                    );
-                })}
-            </>,
-            document.getElementById("formulasGrid")
-        )
-    }, 500)
+    // temporary
+    if (formulas.length === 0) {
+        formulas = mockFormulas;
+    }
+
+    insertFormulas(formulas);
+
+    callback();
 };
 
-export default Formulas;
+export const insertFormulas = (formulas: Iformula[]) => {
+    if (formulas.length === 0) return;
+    renderAt(
+        <>
+            {formulas.map(formula => {
+                return (
+                    <Grid item justifyContent={'center'}>
+                        <Formula {...formula} />
+                    </Grid>
+                );
+            })}
+        </>,
+        "formulasGrid"
+    )
+}
+
+export default memo(Formulas);

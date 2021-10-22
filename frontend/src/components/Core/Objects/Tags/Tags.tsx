@@ -1,10 +1,13 @@
-import React, { memo, useState } from 'react';
-import { Chip, CircularProgress, IconButton, ListItem, Menu, MenuItem } from '@mui/material';
+import React, { memo, useContext, useState } from 'react';
+import { Button, Chip, ChipProps, CircularProgress, Divider, IconButton, ListItem, Menu, MenuItem, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
-import { Error, Tag as TagIcon } from '@mui/icons-material';
+import { Add, Error, Tag as TagIcon } from '@mui/icons-material';
 import { useGetTags } from '../../../../hooks/useGetTags';
+import AddTag from '../../Dialogs/AddTag';
+import { renderAt } from '../../../../utils/components';
+import TagContext, { TagProvider } from '../../../Contexts/Tag';
 
 const useStyles = makeStyles((theme: Theme) => ({
     tagsList: {
@@ -25,25 +28,80 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     tagItem: {
         margin: '5px !important'
+    },
+    container: {
+        paddingLeft: '30px',
+        paddingRight: '30px',
+        '@media (max-width: 600px)': {
+            width: '100vw',
+            alignItems: 'center'
+        }
+    },
+    title: {
+        fontSize: '4rem !important',
+        margin: '5px 0 10px 0 !important',
+        '@media (max-width: 900px)': {
+            fontSize: '2.5rem !important',
+            marginLeft: '10px !important'
+        }
+    },
+    item: {
+        margin: '10px !important',
     }
 }));
 
-export const TagsContainer: React.FC = () => {
-    const classes = useStyles();
+export const TagsWrapper: React.FC = () => {
     return (
-        <div className="">
-
-        </div>
-    );
+        <TagProvider>
+            <Container />
+        </TagProvider>
+    )
 }
+
+export const Container: React.FC = memo(() => {
+    const classes = useStyles();
+    const [openAddTag, setOpenAddTag] = useState(false);
+    const { tags, loading } = useContext(TagContext);
+
+    console.log("Container", { openAddTag, tags, loading });
+
+    return (
+        <>
+            <Box
+                component="main"
+                className={classes.container}
+                sx={{
+                    flexGrow: 1,
+                    m: '0',
+                    pt: '80px',
+                    overflowX: 'hidden'
+                }}
+            >
+                <Typography className={classes.title} variant="h1" component="div" gutterBottom>
+                    Tags
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+                {
+                    loading ? <CircularProgress sx={{ ml: 'auto', mr: 'auto' }} />
+                        : <TagsList tags={tags} className={classes.item} />
+                }
+                <Divider sx={{ mb: 2 }} />
+                <Button startIcon={<Add />} variant="contained" color="success" onClick={() => setOpenAddTag(true)}>
+                    Tag
+                </Button>
+            </Box>
+            <AddTag open={openAddTag} setOpen={setOpenAddTag} />
+        </>
+    );
+});
 
 const TAGS_MENU_MAX_HEIGHT = 50;
 
-export const TagsList: React.FC<{ tags: string[] }> = ({ tags }) => {
+export const TagsList: React.FC<{ tags: string[], className?: string }> = ({ tags, className }) => {
     const classes = useStyles();
     return (
         <Box className={classes.tagsList}>
-            {tags.map(tag => <Tag name={tag} className={classes.tag} />)}
+            {tags.map(tag => <Tag name={tag} className={className || classes.tag} />)}
         </Box>
     );
 }

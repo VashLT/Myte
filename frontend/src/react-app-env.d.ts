@@ -78,7 +78,7 @@ interface Iobject {
     [key: string]: string;
 }
 interface Iuser {
-    id: number;
+    idUser: number;
     username: string;
     name: string;
     email: string;
@@ -93,7 +93,7 @@ interface Iauth {
 }
 
 interface Iformula {
-    id: number;
+    idFormula: number;
     addedAt: string;
     tags: string[];
     category: string;
@@ -104,7 +104,7 @@ interface Iformula {
 }
 
 interface Iimage {
-    id: number;
+    idImage: number;
     date: string;
     url: string;
     title: string;
@@ -124,11 +124,11 @@ type MInputEvent = React.FormEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 // responses
 
-interface IformulaResponse {
-    data?: {
-        formulas: Iformula[]
+interface IresponseFormulas extends Iresponse {
+    data: {
+        formulas: Iformula[];
+        error: string;
     };
-    error?: string;
 }
 
 interface Iresponse {
